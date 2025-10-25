@@ -18,7 +18,7 @@ Route::get('/posts', function () {
 Route::get('/scan-qr', function () {
     return Inertia::render('ELibrary/ScanQR');
 });
-Route::get('//student-checkin', function () {
+Route::get('/student-checkin', function () {
     return Inertia::render('ELibrary/StudentCheckin');
 });
 
