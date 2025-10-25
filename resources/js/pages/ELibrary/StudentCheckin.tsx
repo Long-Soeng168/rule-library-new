@@ -37,7 +37,7 @@ export default function StudentCheckin() {
                     <Link href="/scan-qr">
                         <Button variant="outline">Back to Scanner</Button>
                     </Link>
-                    <Link href="/scan-qr">
+                    <Link href="/">
                         <Button>Home Page</Button>
                     </Link>
                 </div>
