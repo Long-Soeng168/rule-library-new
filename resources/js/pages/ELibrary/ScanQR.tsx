@@ -19,12 +19,11 @@ export default function App() {
             // Flash effect for 1 second
             setTimeout(() => setFlash(false), 1000);
 
-            // If value is a URL, open it
+            // Navigate the current tab using Inertia
             try {
-                const url = new URL(value);
-                router.visit('/profile') // opens in a new tab
-            } catch {
-                console.log('Scanned value is not a URL:', value);
+                router.visit('/student-checkin'); // navigates current tab
+            } catch (err) {
+                console.error('Error navigating:', err);
             }
         }
     };

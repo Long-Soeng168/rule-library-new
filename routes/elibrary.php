@@ -14,8 +14,12 @@ Route::get('/profile', function () {
 Route::get('/posts', function () {
     return Inertia::render('ELibrary/Posts/Index');
 });
+
 Route::get('/scan-qr', function () {
     return Inertia::render('ELibrary/ScanQR');
+});
+Route::get('//student-checkin', function () {
+    return Inertia::render('ELibrary/StudentCheckin');
 });
 
 
