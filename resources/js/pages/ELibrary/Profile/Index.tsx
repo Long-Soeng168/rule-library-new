@@ -3,6 +3,7 @@ import MembershipCard from '@/components/Card/MembershipCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import ELibraryLayout from '@/layouts/ELibraryLayout';
+import { Link } from '@inertiajs/react';
 import { ArrowRightIcon, InfoIcon, QrCodeIcon } from 'lucide-react';
 
 const Index = () => {
@@ -17,10 +18,12 @@ const Index = () => {
                         <CardHeader className="p-5">
                             <div className="flex flex-row items-start justify-between space-y-0 pb-2">
                                 <QrCodeIcon className="size-10 text-primary" />
-                                <Button className="gap-2 rounded-sm" variant="default">
-                                    Start Scan
-                                    <ArrowRightIcon className="h-4 w-4" />
-                                </Button>
+                                <Link href={`/scan-qr`}>
+                                    <Button className="gap-2 rounded-sm" variant="default">
+                                        Start Scan
+                                        <ArrowRightIcon className="h-4 w-4" />
+                                    </Button>
+                                </Link>
                             </div>
                             <div>
                                 <CardTitle className="text-lg font-semibold">Attendance</CardTitle>
