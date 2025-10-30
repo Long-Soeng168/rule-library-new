@@ -2,15 +2,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import useTranslation from '@/hooks/use-translation';
 import { usePage } from '@inertiajs/react';
-import { CalendarDaysIcon } from 'lucide-react';
 import BarcodeLib from 'react-barcode';
-import { Badge } from '../ui/badge';
 import { BorderBeam } from '../ui/border-beam';
+import { FlickeringGrid } from '../ui/flickering-grid';
 
 export default function MembershipCard() {
     // Example member object:
     let member = {
         name: 'Long Soeng',
+        name_kh: 'ឡុង សឹង',
         email: 'longsoeng@gmail.com',
         phone: '012 230 715 24',
         gender: 'Male',
@@ -32,43 +32,58 @@ export default function MembershipCard() {
     const name = currentLocale === 'kh' ? website_info?.name_kh || website_info?.name : website_info?.name;
 
     return (
-        <Card className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-background py-0 shadow-none">
-            <img src={logo} alt="" className="absolute top-4 left-1/2 z-0 size-44 -translate-x-1/2 object-contain opacity-15" />
+        <Card className="relative w-full max-w-lg overflow-hidden rounded-2xl border-primary/30 bg-background py-0 shadow-none">
+            {/* <img src={logo} alt="" className="absolute top-4 left-1/2 z-0 size-44 -translate-x-1/2 object-contain opacity-15" /> */}
 
             <BorderBeam duration={8} size={200} borderWidth={1.5} />
             {/* Content */}
-            <CardContent className="z-10 space-y-4 p-5">
+            <CardContent className="z-10 p-5">
                 {/* Avatar + Name */}
-                <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-1 flex-col justify-start gap-1">
-                        <span className="text-xl leading-none font-semibold text-foreground">{member.name}</span>
-                        <span className='flex flex-wrap gap-1'>
-                            <Badge className="mt-1 rounded" variant="secondary">
-                                Information Technology (A01P12)
-                            </Badge>
-                        </span>
-                        <span className="text-base text-foreground">{member.email}</span>
-                        <span className="text-base text-foreground">{member.phone}</span>
-                        <span className="text-base text-foreground">{member.gender}</span>
-                        <span className="text-base text-foreground">{member.address}</span>
+                <div className="absolute top-0 right-0 left-0 h-20 fill-primary">
+                    <div className="absolute top-[5px] right-0 left-0.5 z-0 h-[200px] w-full mask-[linear-gradient(to_top,transparent_25%,black_95%)]">
+                        <FlickeringGrid
+                            className="absolute top-0 left-0"
+                            color="#655eb3"
+                            squareSize={4}
+                            gridGap={6}
+                            maxOpacity={0.5}
+                            flickerChance={0.1}
+                        />
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                        <Avatar className="aspect-3/4 w-22 rounded-sm border object-cover dark:border-white/20">
+                </div>
+
+                {/* <div className="absolute top-0 right-0 left-0 h-22 bg-primary"></div> */}
+                <div className="relative flex w-full flex-col items-start justify-between gap-3">
+                    <div className="flex w-full flex-col items-center justify-center gap-2 pt-4">
+                        <Avatar className="size-32 rounded-full border object-cover dark:border-white/20">
                             <AvatarImage src={member.avatar} />
                             <AvatarFallback className="rounded-none">{member.name?.[0]?.toUpperCase() || '?'}</AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col items-end">
-                            <span className="text-xs">Joined</span>
-                            <span className="flex items-center text-sm gap-1 font-medium">
-                                <CalendarDaysIcon className="h-4 w-4" />
-                                {member.expireDate}
-                            </span>
+                        <div className="my-4 flex flex-col items-center gap-2">
+                            <div className="text-2xl leading-none font-semibold text-foreground">{member.name_kh}</div>
+                            <div className="text-lg leading-none font-medium text-foreground">{member.name}</div>
+                        </div>
+                    </div>
+                    <div className="flex w-full flex-1 flex-col justify-start gap-1">
+                        <div className="flex items-center text-base text-foreground">
+                            <div className="min-w-[55px] shrink-0 font-medium">Phone</div>: {member.phone}
+                        </div>
+                        <div className="flex items-center text-base text-foreground">
+                            <div className="min-w-[55px] shrink-0 font-medium">Email</div>: {member.email}
+                        </div>
+                        <div className="flex items-center text-base text-foreground">
+                            <div className="min-w-[55px] shrink-0 font-medium">និស្សិត</div>: បរិញ្ញាបត្រ
+                            <div className="mx-4 h-3.5 w-[1.5px] bg-muted-foreground"></div> ផ្នែក : នីតិសាស្រ្ត
+                        </div>
+                        <div className="mt-4 flex w-full flex-col items-center">
+                            <div className="text-xs font-medium">Expired</div>
+                            <div className="flex w-full items-center justify-center gap-1 text-sm">{member.expireDate}</div>
                         </div>
                     </div>
                 </div>
 
                 {/* Barcode */}
-                <div className="000justify-center flex flex-col items-center py-3">
+                <div className="000justify-center flex flex-col items-center py-5">
                     <div className="bg-white">
                         <BarcodeLib
                             value={member.barcodeValue}
