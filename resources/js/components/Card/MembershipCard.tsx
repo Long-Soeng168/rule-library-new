@@ -65,13 +65,13 @@ export default function MembershipCard() {
                         </div>
                     </div>
                     <div className="flex w-full flex-1 flex-col justify-start gap-1">
-                        <div className="flex items-center text-base text-foreground">
-                            <div className="min-w-[55px] shrink-0 font-medium">Phone</div>: {member.phone}
+                        <div className="flex items-center text-base text-foreground gap-1">
+                            <div className="min-w-[55px] shrink-0 font-medium">ទូរស័ព្ទ</div>: {member.phone}
                         </div>
-                        <div className="flex items-center text-base text-foreground">
-                            <div className="min-w-[55px] shrink-0 font-medium">Email</div>: {member.email}
+                        <div className="flex items-center text-base text-foreground gap-1">
+                            <div className="min-w-[55px] shrink-0 font-medium">អ៊ីមែល</div>: {member.email}
                         </div>
-                        <div className="flex items-center text-base text-foreground">
+                        <div className="flex items-center text-base text-foreground gap-1">
                             <div className="min-w-[55px] shrink-0 font-medium">និស្សិត</div>: បរិញ្ញាបត្រ
                             <div className="mx-4 h-3.5 w-[1.5px] bg-muted-foreground"></div> ផ្នែក : នីតិសាស្រ្ត
                         </div>
