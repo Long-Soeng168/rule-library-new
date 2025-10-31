@@ -1,5 +1,6 @@
 import ScrollToTopButton2 from '@/components/Button/ScrollToTopButton2';
 import Footer from '@/components/Footer/Footer';
+import BottomNavbarHideAndShow from '@/components/Navbar/BottomNavbarHideAndShow';
 import Navbar2 from '@/components/Navbar/Navbar2';
 import NavbarHideAndShow from '@/components/Navbar/NavbarHideAndShow';
 import React from 'react';
@@ -17,6 +18,7 @@ export default function ELibraryLayout({ children }: { children: React.ReactNode
 
             {/* <ScrollToTopButton /> */}
             <ScrollToTopButton2 />
+            <BottomNavbarHideAndShow />
         </div>
     );
 }
