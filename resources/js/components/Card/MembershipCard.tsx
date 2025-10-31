@@ -40,14 +40,16 @@ export default function MembershipCard() {
             <CardContent className="z-10 p-5">
                 {/* Avatar + Name */}
                 <div className="absolute top-0 right-0 left-0 h-20 fill-primary">
-                    <div className="absolute top-[5px] right-0 left-0.5 z-0 h-[200px] w-full mask-[linear-gradient(to_top,transparent_25%,black_95%)]">
+                    <div className="relative h-[200px] translate-x-[3px] translate-y-[3px] w-full overflow-hidden rounded-lg mask-[linear-gradient(to_top,transparent_25%,black_95%)]">
                         <FlickeringGrid
-                            className="absolute top-0 left-0"
-                            color="#655eb3"
+                            className="absolute inset-0 z-0 size-full"
                             squareSize={4}
                             gridGap={6}
+                            color="#655eb3"
                             maxOpacity={0.5}
                             flickerChance={0.1}
+                            height={200}
+                            width={512}
                         />
                     </div>
                 </div>
@@ -65,13 +67,13 @@ export default function MembershipCard() {
                         </div>
                     </div>
                     <div className="flex w-full flex-1 flex-col justify-start gap-1">
-                        <div className="flex items-center text-base text-foreground gap-1">
+                        <div className="flex items-center gap-1 text-base text-foreground">
                             <div className="min-w-[55px] shrink-0 font-medium">ទូរស័ព្ទ</div>: {member.phone}
                         </div>
-                        <div className="flex items-center text-base text-foreground gap-1">
+                        <div className="flex items-center gap-1 text-base text-foreground">
                             <div className="min-w-[55px] shrink-0 font-medium">អ៊ីមែល</div>: {member.email}
                         </div>
-                        <div className="flex items-center text-base text-foreground gap-1">
+                        <div className="flex items-center gap-1 text-base text-foreground">
                             <div className="min-w-[55px] shrink-0 font-medium">និស្សិត</div>: បរិញ្ញាបត្រ
                             <div className="mx-4 h-3.5 w-[1.5px] bg-muted-foreground"></div> ផ្នែក : នីតិសាស្រ្ត
                         </div>
