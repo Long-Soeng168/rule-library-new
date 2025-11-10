@@ -19,7 +19,7 @@ export default function MembershipCard() {
         joinDate: '2023-07-15',
         expireDate: '2026-07-15',
         avatar: 'https://github.com/shadcn.png',
-        barcodeValue: 'LB000123',
+        barcodeValue: '153000501',
     };
 
     const { website_info } = usePage<any>().props;
@@ -66,7 +66,7 @@ export default function MembershipCard() {
                             <div className="text-lg leading-none font-medium text-foreground">{member.name}</div>
                         </div>
                     </div>
-                    <div className="flex w-full flex-1 flex-col justify-start gap-1">
+                    {/* <div className="flex w-full flex-1 flex-col justify-start gap-1">
                         <div className="flex items-center gap-1 text-base text-foreground">
                             <div className="min-w-[55px] shrink-0 font-medium">ទូរស័ព្ទ</div>: {member.phone}
                         </div>
@@ -81,7 +81,7 @@ export default function MembershipCard() {
                             <div className="text-xs font-medium">Expired</div>
                             <div className="flex w-full items-center justify-center gap-1 text-sm">{member.expireDate}</div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Barcode */}

@@ -14,6 +14,9 @@ Route::get('/profile', function () {
 Route::get('/posts', function () {
     return Inertia::render('ELibrary/Posts/Index');
 });
+Route::get('/posts/{post}', function () {
+    return Inertia::render('ELibrary/Posts/Show');
+});
 
 Route::get('/scan-qr', function () {
     return Inertia::render('ELibrary/ScanQR');

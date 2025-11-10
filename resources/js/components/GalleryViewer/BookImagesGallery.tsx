@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { Link } from '@inertiajs/react';
 import { BookOpenIcon, FileDownIcon, Maximize2Icon, Minimize2Icon, RotateCwSquareIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import { useState } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -68,14 +69,18 @@ export default function BookImagesGallery({
                 <div className="absolute right-0 bottom-0 left-0 z-10 flex bg-transparent">
                     <div className="z-20 mx-auto flex w-full items-center justify-center text-sm text-white lg:justify-end">
                         <div className="flex w-full justify-center gap-2 bg-black/50 p-2">
-                            <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
-                                <FileDownIcon size={20} />
-                                <span>Download PDF</span>
-                            </button>
-                            <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
-                                <BookOpenIcon size={20} />
-                                <span>Read PDF</span>
-                            </button>
+                            <Link href={`/view-pdf?file_name=file-sample_150kB.pdf&id=1&resource=items`}>
+                                <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
+                                    <FileDownIcon size={20} />
+                                    <span>Download PDF</span>
+                                </button>
+                            </Link>
+                            <Link href={`/view-pdf?file_name=file-sample_150kB.pdf&id=1&resource=items`}>
+                                <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
+                                    <BookOpenIcon size={20} />
+                                    <span>Read PDF</span>
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

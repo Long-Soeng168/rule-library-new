@@ -1,62 +1,61 @@
 export const samplePosts = [
-  {
-    url: "/blog/react-components",
-    data: {
-      title: "21 Best Free React Components Libraries To Kickstart Projects",
-      description:
-        "Discover the most powerful and popular React component libraries that will accelerate your development workflow and help you build stunning UIs.",
-      date: "2024-12-01",
-      thumbnail: "https://picsum.photos/seed/6/800/500",
+    {
+        url: '/library/reading-week',
+        data: {
+            title: 'Reading Week Activities and Events 2025',
+            description: 'Join us for Reading Week — filled with book fairs, reading challenges, and fun activities to inspire lifelong learning.',
+            date: '2025-11-28',
+            thumbnail: '/assets/rule_library/meeting/1.jpg',
+        },
     },
-  },
-  {
-    url: "/blog/nextjs-portfolio-templates",
-    data: {
-      title: "23 NextJS Portfolio Template Examples For Design Inspiration",
-      description:
-        "Explore the best NextJS portfolio templates and examples to showcase your work professionally and stand out from the competition.",
-      date: "2024-11-28",
-      thumbnail: "https://picsum.photos/seed/1/600/400",
+    {
+        url: '/library/new-arrivals',
+        data: {
+            title: 'New Arrivals: Explore the Latest Books in Our Library',
+            description:
+                'Check out the newest books, journals, and digital resources added to our collection this month. Don’t miss out on what’s trending!',
+            date: '2025-12-01',
+            thumbnail: 'https://picsum.photos/seed/6/800/500',
+        },
     },
-  },
-  {
-    url: "/blog/react-animation-libraries",
-    data: {
-      title: "13 Awesome React Animation Libraries To Elevate Your Design Projects",
-      description:
-        "Transform your React applications with these powerful animation libraries that make creating smooth, engaging user experiences effortless.",
-      date: "2024-11-25",
-      thumbnail: "https://picsum.photos/seed/2/600/400",
+
+    {
+        url: '/library/digital-resources',
+        data: {
+            title: 'How To Access Digital Library Resources From Home',
+            description:
+                'Learn how to access e-books, academic journals, and online research databases through your student account — anytime, anywhere.',
+            date: '2025-11-25',
+            thumbnail: 'https://picsum.photos/seed/2/600/400',
+        },
     },
-  },
-  {
-    url: "/blog/react-landing-page-templates",
-    data: {
-      title: "21 Best React Landing Page Templates To Inspire Yours",
-      description:
-        "Discover stunning React landing page templates and learn the design principles that make them convert visitors into customers.",
-      date: "2024-11-22",
-      thumbnail: "https://picsum.photos/seed/3/600/400",
+    {
+        url: '/library/research-guides',
+        data: {
+            title: 'Top Research Tips for Students and Faculty',
+            description:
+                'Discover practical research strategies, citation tools, and database tips to make your projects more effective and organized.',
+            date: '2025-11-22',
+            thumbnail: 'https://picsum.photos/seed/3/600/400',
+        },
     },
-  },
-  {
-    url: "/blog/react-native-libraries",
-    data: {
-      title: "21 Best React Native Libraries You Should Know About",
-      description:
-        "Explore essential React Native libraries that will streamline your mobile app development and enhance functionality.",
-      date: "2024-11-20",
-      thumbnail: "https://picsum.photos/seed/4/600/400",
+    {
+        url: '/library/library-services',
+        data: {
+            title: 'Library Services Every Student Should Know',
+            description:
+                'From book borrowing to study rooms and interlibrary loans — learn about all the services our library offers to support your studies.',
+            date: '2025-11-20',
+            thumbnail: 'https://picsum.photos/seed/4/600/400',
+        },
     },
-  },
-  {
-    url: "/blog/react-portfolio-templates",
-    data: {
-      title: "Looking For A React Portfolio Template? 19 Best React Portfolio Templates",
-      description:
-        "Discover the best React portfolio templates to showcase your work professionally and land your dream job or clients.",
-      date: "2024-11-18",
-      thumbnail: "https://picsum.photos/seed/5/600/400",
+    {
+        url: '/library/library-rules',
+        data: {
+            title: 'Library Rules and Etiquette: What You Need To Know',
+            description: 'Get familiar with our library’s rules and guidelines to help maintain a peaceful and productive environment for everyone.',
+            date: '2025-11-18',
+            thumbnail: 'https://picsum.photos/seed/5/600/400',
+        },
     },
-  },
 ];

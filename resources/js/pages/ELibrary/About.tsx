@@ -3,7 +3,6 @@ import AlertLibraryArticles from '@/components/Alert/AlertLibraryArticles';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/animate-ui/radix/accordion';
 import { MobileTableOfContents } from '@/components/TableContent/mobile-table-of-contents';
 import { TableOfContents } from '@/components/TableContent/table-of-contents';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
 import ELibraryLayout from '@/layouts/ELibraryLayout';
 
@@ -14,7 +13,8 @@ const About = () => {
             <div className="section-container">
                 <div className="relative z-10 mx-auto flex max-w-7xl divide-x divide-border px-4 md:px-0">
                     <div className="pointer-events-none absolute left-1/2 mx-auto h-full w-[calc(100%-2rem)] max-w-7xl -translate-x-1/2 border-x border-border p-0 lg:w-full" />
-                    <main className="prose w-full max-w-none overflow-hidden p-4 dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
+                    <main className="prose w-full pb-20 max-w-none overflow-hidden p-4 dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
+                        <h1 className="mt-6 text-primary">About RULE Library</h1>
                         <section>
                             <h2>1. Introduction</h2>
                             <p>
@@ -284,7 +284,7 @@ If you have a road map and still can't find your destination, then you are truly
                             </p>
 
                             <section>
-                                <p className='text-lg font-bold pt-4'>Law Library</p>
+                                <p className="pt-4 text-lg font-bold">Law Library</p>
                                 <div className="not-prose">
                                     <TeamAccordion
                                         members={[
@@ -320,7 +320,7 @@ If you have a road map and still can't find your destination, then you are truly
                             </section>
 
                             <section>
-                                <p className='text-lg font-bold pt-4'>Economics Library</p>
+                                <p className="pt-4 text-lg font-bold">Economics Library</p>
                                 <div className="not-prose">
                                     <TeamAccordion
                                         members={[
@@ -354,7 +354,7 @@ If you have a road map and still can't find your destination, then you are truly
                             </section>
 
                             <section>
-                                <p className='text-lg font-bold pt-4'>Electronic Library</p>
+                                <p className="pt-4 text-lg font-bold">Electronic Library</p>
                                 <div className="not-prose">
                                     <TeamAccordion
                                         members={[

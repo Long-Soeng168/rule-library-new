@@ -56,7 +56,7 @@ const Index = () => {
                             return (
                                 <PostCard
                                     key={blog.url}
-                                    url={`#`}
+                                    url={`/posts/1`}
                                     title={blog.data.title}
                                     description={blog.data.description}
                                     date={formattedDate}

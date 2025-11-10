@@ -34,3 +34,8 @@ deleted_at={item.deleted_at}
 recoverPath={`/admin/users/${item.id}/recover`}
 permission="user update" <-------
 />
+
+
+
+#PDF Viewer Package
+npm install @react-pdf-viewer/core @react-pdf-viewer/default-layout

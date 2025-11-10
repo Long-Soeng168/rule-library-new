@@ -31,17 +31,29 @@ export const advisors = [
     { value: 'advisor-11', label: 'Prof. Sovann Roeun' },
     { value: 'advisor-12', label: 'Mrs. Malis Men' },
 ];
+export const languages = [
+    { value: 'kh', label: 'Khmer' },
+    { value: 'en', label: 'English' },
+];
 
 export default function ResourceSidebar() {
     return (
         <>
-            <Accordion type="multiple" defaultValue={['categories', 'advisors']} className="w-full rounded-lg border px-0">
+            <Accordion type="multiple" defaultValue={['categories', 'advisors', 'languages']} className="w-full rounded-lg border px-0">
                 <AccordionItem value="categories">
                     <AccordionTrigger chevron={false} className="px-4 pb-2 font-semibold">
                         Categories
                     </AccordionTrigger>
                     <AccordionContent className="px-2">
                         <ResourceSidebarList limit={20} heading="All Categories" options={categories} />
+                    </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="languages">
+                    <AccordionTrigger chevron={false} className="px-4 font-semibold">
+                        Languages
+                    </AccordionTrigger>
+                    <AccordionContent className="px-2">
+                        <LibrarySidebarList heading="All Languages" options={languages} />
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="advisors">
@@ -53,8 +65,8 @@ export default function ResourceSidebar() {
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
-            <div className='my-4 flex justify-end'>
-                <Button variant={'link'} className='hover:bg-muted'>
+            <div className="my-4 flex justify-end">
+                <Button variant={'link'} className="hover:bg-muted">
                     <span>Clear All Filter</span>
                     <RotateCwIcon />
                 </Button>
