@@ -4,7 +4,7 @@ import ELibraryLayout from '@/layouts/ELibraryLayout';
 export default function TimelinePage() {
     const data = [
         {
-            title: '2026',
+            title: 'Early 2026',
             content: (
                 <div>
                     <p className="mb-8 text-xs text-neutral-800 md:text-base dark:text-neutral-200">Built and launched New E-Library Website. <b>(Version 3)</b></p>
