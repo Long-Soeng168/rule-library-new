@@ -12,7 +12,7 @@ export function MobileTableOfContents() {
 
             <DrawerContent className="lg:hidden z-1000">
                 <DrawerHeader>
-                    <h3 className="font-semibold">Table of Contents</h3>
+                    <p className="font-semibold">Table of Contents</p>
                 </DrawerHeader>
 
                 <DrawerBody>
