@@ -10,96 +10,75 @@ const About = () => {
             <div className="section-container">
                 <div className="relative z-10 mx-auto flex max-w-7xl divide-x divide-border px-4 md:px-0">
                     <div className="pointer-events-none absolute left-1/2 mx-auto h-full w-[calc(100%-2rem)] max-w-7xl -translate-x-1/2 border-x border-border p-0 lg:w-full" />
-                    <main className="prose w-full max-w-none pb-20 overflow-hidden p-4 dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
-                        <h1 className="mt-6 text-primary">Reading Week Activities and Events 2025</h1>
+                    <main className="prose w-full max-w-none overflow-hidden p-4 pb-20 dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
+                        <h1 className="mt-6 text-primary">ការប្រជុំបច្ចេកទេសបណ្ណាល័យនៅថ្ងៃទី២៤ ខែតុលា ឆ្នាំ២០២៥</h1>
                         <section>
                             <h2>1. Introduction</h2>
                             <p>
-                                The Royal University of Law and Economic Sciences (RULE) Library proudly organizes the annual{' '}
-                                <strong>Reading Week 2025</strong>, a week-long event dedicated to promoting the joy of reading, research, and
-                                lifelong learning among students and staff. This year’s theme, <em>“Read, Reflect, and Grow,”</em> encourages the
-                                university community to explore new perspectives through books and knowledge sharing.
+                                On October 24, 2025, the Royal University of Law and Economic Sciences (RULE) Library held a technical meeting to
+                                discuss ongoing and upcoming projects, review library operations, and coordinate strategies to improve services for
+                                students, faculty, and researchers.
                             </p>
                             <p>
-                                Reading Week aims to build a stronger reading culture within the university, inspiring curiosity, creativity, and
-                                critical thinking. The event features various activities designed to engage readers, highlight the value of books, and
-                                connect learning with real-world experiences.
+                                The meeting gathered librarians, IT staff, and administrative personnel to address key topics including library
+                                management systems, digital resources, and service quality enhancements. This session reflects the university’s
+                                commitment to modernizing library operations and ensuring that library services remain effective and user-friendly.
                             </p>
                         </section>
 
                         <section>
-                            <h2>2. Event Highlights</h2>
-                            <p>
-                                Throughout Reading Week, the library will host a series of interactive programs and exhibitions to encourage
-                                participation from all faculties. The main highlights include:
-                            </p>
+                            <h2>2. Participants</h2>
+                            <p>The technical meeting included the following participants:</p>
                             <ul>
-                                <li>
-                                    <strong>Book Exhibition:</strong> Display of newly arrived books, rare collections, and recommended reading
-                                    materials from different disciplines.
-                                </li>
-                                <li>
-                                    <strong>Reading Challenge:</strong> Students are invited to read as many books as possible during the week and
-                                    share short reflections or reviews.
-                                </li>
-                                <li>
-                                    <strong>Guest Talks:</strong> Inspiring sessions with authors, researchers, and alumni discussing the importance
-                                    of reading and academic success.
-                                </li>
-                                <li>
-                                    <strong>Story Corner:</strong> A casual reading zone where participants can read aloud, share book
-                                    recommendations, and discuss favorite authors.
-                                </li>
-                                <li>
-                                    <strong>Library Tour:</strong> Guided tours to help new students understand how to make the best use of physical
-                                    and digital library resources.
-                                </li>
+                                <li>Library Director and senior librarians</li>
+                                <li>IT and digital services staff</li>
+                                <li>Administrative and support personnel from the library</li>
+                                <li>Representatives from partner institutions for collaborative projects</li>
+                            </ul>
+                            <p>
+                                All participants contributed their expertise to review current systems and propose solutions for better workflow and
+                                service delivery.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h2>3. Meeting Agenda</h2>
+                            <p>The main agenda of the meeting included:</p>
+                            <ul>
+                                <li>Review of the library management system and its current functionalities</li>
+                                <li>Updates on digital resources and e-library access for students and staff</li>
+                                <li>Plans for cataloging new arrivals and improving the search system</li>
+                                <li>Discussion on staff training and professional development programs</li>
+                                <li>Coordination of upcoming events such as Reading Week and academic workshops</li>
                             </ul>
                         </section>
 
                         <section>
-                            <h2>3. Participation Details</h2>
-                            <p>
-                                All students, faculty members, and university staff are encouraged to participate in Reading Week activities.
-                                Registration for specific events, such as the Reading Challenge or Guest Talks, can be completed at the library’s
-                                information desk or through the university’s online portal.
-                            </p>
-                            <p>
-                                Certificates of participation will be awarded to active participants and winners of the Reading Challenge at the
-                                closing ceremony.
-                            </p>
-                            <p>
-                                The library team also welcomes volunteers who wish to assist in organizing or hosting activities throughout the week.
-                            </p>
-                        </section>
-
-                        <section>
-                            <h2>4. Schedule and Venue</h2>
+                            <h2>4. Key Outcomes</h2>
+                            <p>The meeting concluded with several important decisions and action plans, including:</p>
                             <ul>
-                                <li>
-                                    <strong>Event Period:</strong> Monday, March 4 – Saturday, March 9, 2025
-                                </li>
-                                <li>
-                                    <strong>Venue:</strong> RULE Library, Building I (Second Floor Reading Area)
-                                </li>
-                                <li>
-                                    <strong>Opening Hours:</strong> 8:00 AM – 7:00 PM daily during the event
-                                </li>
+                                <li>Implementation of a more efficient cataloging workflow to process new materials faster</li>
+                                <li>Enhancement of digital library platforms to allow remote access for students and faculty</li>
+                                <li>Scheduling periodic training sessions for library staff on new systems and tools</li>
+                                <li>Strengthening collaboration with partner institutions for access to additional resources and databases</li>
                             </ul>
                             <p>
-                                Participants are encouraged to check the detailed daily schedule on the library notice board or the official
-                                university website for updates on specific sessions and speaker line-ups.
+                                These initiatives are expected to improve library operations, increase accessibility of resources, and provide a
+                                better experience for all library users.
                             </p>
                         </section>
 
                         <section>
                             <h2>5. Conclusion</h2>
                             <p>
-                                Reading Week 2025 is more than an event — it is a celebration of curiosity, learning, and the shared love of books.
-                                The Royal University of Law and Economic Sciences Library invites everyone to take part, discover new ideas, and
-                                strengthen their passion for reading.
+                                The technical meeting held on October 24, 2025, was a productive session that highlighted the library’s commitment to
+                                continuous improvement. By addressing both operational and technological aspects, RULE Library aims to support the
+                                academic and research needs of the university community effectively.
                             </p>
-                            <p>Together, let’s make Reading Week 2025 a meaningful and inspiring experience for our entire university community.</p>
+                            <p>
+                                Regular technical meetings like this ensure that the library remains up-to-date with modern practices and continues to
+                                provide high-quality services for students, faculty, and researchers.
+                            </p>
                         </section>
                     </main>
                     <aside className="hidden w-[350px] flex-shrink-0 bg-muted/60 p-6 lg:block lg:p-10 dark:bg-muted/20">
