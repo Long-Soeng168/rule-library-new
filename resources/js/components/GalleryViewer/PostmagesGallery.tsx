@@ -1,19 +1,14 @@
-import { Maximize2Icon, Minimize2Icon, RotateCwSquareIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { ImagesIcon, Maximize2Icon, Minimize2Icon, RotateCwSquareIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import { useState } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
-import { Label } from '../ui/label';
 
-const images = [
-    'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(107).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(106).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(105).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(104).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(103).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(102).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(101).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(108).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(109).jpg',
+const sample_images = [
+    { image: '/assets/rule_library/meeting/1.jpeg' },
+    { image: '/assets/rule_library/meeting/2.jpeg' },
+    { image: '/assets/rule_library/meeting/3.jpeg' },
+    { image: '/assets/rule_library/meeting/4.jpeg' },
 ];
 
 type ImageInput = string | { image: string; id: number };
@@ -27,12 +22,12 @@ interface UploadedImageProps {
     basePath?: string; // default: "/assets/images/thumb/"
 }
 
-export default function ({
+export default function PostmagesGallery({
     containerClassName,
     imageContainerClassName,
     imageClassName,
     label = 'Images',
-    images,
+    images = sample_images,
     basePath = '/assets/images/thumb/',
 }: UploadedImageProps) {
     if (!images) return null;
@@ -95,20 +90,19 @@ export default function ({
             //     </div>
             // )}
         >
-            <div className='grid content-start gap-2 mt-4'>
-                <Label>{label}</Label>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            <div className={cn('grid content-start gap-2', containerClassName)}>
+                <h2 className="flex items-center gap-1 text-base">
+                    <ImagesIcon size={18} />
+                    {label}
+                </h2>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
                     {images.map((objectImage, idx) => (
                         <PhotoView key={idx} src={basePath + objectImage.image}>
-                            <div className="group relative overflow-hidden cursor-pointer rounded border bg-muted/20">
-                                <img
-                                    src={basePath + 'thumb/' + objectImage.image}
-                                    alt={`Image ${idx + 1}`}
-                                    className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                />
-                                {/* Optional hover overlay */}
-                                <div className="absolute inset-0 bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                            </div>
+                            <img
+                                src={basePath + (objectImage?.image || '')}
+                                alt={`Image ${idx + 1}`}
+                                className="mt-0 mb-0 aspect-4/3 w-full cursor-pointer rounded-sm object-cover transition-transform duration-300 group-hover:scale-105 hover:scale-105"
+                            />
                         </PhotoView>
                     ))}
                 </div>

@@ -1,3 +1,4 @@
+import PostmagesGallery from '@/components/GalleryViewer/PostmagesGallery';
 import { MobileTableOfContents } from '@/components/TableContent/mobile-table-of-contents';
 import { TableOfContents } from '@/components/TableContent/table-of-contents';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
@@ -7,11 +8,11 @@ const About = () => {
     return (
         <ELibraryLayout>
             <ScrollProgress className="top-0 h-[4px]" />
-            <div className="section-container">
+            <div className="section-container px-0">
                 <div className="relative z-10 mx-auto flex max-w-7xl divide-x divide-border px-4 md:px-0">
                     <div className="pointer-events-none absolute left-1/2 mx-auto h-full w-[calc(100%-2rem)] max-w-7xl -translate-x-1/2 border-x border-border p-0 lg:w-full" />
                     <main className="prose w-full max-w-none overflow-hidden p-4 pb-20 dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
-                        <h1 className="mt-6 text-primary">ការប្រជុំបច្ចេកទេសបណ្ណាល័យនៅថ្ងៃទី២៤ ខែតុលា ឆ្នាំ២០២៥</h1>
+                        <h1 className="mt-6 text-primary leading-tight">ការប្រជុំបច្ចេកទេសបណ្ណាល័យនៅថ្ងៃទី២៤ ខែតុលា ឆ្នាំ២០២៥</h1>
                         <section>
                             <h2>1. Introduction</h2>
                             <p>
@@ -80,6 +81,8 @@ const About = () => {
                                 provide high-quality services for students, faculty, and researchers.
                             </p>
                         </section>
+
+                        <PostmagesGallery containerClassName="pt-8" basePath="" />
                     </main>
                     <aside className="hidden w-[350px] flex-shrink-0 bg-muted/60 p-6 lg:block lg:p-10 dark:bg-muted/20">
                         <div className="sticky top-20 space-y-8">

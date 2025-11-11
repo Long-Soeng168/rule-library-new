@@ -5,7 +5,7 @@ export const samplePosts = [
             title: 'ការប្រជុំបច្ចេកទេសបណ្ណាល័យនៅថ្ងៃទី២៤ ខែតុលា ឆ្នាំ២០២៥',
             description: 'Join us for Reading Week — filled with book fairs, reading challenges, and fun activities to inspire lifelong learning.',
             date: '2025-11-28',
-            thumbnail: '/assets/rule_library/meeting/1.jpg',
+            thumbnail: '/assets/rule_library/meeting/1.jpeg',
         },
     },
     {
