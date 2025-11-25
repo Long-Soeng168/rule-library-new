@@ -4,35 +4,17 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import SmallOverlayTopRightButton from '../Button/SmallOverlayTopRightButton';
 
-import {
-    Banknote,
-    Briefcase,
-    Calculator,
-    ChevronDownIcon,
-    ChevronUpIcon,
-    Globe,
-    Plane,
-    Scale,
-    Scroll,
-    Sigma,
-    TrendingUp,
-    Wallet,
-} from 'lucide-react';
+import { BookOpen, FileCheckIcon, FileIcon, FileTextIcon, Microscope, Users } from 'lucide-react';
 
 const data = [
-    { code: '1', icon: Globe, name: 'International Relations' },
-    { code: '2', icon: Sigma, name: 'Mathematical Economics' },
-    { code: '3', icon: Wallet, name: 'Accounting' },
-    { code: '4', icon: Plane, name: 'Tourism' },
-    { code: '5', icon: Briefcase, name: 'Business Management' },
-    { code: '6', icon: Banknote, name: 'Banking and Finance' },
-    { code: '7', icon: Scroll, name: 'Public Administration' },
-    { code: '8', icon: Scale, name: 'Law' },
-    { code: '9', icon: TrendingUp, name: 'Development Economics' },
-    { code: '10', icon: Calculator, name: 'Mathematics' },
+    { code: '1', icon: FileTextIcon, name: 'គម្រោងឯកសារសេដ្ឋកិច្ច' },
+    { code: '2', icon: FileCheckIcon, name: 'គម្រោងបទដ្ឋានគតិយុត្ត' },
+    { code: '3', icon: FileIcon, name: 'ឯកសារផ្សេងៗ' },
+    { code: '5', icon: Microscope, name: 'ឯកសារស្រាវជ្រាវ' },
+    { code: '6', icon: Users, name: 'ASEAN University Network' },
 ];
 
-export const Feature3 = () => {
+export const Feature3Copy = () => {
     const [showAll, setShowAll] = useState(false);
 
     const { libraryTypes } = usePage<any>().props;
@@ -40,12 +22,11 @@ export const Feature3 = () => {
 
     // show 7 + "See All" card when collapsed
     // const visibleCards = showAll ? libraryTypes : libraryTypes.slice(0, 7);
-    const visibleCards = showAll ? data : data.slice(0, 7);
 
     return (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
             <MotionHighlight hover className="rounded-xl">
-                {visibleCards.map((item: any) => (
+                {data.map((item: any) => (
                     <Link href={`/resources/theses?major_code=${item.code}`} key={item.id} prefetch>
                         <div key={item.id} data-id={item.id} className="group relative h-full cursor-pointer">
                             <div className="flex h-full flex-col rounded-xl border p-4 transition-all duration-300 hover:border-primary hover:shadow-md">
@@ -56,7 +37,7 @@ export const Feature3 = () => {
                                     image={`/assets/images/types/thumb/${item.image}`}
                                     alt={currentLocale === 'kh' ? item?.name_kh || item?.name : item?.name}
                                 /> */}
-                                <span className="flex size-10 text-primary items-center justify-center rounded-md border-none bg-primary/10">
+                                <span className="flex size-10 items-center justify-center rounded-md border-none bg-primary/10 text-primary">
                                     <item.icon />
                                 </span>
 
@@ -69,17 +50,6 @@ export const Feature3 = () => {
                     </Link>
                 ))}
             </MotionHighlight>
-            <div className="h-full w-full">
-                <button
-                    onClick={() => setShowAll(!showAll)}
-                    className="group flex h-full min-h-24 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border p-4 transition-all duration-300 hover:border-primary hover:bg-muted"
-                >
-                    <div className="flex size-10 items-center justify-around rounded-full group-hover:bg-primary/10">
-                        {showAll ? <ChevronUpIcon className="size-6 text-primary" /> : <ChevronDownIcon className="size-6 text-primary" />}
-                    </div>
-                    <p className="text-base">{showAll ? 'Show Less' : 'See All'}</p>
-                </button>
-            </div>
         </div>
     );
 };

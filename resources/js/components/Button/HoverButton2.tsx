@@ -3,12 +3,11 @@ import { ChevronRightIcon } from 'lucide-react';
 import { styled } from 'styled-components';
 
 const HoverButton2 = ({ title = 'See More' }: { title?: string }) => {
-    
     const { t } = useTranslation();
 
     return (
         <StyledWrapper>
-            <button className="cta flex items-center text-primary before:bg-true-primary/20 dark:before:bg-true-primary">
+            <button className="cta flex items-center text-primary before:bg-true-primary/20 before:opacity-20 dark:before:opacity-50 dark:before:bg-true-primary">
                 <span>{t(title)}</span>
                 <ChevronRightIcon />
             </button>

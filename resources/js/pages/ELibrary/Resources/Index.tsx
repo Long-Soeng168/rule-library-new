@@ -1,16 +1,16 @@
-import PaginationTabs from '@/components/Pagination/PaginationTabs';
+import SpaceAnimateButton from '@/components/Button/SpaceAnimateButton';
 import LibrarySearch from '@/components/Search/LibrarySearch';
-import ResourceList from '@/components/Section/ResourceList';
 import ResourceMainCategory from '@/components/Section/ResourceMainCategory';
-import ResourceMainCategoryVertical from '@/components/Section/ResourceMainCategoryVertical';
+import ScrollCardSection from '@/components/Section/ScrollCardSection';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import ELibraryLayout from '@/layouts/ELibraryLayout';
+import { Link } from '@inertiajs/react';
 
-const Index = () => {
+const ELibraryPage = () => {
     return (
         <ELibraryLayout>
-            <section className="section-container mb-40">
-                <div className="my-4">
+            <section className="mb-40">
+                <div className="section-container my-4">
                     {/* <ResourceBreadcrumb /> */}
                     <Breadcrumb>
                         <BreadcrumbList>
@@ -24,21 +24,25 @@ const Index = () => {
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
-                <div className="flex gap-6">
-                    <div className="w-58">
-                        <ResourceMainCategoryVertical />
-                    </div>
-                    <div className="flex-1">
-                        <div className="mb-6">
-                            <LibrarySearch />
-                        </div>
-                        <ResourceList className="lg:grid-cols-4" />
-                        <PaginationTabs />
-                    </div>
+                <div className="section-container my-10">
+                    <LibrarySearch />
                 </div>
+                <div>
+                    <ResourceMainCategory />
+                </div>
+
+                {/* Theses */}
+                <ScrollCardSection title="Theses" />
+                <ScrollCardSection title="Publications" />
+                <ScrollCardSection title="Journals" />
             </section>
+            <div className="section-container my-20 flex justify-center">
+                <Link href={`/resources`}>
+                    <SpaceAnimateButton title="See All Resources" />
+                </Link>
+            </div>
         </ELibraryLayout>
     );
 };
 
-export default Index;
+export default ELibraryPage;

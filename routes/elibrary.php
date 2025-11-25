@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\FrontPageController;
+use App\Http\Controllers\LibraryDataFrontPageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('ELibrary/Index');
-});
+// Route::get('/', function () {
+//     return Inertia::render('ELibrary/Index');
+// });
+Route::get('/', [FrontPageController::class, 'index']);
+
 
 Route::get('/profile', function () {
     return Inertia::render('ELibrary/Profile/Index');
