@@ -12,7 +12,7 @@ export default function Feature1() {
     return (
         <section className="section-container mt-20">
             <ContentHeader
-                align="center"
+                containerClassName='text-center'
                 title={currentLocale === 'kh' ? whatWeOfferHeader?.name_kh || whatWeOfferHeader?.name : whatWeOfferHeader?.name}
                 description={
                     currentLocale === 'kh'

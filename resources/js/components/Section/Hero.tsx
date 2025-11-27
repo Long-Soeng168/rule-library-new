@@ -18,23 +18,13 @@ const Hero = () => {
         <section className="relative flex flex-col overflow-x-hidden bg-background py-10 text-foreground">
             <main className="flex flex-1 flex-col items-center justify-center px-4 text-center">
                 <div className="mx-auto max-w-5xl space-y-6">
-                    <Link href={`/about`}>
+                    <Link href={`/about`} prefetch>
                         <AnimatedGradientTextBadge />
                     </Link>
-                    <h1 className="px-10 text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl md:px-20 md:text-5xl">
+                    <h1 className="mt-4 px-4 text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl md:px-10 md:text-5xl">
                         {/* {currentLocale === 'kh' ? homepageHero?.name_kh || homepageHero?.name : homepageHero?.name} */}
-                        All Library Resources. In One Place.
+                        <p>All&nbsp;Library&nbsp;Resources.&nbsp; In&nbsp;One&nbsp;Place.</p>
                     </h1>
-
-                    <div className="flex justify-center">
-                        {/* Subtitle */}
-                        <div className="max-w-xl text-sm text-muted-foreground sm:text-base md:text-lg">
-                            {/* {currentLocale === 'kh'
-                                ? homepageHero?.short_description_kh || homepageHero?.short_description
-                                : homepageHero?.short_description} */}
-                            <p>Your centralized source for RULE library — e-resources, posts, and key info all in one spot.</p>
-                        </div>
-                    </div>
 
                     {/* Search bar */}
                     <LibrarySearch />
@@ -44,14 +34,16 @@ const Hero = () => {
                         {data.map((item, i) => {
                             const Icon = item.icon;
                             return (
-                                <Button
-                                    key={i}
-                                    variant="secondary"
-                                    className="flex items-center gap-1 rounded-full border border-accent px-3 py-1 text-xs transition-all duration-300 hover:border-primary sm:gap-2 sm:px-4 sm:py-2 sm:text-sm"
-                                >
-                                    <Icon className="h-4 w-4 text-primary" />
-                                    {item.name}
-                                </Button>
+                                <Link href={`/resources/theses`} prefetch>
+                                    <Button
+                                        key={i}
+                                        variant="secondary"
+                                        className="flex items-center gap-1 rounded-full border border-accent px-3 py-1 text-xs transition-all duration-300 hover:border-primary sm:gap-2 sm:px-4 sm:py-2 sm:text-sm"
+                                    >
+                                        <Icon className="h-4 w-4 text-primary" />
+                                        {item.name}
+                                    </Button>
+                                </Link>
                             );
                         })}
                     </div>

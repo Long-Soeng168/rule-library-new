@@ -6,7 +6,7 @@ import { TableOfContents } from '@/components/TableContent/table-of-contents';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
 import ELibraryLayout from '@/layouts/ELibraryLayout';
 
-const About = () => {
+const Index = () => {
     return (
         <ELibraryLayout>
             <ScrollProgress className="top-0 h-[4px]" />
@@ -400,4 +400,4 @@ If you have a road map and still can't find your destination, then you are truly
     );
 };
 
-export default About;
+export default Index;

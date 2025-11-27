@@ -57,7 +57,7 @@ export function ScrollAreaHorizontalItem() {
     return (
         <div className="overflow-x-visible">
             <ScrollArea className="w-full overflow-x-visible rounded-md whitespace-nowrap">
-                <div className="section-container flex h-full w-full justify-start space-x-4 overflow-x-visible pb-2">
+                <div className="section-container flex h-full w-full justify-start space-x-4 overflow-x-visible pb-4">
                     {data.map((artwork) => (
                         <Link href={`/resources/theses/1`}>
                             <div key={artwork.artist} className="aspect-7/10 w-[265px] shrink-0">
@@ -75,9 +75,9 @@ export function ScrollAreaHorizontalItem() {
                         <HoverButton2 />
                     </div>
                 </div>
-                <ScrollBar orientation="horizontal" className="h-1.5" />
+                <ScrollBar orientation="horizontal" />
             </ScrollArea>
-            <div className="mt-1 flex w-full justify-end pr-4">
+            <div className="mt-2 flex w-full justify-end pr-4">
                 <Link href={`/resources`}>
                     <HoverButton />
                 </Link>

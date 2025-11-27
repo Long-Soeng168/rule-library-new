@@ -1,7 +1,7 @@
 import { Timeline } from '@/components/ui/timeline';
 import ELibraryLayout from '@/layouts/ELibraryLayout';
 
-export default function TimelinePage() {
+export default function OurJourney() {
     const data = [
         {
             title: 'Early 2026',

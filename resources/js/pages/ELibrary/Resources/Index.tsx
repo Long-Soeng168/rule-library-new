@@ -9,7 +9,7 @@ import { Link } from '@inertiajs/react';
 const ELibraryPage = () => {
     return (
         <ELibraryLayout>
-            <section className="mb-40">
+            <section className="mb-20">
                 <div className="section-container my-4">
                     {/* <ResourceBreadcrumb /> */}
                     <Breadcrumb>
@@ -24,7 +24,7 @@ const ELibraryPage = () => {
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
-                <div className="section-container my-10">
+                <div className="section-container">
                     <LibrarySearch />
                 </div>
                 <div>
@@ -32,15 +32,10 @@ const ELibraryPage = () => {
                 </div>
 
                 {/* Theses */}
-                <ScrollCardSection title="Theses" />
-                <ScrollCardSection title="Publications" />
-                <ScrollCardSection title="Journals" />
+                <ScrollCardSection containerClassName='mt-8' title="Theses" />
+                <ScrollCardSection containerClassName='mt-16' title="Publications" />
+                <ScrollCardSection containerClassName='mt-16' title="Journals" />
             </section>
-            <div className="section-container my-20 flex justify-center">
-                <Link href={`/resources`}>
-                    <SpaceAnimateButton title="See All Resources" />
-                </Link>
-            </div>
         </ELibraryLayout>
     );
 };

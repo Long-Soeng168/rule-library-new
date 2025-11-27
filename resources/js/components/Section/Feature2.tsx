@@ -7,7 +7,7 @@ export default function Feature2() {
     const { librariesHeader, libraryData } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
     return (
-        <div className="mt-10">
+        <div className="mt-20">
             <div className="section-container">
                 <ContentHeader
                     // title={currentLocale === 'kh' ? librariesHeader?.name_kh || librariesHeader?.name : librariesHeader?.name}
@@ -16,6 +16,7 @@ export default function Feature2() {
                     //         ? librariesHeader?.short_description_kh || librariesHeader?.short_description
                     //         : librariesHeader?.short_description
                     // }
+                    link="/resources/theses"
                     title="Theses"
                 />
             </div>
@@ -28,6 +29,7 @@ export default function Feature2() {
                     //         ? librariesHeader?.short_description_kh || librariesHeader?.short_description
                     //         : librariesHeader?.short_description
                     // }
+                    link="/resources/theses"
                     title="Publications"
                 />
             </div>

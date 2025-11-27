@@ -7,6 +7,7 @@ import { Feature3 } from '@/components/Section/Feature3';
 import { Feature3Copy } from '@/components/Section/Feature3Copy';
 import Feature6 from '@/components/Section/Feature6';
 import Hero from '@/components/Section/Hero';
+import PostsHomePageSection from '@/components/Section/PostsHomePageSection';
 import useTranslation from '@/hooks/use-translation';
 import ELibraryLayout from '@/layouts/ELibraryLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
@@ -45,10 +46,13 @@ const Index = () => {
             {/* Search bar */}
             <Hero />
 
+            {/* Posts Section */}
+            <PostsHomePageSection />
+
             {/* E-Resource Hightligh */}
             <Feature2 />
 
-            {/* Types of Libraries */}
+            {/* Theses Major */}
             <div className="section-container mt-20">
                 <ContentHeader
                     // title={currentLocale === 'kh' ? libraryTypeHeader?.name_kh || libraryTypeHeader?.name : libraryTypeHeader?.name}
@@ -104,7 +108,7 @@ const Index = () => {
             </div>
 
             <div className="section-container my-20 flex justify-center">
-                <Link href={`/libraries`}>
+                <Link href={`/resources`}>
                     <SpaceAnimateButton title={t('See All E-Resources')} />
                 </Link>
             </div>

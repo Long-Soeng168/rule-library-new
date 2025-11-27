@@ -31,13 +31,21 @@ Route::get('/student-checkin', function () {
 
 
 Route::get('/about', function () {
-    return Inertia::render('ELibrary/About');
+    return Inertia::render('ELibrary/About/Index');
 });
+
+Route::get('/our-journey', function () {
+    return Inertia::render('ELibrary/About/OurJourney');
+});
+Route::get('/our-staffs', function () {
+    return Inertia::render('ELibrary/About/OurStaffs');
+});
+Route::get('/our-staffs-structure', function () {
+    return Inertia::render('ELibrary/About/OurStaffsStructure');
+});
+
 Route::get('/resources', function () {
     return Inertia::render('ELibrary/Resources/Index');
-});
-Route::get('/our-journey', function () {
-    return Inertia::render('ELibrary/TimelinePage');
 });
 Route::get('/resources/theses', function () {
     return Inertia::render('ELibrary/Resources/MainCategory');

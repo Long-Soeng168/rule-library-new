@@ -17,25 +17,24 @@ const CARDS = [
 
 export default function ResourceMainCategory({ className = '' }) {
     return (
-        <ScrollArea className="h-full w-full overflow-x-auto pb-5">
+        <ScrollArea className="h-full w-full overflow-x-auto py-5">
             {/* Actual Max width padding-x and 5 cols items = 1280 - (16*2) -  (16*4) = 1184px (236.8px each)*/}
-            <div className="mx-auto flex max-w-[1280px] gap-[16px] px-[16px]">
+            <div className="mx-auto flex max-w-[1280px] gap-4 px-4">
                 <MotionHighlight hover className="rounded-md">
                     {CARDS.map((card) => (
                         <Link key={card.value} href={`/resources/theses`}>
                             <div
                                 data-value={card.value}
-                                className="group relative h-full w-[140px] flex-shrink-0 cursor-pointer overflow-hidden sm:w-[160px] md:w-[200px] lg:w-[236.8px]"
+                                className="group relative h-full w-[125px] flex-shrink-0 cursor-pointer overflow-hidden sm:w-[160px] md:w-[200px] lg:w-[236.8px]"
                             >
-                                <div className="flex h-full flex-col items-center justify-center rounded-md border p-4 transition-all duration-300 hover:border-primary hover:shadow-md">
-                                    <div className="mb-2 flex size-12 items-center justify-center rounded-lg bg-muted">
-                                        <card.icon className="size-10 text-true-primary" />
+                                <div className="flex h-full flex-col items-center justify-center rounded-md border pt-3 transition-all duration-300 hover:border-primary hover:shadow-md">
+                                    <div className="mb-2 flex size-8 items-center justify-center rounded bg-muted md:size-12 md:rounded-lg">
+                                        <card.icon className="size-6 text-true-primary md:size-10" />
                                     </div>
-                                    <p className="mb-1 text-lg font-medium">{card.title}</p>
-                                    <p className="text-base text-muted-foreground">1200+ {card.title}</p>
+                                    <p className="mb-1 text-xs font-medium md:text-lg">{card.title}</p>
 
                                     {/* Hover icon overlay */}
-                                    <SmallOverlayTopRightButton className="bg-primary/20 text-primary" iconSize={5} />
+                                    <SmallOverlayTopRightButton className="bg-primary/20 text-primary max-md:hidden" iconSize={5} />
                                 </div>
                             </div>
                         </Link>

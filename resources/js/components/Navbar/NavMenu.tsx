@@ -23,6 +23,7 @@ export const NavMenu = ({ orientation = 'horizontal' }: { orientation?: 'horizon
                 return (
                     <li key={item.label} className={orientation === 'vertical' ? 'w-full' : 'w-auto'}>
                         <Link
+                            prefetch
                             href={item.href}
                             className={cn(
                                 'block w-full rounded-md px-3 py-2 text-sm transition-colors hover:bg-gray-100 hover:text-gray-900',
