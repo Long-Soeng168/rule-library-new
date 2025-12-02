@@ -58,7 +58,7 @@ const LoginForm = () => {
                             </div>
 
                             <div className="flex items-center space-x-3">
-                                <Checkbox id="remember" name="remember" tabIndex={3} />
+                                <Checkbox id="remember" defaultChecked name="remember" tabIndex={3} />
                                 <Label htmlFor="remember">{t('Remember me')}</Label>
                             </div>
 

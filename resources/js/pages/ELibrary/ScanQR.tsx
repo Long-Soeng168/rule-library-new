@@ -1,3 +1,4 @@
+import ELibraryLayout from '@/layouts/ELibraryLayout';
 import { router } from '@inertiajs/react';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { useState } from 'react';
@@ -36,16 +37,18 @@ export default function App() {
     };
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
-            <h1 className="mb-4 text-2xl font-semibold">Attendance QR Scanner</h1>
+        <ELibraryLayout>
+            <div className="flex flex-col items-center justify-center p-4 py-10">
+                <h1 className="mb-4 text-2xl font-semibold">Attendance QR Scanner</h1>
 
-            <div className={`mb-4 w-full max-w-md rounded-xl p-4 shadow-lg transition-all ${flash ? 'bg-green-200' : 'bg-white'}`}>
-                <Scanner onScan={handleScan} onError={handleError} />
+                <div className={`mb-4 w-full max-w-md rounded-xl p-4 shadow-lg transition-all ${flash ? 'bg-green-200' : 'bg-white'}`}>
+                    <Scanner onScan={handleScan} onError={handleError} />
+                </div>
+
+                {flash && <p className="mt-4 animate-pulse font-bold text-green-600">✅ QR Scanned!</p>}
+
+                {error && <p className="mt-4 font-medium text-red-500">{error}</p>}
             </div>
-
-            {flash && <p className="mt-4 animate-pulse font-bold text-green-600">✅ QR Scanned!</p>}
-
-            {error && <p className="mt-4 font-medium text-red-500">{error}</p>}
-        </div>
+        </ELibraryLayout>
     );
 }

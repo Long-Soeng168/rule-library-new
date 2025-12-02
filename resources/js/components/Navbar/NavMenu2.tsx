@@ -73,15 +73,6 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                             Our Staffs
                         </Link>
                     </li>
-                    <li>
-                        <Link
-                            prefetch
-                            href="/our-staffs-structure"
-                            className="block px-3 py-2 text-sm text-foreground hover:bg-muted dark:hover:bg-none"
-                        >
-                            Staffs Structure
-                        </Link>
-                    </li>
                 </ul>
             </li>
 

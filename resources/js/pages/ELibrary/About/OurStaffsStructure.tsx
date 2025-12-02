@@ -14,10 +14,10 @@ const StyledNode = styled.div`
     text-align: center;
 `;
 
-const OurStaffs = () => {
+const OurStaffsStructure = () => {
     return (
-        <ELibraryLayout>
-            <div className="section-container">
+        <>
+            <div className="section-container pb-10">
                 <header className="my-8 text-center">
                     <h1 className="text-3xl font-bold text-foreground md:text-4xl">រចនាសម្ព័ន្ធបណ្ណាល័យ ស.ភ.ន.វ.ស.</h1>
                 </header>
@@ -180,8 +180,8 @@ const OurStaffs = () => {
                     </Tree>
                 </div>
             </div>
-        </ELibraryLayout>
+        </>
     );
 };
 
-export default OurStaffs;
+export default OurStaffsStructure;
