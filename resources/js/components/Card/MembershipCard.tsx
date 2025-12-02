@@ -62,7 +62,7 @@ export default function MembershipCard() {
                             <AvatarFallback className="rounded-none">{member.name?.[0]?.toUpperCase() || '?'}</AvatarFallback>
                         </Avatar>
                         <div className="my-4 flex flex-col items-center gap-2">
-                            <div className="text-2xl leading-none font-semibold text-foreground">{member.name_kh}</div>
+                            {/* <div className="text-2xl leading-none font-semibold text-foreground">{member.name_kh}</div> */}
                             <div className="text-lg leading-none font-medium text-foreground">{member.name}</div>
                         </div>
                     </div>
