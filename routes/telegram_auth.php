@@ -19,6 +19,7 @@ Route::match(['get', 'post'], '/t-login/callback', function (Request $request) {
     //    /auth?bot_id=547043436&origin=https://rule-library.longsoeng.com&embed=1&request_access=write&return_to=https%3A%2F%2Fcore.telegram.org%2Fwidgets%2Flogin
     //    https://oauth.telegram.org/auth/logout?bot_id=8069292817&origin=https://rule-library.longsoeng.com&request_access=write&hash=e5aa2e321f192cd19acb055b2dec33d56f99cfb82b88352f981486e512075145
     // dd($request->all());
+    // https://oauth.telegram.org/auth/logout?bot_id=8069292817&origin=https%3A%2F%2Frule-library.longsoeng.com&embed=1&request_access=write&return_to=https%3A%2F%2Frule-library.longsoeng.com%2Flogin
 
     // Get all Telegram data safely
     $data = $request->all();
