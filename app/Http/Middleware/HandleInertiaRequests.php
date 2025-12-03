@@ -47,7 +47,6 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'app_url' => config('app.url'),
-            'telegram_bot_username' => env('TELEGRAM_BOT_USERNAME'),
             // 'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),

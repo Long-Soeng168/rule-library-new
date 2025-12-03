@@ -39,14 +39,3 @@ permission="user update" <-------
 
 #PDF Viewer Package
 npm install @react-pdf-viewer/core @react-pdf-viewer/default-layout
-
-
-
-#Test Telegram Login Widget
-ngrok http 8000
-npm run build
-php artisan serve
-
--> Add Fields : php artisan make:migration add_telegram_id_to_users_table --table=users
--> Update Fillable User model : telegram_id, photo_url
--> 
