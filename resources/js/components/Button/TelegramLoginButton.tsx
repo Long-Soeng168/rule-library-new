@@ -12,7 +12,6 @@ export default function TelegramLoginButton() {
         script.setAttribute('data-size', 'large');
         script.setAttribute('data-radius', '6');
         script.setAttribute('data-request-access', 'write');
-        script.setAttribute('data-embed', '1');
         script.setAttribute('data-auth-url', `${app_url}/t-login/callback`);
 
         // append directly inside the container

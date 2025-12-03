@@ -16,7 +16,9 @@ Route::get('/telegram-login-widget', function () {
 Route::match(['get', 'post'], '/t-login/callback', function (Request $request) {
     // === What we get from telegram ===
     // /api/t-login/callback?id=983913974&first_name=Long%20Soeng%20(ឡុង%20សឹង)&username=longsoeng&photo_url=https%3A%2F%2Ft.me%2Fi%2Fuserpic%2F320%2FLpUqXkHECvNvRQkHWCwpvWMJ1QWatAkdTvctr-AZxPU.jpg&auth_date=1764735311&hash=c9d000bfbbbb0a5991a7045d651254acae122aa1f6ffa87b6458d731657c860f
-    dd($request->all());
+    //    /auth?bot_id=547043436&origin=https://rule-library.longsoeng.com&embed=1&request_access=write&return_to=https%3A%2F%2Fcore.telegram.org%2Fwidgets%2Flogin
+    //    https://oauth.telegram.org/auth/logout?bot_id=8069292817&origin=https://rule-library.longsoeng.com&request_access=write&hash=e5aa2e321f192cd19acb055b2dec33d56f99cfb82b88352f981486e512075145
+    // dd($request->all());
 
     // Get all Telegram data safely
     $data = $request->all();
