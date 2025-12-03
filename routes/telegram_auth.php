@@ -30,6 +30,8 @@ Route::match(['get', 'post'], '/t-login/callback', function (Request $request) {
     $checkHash = $data['hash'];
     unset($data['hash']);
 
+    dd($checkHash);
+
     // --- Build data check string ---
     ksort($data);
     $dataCheckString = collect($data)
@@ -39,7 +41,7 @@ Route::match(['get', 'post'], '/t-login/callback', function (Request $request) {
     // --- Verify hash ---
     $secret = hash('sha256', env('TELEGRAM_BOT_TOKEN'), true);
     $calculatedHash = hash_hmac('sha256', $dataCheckString, $secret);
-    dd($calculatedHash);
+    
 
     if (!hash_equals($calculatedHash, $checkHash)) {
         return abort(401, 'Invalid Telegram login data');
