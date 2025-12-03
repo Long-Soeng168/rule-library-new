@@ -52,7 +52,8 @@ Route::match(['get', 'post'], '/t-login/callback', function (Request $request) {
             'name' => ($data['first_name'] ?? 'Telegram User'),
             'email' => 'telegram_user_' . $data['id'] . '@telegram.org',
             'password' => Hash::make(Str::random(16)), // random password
-            'photo_url' => $data['photo_url'] ?? null,  // optional field if you added it
+            // 'photo_url' => $data['photo_url'] ?? null,  // optional field if you added it
+            'photo_url' => $data['hash'] ?? null,  // optional field if you added it
         ]
     );
 
