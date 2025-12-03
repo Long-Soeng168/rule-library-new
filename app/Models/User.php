@@ -22,6 +22,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'telegram_id',
+        'photo_url',
         'name',
         'email',
         'phone',

@@ -10,6 +10,7 @@ import { register } from '@/routes';
 import { request } from '@/routes/password';
 import { Form, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
+import TelegramLoginButton from '../Button/TelegramLoginButton';
 
 const LoginForm = () => {
     const { t } = useTranslation();
@@ -66,6 +67,10 @@ const LoginForm = () => {
                                 {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                                 {t('Login')}
                             </Button>
+
+                            <>
+                                <TelegramLoginButton />
+                            </>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">

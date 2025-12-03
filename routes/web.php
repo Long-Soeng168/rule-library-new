@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 
 // ==== Switch Language ====
 Route::get('/lang/{locale}', function ($locale) {
@@ -31,3 +32,6 @@ require __DIR__ . '/admin_route.php';
 require __DIR__ . '/file_stream_route.php';
 
 require __DIR__ . '/elibrary.php';
+
+// ==== Telegram Auth ====
+require __DIR__ . '/telegram_auth.php';
