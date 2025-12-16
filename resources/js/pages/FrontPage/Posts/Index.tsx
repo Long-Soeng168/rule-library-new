@@ -22,25 +22,24 @@ const Index = () => {
         <FrontPageLayout>
             <div className="relative min-h-screen bg-background">
                 {/* Background Grid */}
-                <div className="absolute top-[5px] left-0 z-0 h-[200px] w-full mask-[linear-gradient(to_top,transparent_25%,black_95%)]">
+                <div className="absolute top-[5px] left-0 z-0 h-[100px] w-full mask-[linear-gradient(to_top,transparent_25%,black_95%)]">
                     <FlickeringGrid className="absolute top-0 left-0 size-full" />
                 </div>
 
                 {/* Header Section */}
-                <div className="relative z-10 flex min-h-[250px] flex-col justify-center gap-6 p-6">
+                <div className="relative z-10 flex min-h-[100px] flex-col justify-center gap-6 pt-10">
                     <div className="section-container mx-auto w-full">
                         <div className="flex flex-col gap-2">
                             <h1 className="text-4xl font-medium tracking-tighter md:text-5xl">Posts</h1>
                             <p className="text-sm text-muted-foreground md:text-base lg:text-lg">Latest posts and updates from RULE Library.</p>
                         </div>
                     </div>
-
-                    {allTags.length > 0 && (
-                        <div className="section-container mx-auto w-full">
-                            <TagFilter tags={allTags} selectedTag={selectedTag || ''} tagCounts={tagCounts} />
-                        </div>
-                    )}
                 </div>
+                {allTags.length > 0 && (
+                    <div className="section-container z-20 mx-auto w-full py-6">
+                        <TagFilter tags={allTags} selectedTag={selectedTag || ''} tagCounts={tagCounts} />
+                    </div>
+                )}
 
                 {/* Blog List */}
                 <div className="section-container">
