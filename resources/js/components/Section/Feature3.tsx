@@ -74,7 +74,7 @@ export const Feature3 = () => {
                     onClick={() => setShowAll(!showAll)}
                     className="group flex h-full min-h-24 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border p-4 transition-all duration-300 hover:border-primary hover:bg-muted"
                 >
-                    <div className="flex size-10 items-center justify-around rounded-full group-hover:bg-primary/10">
+                    <div className="flex size-10 items-center justify-around rounded-full bg-primary/5 group-hover:bg-primary/10">
                         {showAll ? <ChevronUpIcon className="size-6 text-primary" /> : <ChevronDownIcon className="size-6 text-primary" />}
                     </div>
                     <p className="text-base">{showAll ? 'Show Less' : 'See All'}</p>

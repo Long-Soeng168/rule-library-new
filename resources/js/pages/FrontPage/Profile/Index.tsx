@@ -2,13 +2,13 @@ import LibraryFeatureCards from '@/components/Card/LibraryFeatureCards';
 import MembershipCard from '@/components/Card/MembershipCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { Link } from '@inertiajs/react';
 import { ArrowRightIcon, InfoIcon, QrCodeIcon } from 'lucide-react';
 
 const Index = () => {
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <div className="section-container relative py-4">
                 <div className="flex justify-center">
                     <MembershipCard />
@@ -43,7 +43,7 @@ const Index = () => {
                     <LibraryFeatureCards />
                 </div>
             </div>
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 };
 

@@ -47,7 +47,7 @@ const StyledWrapper = styled.div`
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 50;
+    z-index: 30;
     .scrolldown {
         --color: var(--foreground);
         --sizeX: 30px;

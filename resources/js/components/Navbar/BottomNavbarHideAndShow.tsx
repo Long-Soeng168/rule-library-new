@@ -38,7 +38,7 @@ export default function BottomNavbarHideAndShow() {
 
     return (
         <nav
-            className={`fixed bottom-0 left-0 z-50 w-full border-t border-border bg-background transition-transform duration-300 ease-in-out ${
+            className={`fixed bottom-0 left-0 z-40 w-full border-t border-border bg-background transition-transform duration-300 ease-in-out ${
                 show ? 'translate-y-0' : 'translate-y-full'
             } lg:hidden`}
         >

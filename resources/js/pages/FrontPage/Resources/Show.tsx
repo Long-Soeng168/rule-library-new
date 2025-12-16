@@ -1,8 +1,7 @@
-import HoverButton from '@/components/Button/HoverButton';
 import ResourceDetail from '@/components/Section/ResourceDetail';
-import ResourceList from '@/components/Section/ResourceList';
+import ScrollCardSection from '@/components/Section/ScrollCardSection';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 
 export const data: any[] = [
     {
@@ -56,8 +55,8 @@ const thesisData = {
 
 const Show = () => {
     return (
-        <ELibraryLayout>
-            <section className="section-container mb-40">
+        <FrontPageLayout>
+            <section className="section-container">
                 <div className="my-4">
                     {/* <ResourceBreadcrumb /> */}
                     <Breadcrumb>
@@ -95,15 +94,11 @@ const Show = () => {
                 <div>
                     <ResourceDetail item={thesisData} />
                 </div>
-                <div className="mt-20">
-                    <h2 className="mb-4 text-xl font-bold tracking-tight md:text-2xl">Related</h2>
-                    <ResourceList />
-                    <div className="mt-4 flex w-full justify-end">
-                        <HoverButton />
-                    </div>
-                </div>
             </section>
-        </ELibraryLayout>
+            <section className="mt-20 mb-20">
+                <ScrollCardSection containerClassName="mt-8" title="Related" />
+            </section>
+        </FrontPageLayout>
     );
 };
 

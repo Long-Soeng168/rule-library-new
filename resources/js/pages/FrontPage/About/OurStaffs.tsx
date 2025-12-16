@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { staffSampleData } from '@/data/staff-sample-data';
 import useTranslation from '@/hooks/use-translation';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { usePage } from '@inertiajs/react';
 import { Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -28,7 +28,7 @@ export default function StaffPage() {
     const { t, currentLocale } = useTranslation();
 
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <div className="section-container">
                 {/* Header */}
                 <header className="my-8 text-center">
@@ -134,6 +134,6 @@ export default function StaffPage() {
                     </TabsContent>
                 </Tabs>
             </div>
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 }

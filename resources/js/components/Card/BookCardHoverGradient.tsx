@@ -50,7 +50,7 @@ const BookCardHoverGradient = ({
                                 {/* <p className="card__description">{subTitle}</p> */}
                                 <div className="mt-2 flex flex-wrap gap-2">
                                     <Badge variant="secondary" className="rounded">
-                                        នីតិសាស្ត្រ
+                                        ធនាគារ និងហិរញ្ញវត្ថុ
                                     </Badge>
                                 </div>
                             </div>

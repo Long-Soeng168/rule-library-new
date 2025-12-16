@@ -25,7 +25,6 @@ export function NavbarLogo() {
                 </Avatar>
                 <div className="flex flex-col">
                     {name && <p className="text-xl leading-tight font-semibold text-foreground md:text-2xl">{name}</p>}
-                    {description && <p className="text-base text-muted-foreground md:text-xl">{description}</p>}
                 </div>
             </div>
         </Link>

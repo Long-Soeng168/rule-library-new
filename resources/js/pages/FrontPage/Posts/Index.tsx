@@ -2,7 +2,7 @@ import { PostCard } from '@/components/Card/PostCard';
 import { TagFilter } from '@/components/tag-filter';
 import { FlickeringGrid } from '@/components/ui/flickering-grid';
 import { samplePosts } from '@/data/post-sample-data';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { useState } from 'react';
 
 const formatDate = (date: Date) => date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -19,7 +19,7 @@ const Index = () => {
     const allTags = postCategories;
 
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <div className="relative min-h-screen bg-background">
                 {/* Background Grid */}
                 <div className="absolute top-[5px] left-0 z-0 h-[200px] w-full mask-[linear-gradient(to_top,transparent_25%,black_95%)]">
@@ -67,7 +67,7 @@ const Index = () => {
                     </div>
                 </div>
             </div>
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 };
 

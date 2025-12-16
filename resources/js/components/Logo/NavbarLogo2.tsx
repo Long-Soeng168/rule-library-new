@@ -27,14 +27,13 @@ export function NavbarLogo2() {
                     {name && (
                         <div className="whitespace-nowrap">
                             <p className="text-base font-medium whitespace-nowrap text-muted-foreground md:text-[16px]">គេហទំព័របណ្ណាល័យនៃ</p>
-                            <p className="text-sm leading-tight font-bold text-foreground md:text-[20px]">សាកលវិទ្យាល័យភូមិន្ទនីតិសាស្ត្រ</p>
-                            <p className="text-sm leading-tight font-bold text-foreground md:text-[20px]">និងវិទ្យាសាស្ត្រសេដ្ឋកិច្ច</p>
-                            <p className="leading-tight font-medium text-foreground md:text-[13px] mt-1">Royal University of Law and Economics</p>
+                            <p className="text-lg leading-tight font-bold text-foreground md:text-[20px]">សាកលវិទ្យាល័យភូមិន្ទនីតិសាស្ត្រ</p>
+                            <p className="text-lg leading-tight font-bold text-foreground md:text-[20px]">និងវិទ្យាសាស្ត្រសេដ្ឋកិច្ច</p>
+                            <p className="text-sm leading-tight font-medium text-foreground md:text-[13px] mt-1">Royal University of Law and Economics</p>
                             {/* <p className="text-sm leading-tight font-semibold text-foreground md:text-lg">{website_info.name_kh}</p> */}
                             {/* <p className="leading-tight font-semibold text-foreground md:text-sm">{name}</p> */}
                         </div>
                     )}
-                    {description && <p className="text-base text-muted-foreground md:text-xl">{description}</p>}
                 </div>
             </div>
         </Link>

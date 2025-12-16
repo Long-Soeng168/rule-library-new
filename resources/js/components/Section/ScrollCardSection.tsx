@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import HoverButton from '../Button/HoverButton';
 import BookCardHoverGradient from '../Card/BookCardHoverGradient';
+import { ContentHeader } from '../Header/ContentHeader';
 import { PlaceholderPattern } from '../ui/placeholder-pattern';
 
 export const data: any[] = [
@@ -58,15 +59,22 @@ export default function ScrollCardSection({ title, containerClassName }: { title
     return (
         <div className={cn('section-container', containerClassName)}>
             <div>
-                <div className="mb-4 text-start">
-                    <h2 className="text-xl font-bold tracking-tight md:text-2xl">{title}</h2>
-                </div>
+                <ContentHeader
+                    // title={currentLocale === 'kh' ? libraryTypeHeader?.name_kh || libraryTypeHeader?.name : libraryTypeHeader?.name}
+                    // description={
+                    //     currentLocale === 'kh'
+                    //         ? libraryTypeHeader?.short_description_kh || libraryTypeHeader?.short_description
+                    //         : libraryTypeHeader?.short_description
+                    // }
+                    link={`/resources/theses`}
+                    title={title || ''}
+                />
             </div>
             <div className={cn('grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5')}>
                 {data.map((item, index) => (
                     <BookCardHoverGradient key={index} title={item.name} subTitle={item.subtitle} image_url={item.image_url} />
                 ))}
-                <div className="relative z-10 flex h-full min-h-40 w-full items-center justify-center overflow-hidden rounded-md border-2 border-background shadow dark:border-border">
+                <div className="relative z-10 flex h-full min-h-40 w-full items-center justify-center overflow-hidden rounded-md border-2 border-background pl-6 shadow dark:border-border">
                     <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />
                     <Link href={`/posts`} prefetch>
                         <HoverButton />

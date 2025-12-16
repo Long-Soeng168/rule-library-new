@@ -1,4 +1,5 @@
 import { NavbarLogo3 } from '../Logo/NavbarLogo3';
+import { NavbarLogo4 } from '../Logo/NavbarLogo4';
 import LibrarySearchSheet from '../Search/LibrarySearchSheet';
 import { SwitchDarkModeSmoothAnimated } from '../Switch/SwitchDarkModeSmoothAnimated';
 import NavLanguage from './NavLanguage';
@@ -8,41 +9,42 @@ import { NavSheet } from './NavSheet';
 const NavbarDataForHideAndShow = () => {
     return (
         <>
-            {/* Start Top Navbar */}
-            <div className="min-[650px]:border-b">
+            {/* Desktop view */}
+            <div className="max-[650px]:hidden min-[650px]:border-b">
                 <div className="section-container mx-auto w-full py-2">
                     <div className="flex h-full items-center justify-between">
                         <NavbarLogo3 />
 
-                        <div className="max-[650px]:hidden">
+                        <div>
                             <NavMenu2 />
                         </div>
-                        <div className="max-[650px]:hidden">
-                            <div className="flex items-center gap-3">
-                                <LibrarySearchSheet />
-                                <SwitchDarkModeSmoothAnimated />
-                                <NavLanguage />
+                        <div className="flex items-center gap-3">
+                            <LibrarySearchSheet />
+                            <SwitchDarkModeSmoothAnimated />
+                            <NavLanguage />
 
-                                {/* Start Mobile Menu */}
-                                <div className="hidden max-[650px]:block">
-                                    <NavSheet />
-                                </div>
-                                {/* End Mobile Menu */}
+                            {/* Start Mobile Menu */}
+                            <div className="hidden max-[650px]:block">
+                                <NavSheet />
                             </div>
+                            {/* End Mobile Menu */}
                         </div>
                     </div>
                 </div>
             </div>
-            {/* End Top Navbar */}
+            {/* End Desktop view */}
 
-            {/* Start Bottom Navbar */}
-            <div className="sticky top-0 z-30 mx-auto w-full border-b bg-background/40 pb-4 backdrop-blur-md min-[650px]:hidden">
+            {/* Mobile view */}
+            <div className="sticky top-0 z-30 mx-auto w-full border-b bg-background/40 py-2 backdrop-blur-md min-[650px]:hidden">
                 <nav className="section-container">
                     <div className="sticky top-0 flex h-full items-center justify-between">
-                        <div></div>
+                        <div>
+                            <NavbarLogo4 />
+                        </div>
 
                         <div className="flex items-center gap-3">
                             <LibrarySearchSheet />
+                            <SwitchDarkModeSmoothAnimated />
                             <NavLanguage />
 
                             {/* Start Mobile Menu */}
@@ -54,7 +56,7 @@ const NavbarDataForHideAndShow = () => {
                     </div>
                 </nav>
             </div>
-            {/* End Bottom Navbar */}
+            {/* End Mobile view */}
         </>
     );
 };

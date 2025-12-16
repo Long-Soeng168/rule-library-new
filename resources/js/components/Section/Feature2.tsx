@@ -1,7 +1,7 @@
 import useTranslation from '@/hooks/use-translation';
 import { usePage } from '@inertiajs/react';
 import { ContentHeader } from '../Header/ContentHeader';
-import { ScrollAreaHorizontalItem } from '../ScrollArea/ScrollAreaHorizontalItem';
+import { BookScrollAreaHorizontal } from '../ScrollArea/BookScrollAreaHorizontal';
 
 export default function Feature2() {
     const { librariesHeader, libraryData } = usePage<any>().props;
@@ -20,7 +20,8 @@ export default function Feature2() {
                     title="Theses"
                 />
             </div>
-            <ScrollAreaHorizontalItem />
+            <BookScrollAreaHorizontal />
+            
             <div className="section-container mt-20">
                 <ContentHeader
                     // title={currentLocale === 'kh' ? librariesHeader?.name_kh || librariesHeader?.name : librariesHeader?.name}
@@ -33,7 +34,7 @@ export default function Feature2() {
                     title="Publications"
                 />
             </div>
-            <ScrollAreaHorizontalItem />
+            <BookScrollAreaHorizontal />
         </div>
     );
 }

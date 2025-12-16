@@ -9,11 +9,11 @@ import Feature6 from '@/components/Section/Feature6';
 import Hero from '@/components/Section/Hero';
 import PostsHomePageSection from '@/components/Section/PostsHomePageSection';
 import useTranslation from '@/hooks/use-translation';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 const Index = () => {
-    const { website_info, app_url, sourceOfFundingHeader, libraryTypeHeader, provinceHeader, claStatisticHeader } = usePage<any>().props;
+    const { website_info, app_url } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
 
     const description =
@@ -22,7 +22,7 @@ const Index = () => {
     const title = currentLocale === 'kh' ? website_info?.name_kh || website_info?.name : website_info?.name;
     const image = `${app_url}/assets/images/website_infos/${website_info.logo}`;
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <Head>
                 {/* Basic Meta */}
                 <title>{title}</title>
@@ -112,7 +112,7 @@ const Index = () => {
                     <SpaceAnimateButton title={t('See All E-Resources')} />
                 </Link>
             </div>
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 };
 

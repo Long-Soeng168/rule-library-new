@@ -4,7 +4,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import SmallOverlayTopRightButton from '../Button/SmallOverlayTopRightButton';
 
-import { BookOpen, FileCheckIcon, FileIcon, FileTextIcon, Microscope, Users } from 'lucide-react';
+import { FileCheckIcon, FileIcon, FileTextIcon, Microscope, Users } from 'lucide-react';
 
 const data = [
     { code: '1', icon: FileTextIcon, name: 'គម្រោងឯកសារសេដ្ឋកិច្ច' },
@@ -37,7 +37,7 @@ export const Feature3Copy = () => {
                                     image={`/assets/images/types/thumb/${item.image}`}
                                     alt={currentLocale === 'kh' ? item?.name_kh || item?.name : item?.name}
                                 /> */}
-                                <span className="flex size-10 items-center justify-center rounded-md border-none bg-primary/10 text-primary">
+                                <span className="flex size-10 items-center justify-center rounded-md border-none bg-primary/5 text-primary hover:bg-primary/10">
                                     <item.icon />
                                 </span>
 

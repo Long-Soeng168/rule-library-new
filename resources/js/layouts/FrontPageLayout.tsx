@@ -5,7 +5,7 @@ import Navbar2 from '@/components/Navbar/Navbar2';
 import NavbarHideAndShow from '@/components/Navbar/NavbarHideAndShow';
 import React from 'react';
 
-export default function ELibraryLayout({ children }: { children: React.ReactNode }) {
+export default function FrontPageLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex min-h-screen flex-col">
             <Navbar2 />

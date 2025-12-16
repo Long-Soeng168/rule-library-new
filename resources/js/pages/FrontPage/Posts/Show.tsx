@@ -2,11 +2,11 @@ import PostmagesGallery from '@/components/GalleryViewer/PostmagesGallery';
 import { MobileTableOfContents } from '@/components/TableContent/mobile-table-of-contents';
 import { TableOfContents } from '@/components/TableContent/table-of-contents';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 
 const About = () => {
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <ScrollProgress className="top-0 h-[4px]" />
             <div className="section-container px-0">
                 <div className="relative z-10 mx-auto flex max-w-7xl divide-x divide-border px-4 md:px-0">
@@ -92,7 +92,7 @@ const About = () => {
                 </div>
             </div>
             <MobileTableOfContents />
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 };
 

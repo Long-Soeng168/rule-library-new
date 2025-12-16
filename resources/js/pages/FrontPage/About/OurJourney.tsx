@@ -1,5 +1,5 @@
 import { Timeline } from '@/components/ui/timeline';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 
 export default function OurJourney() {
     const data = [
@@ -146,10 +146,10 @@ export default function OurJourney() {
         },
     ];
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <div className="section-container relative overflow-clip">
                 <Timeline data={data} />
             </div>
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 }

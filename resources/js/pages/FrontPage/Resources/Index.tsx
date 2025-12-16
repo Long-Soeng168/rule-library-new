@@ -3,12 +3,12 @@ import LibrarySearch from '@/components/Search/LibrarySearch';
 import ResourceMainCategory from '@/components/Section/ResourceMainCategory';
 import ScrollCardSection from '@/components/Section/ScrollCardSection';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { Link } from '@inertiajs/react';
 
-const ELibraryPage = () => {
+const Index = () => {
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <section className="mb-20">
                 <div className="section-container my-4">
                     {/* <ResourceBreadcrumb /> */}
@@ -36,8 +36,8 @@ const ELibraryPage = () => {
                 <ScrollCardSection containerClassName='mt-16' title="Publications" />
                 <ScrollCardSection containerClassName='mt-16' title="Journals" />
             </section>
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 };
 
-export default ELibraryPage;
+export default Index;

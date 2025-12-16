@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\FrontPage;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Faq;
 use App\Models\KeyValue;
@@ -12,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
-class LibraryDataFrontPageController extends Controller
+class FrontPageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,7 +44,7 @@ class LibraryDataFrontPageController extends Controller
         $faqData = Faq::all();
 
 
-        return Inertia::render('LibraryDataFrontPage/Index', [
+        return Inertia::render('FrontPage/Index', [
             'homepageHero' => $homepageHero,
             'librariesHeader' => $librariesHeader,
             'libraryTypeHeader' => $libraryTypeHeader,

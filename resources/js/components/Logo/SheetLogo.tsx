@@ -25,7 +25,6 @@ export function SheetLogo() {
                 </Avatar>
                 <div className="flex flex-col items-center">
                     {name && <p className="text-base leading-tight font-semibold text-foreground sm:text-lg">{name}</p>}
-                    {description && <p className="text-xs text-foreground sm:text-sm">{description}</p>}
                 </div>
             </div>
         </Link>

@@ -9,7 +9,7 @@ import ResourceSidebar from '@/components/Sidebar/ResourceSidebar';
 import ResourceSidebarSheet from '@/components/Sidebar/ResourceSidebarSheet';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { LayoutGridIcon, LayoutListIcon, SlidersHorizontalIcon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -18,7 +18,7 @@ const MainCategory = () => {
     const [cardLayout, setCardLayout] = useState<'grid' | 'list'>('grid');
 
     return (
-        <ELibraryLayout>
+        <FrontPageLayout>
             <section className="section-container mb-40">
                 <div className="my-4">
                     {/* <ResourceBreadcrumb /> */}
@@ -91,7 +91,7 @@ const MainCategory = () => {
                     </div>
                 </div>
             </section>
-        </ELibraryLayout>
+        </FrontPageLayout>
     );
 };
 

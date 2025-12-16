@@ -33,7 +33,6 @@ export function NavbarLogo3() {
                             {/* <p className="leading-tight font-semibold text-foreground md:text-sm">{name}</p> */}
                         </div>
                     )}
-                    {description && <p className="text-base text-muted-foreground md:text-xl">{description}</p>}
                 </div>
             </div>
         </Link>

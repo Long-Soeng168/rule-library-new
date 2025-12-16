@@ -1,5 +1,5 @@
 import StaffCard from '@/components/Card/StaffCard';
-import ELibraryLayout from '@/layouts/ELibraryLayout';
+import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { Tree, TreeNode } from 'react-organizational-chart';
 import { styled } from 'styled-components';
 
