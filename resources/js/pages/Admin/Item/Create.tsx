@@ -297,6 +297,9 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                             </Tabs>
                         </div>
                         <div className="form-field-container md:grid-cols-1">
+                            <p>
+                                Author Name: <span className="font-bold">{editData?.author_name}</span>
+                            </p>
                             {authors?.length > 0 && (
                                 <FormFieldMultiSelect
                                     label="Authors"
@@ -382,15 +385,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 error={errors.language_code}
                             />
                         )}
-                        <FormField
-                            containerClassName="col-span-2"
-                            id="external_link"
-                            name="external_link"
-                            label="External Link"
-                            value={data.external_link || ''}
-                            onChange={(val) => setData('external_link', val)}
-                            error={errors.external_link}
-                        />
+
                         <FormField
                             containerClassName="col-span-2"
                             id="keywords"
@@ -522,28 +517,46 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                     />
                                 )}
                             </div>
-                            <FormFileUpload
-                                dropzoneOptions={{
-                                    maxFiles: 100,
-                                    maxSize: 1024 * 1024 * 50,
-                                    multiple: true,
-                                    accept: {},
-                                }}
-                                key={editData?.files?.map((img: any) => img.image || img).join('-')}
-                                id="files"
-                                label="Files"
-                                files={files}
-                                setFiles={setFiles}
-                            />
-                            {editData?.files?.length > 0 && (
-                                <UploadedFile
-                                    fileClassName="bg-background"
-                                    label="Uploaded Files"
-                                    permission="item update"
-                                    files={editData?.files}
-                                    deletePath="/admin/items/files/"
-                                    basePath="/assets/files/items/"
+                            {data?.file_type_code == 'video-youtube-url' ? (
+                                <FormField
+                                    containerClassName="col-span-2"
+                                    className="bg-background"
+                                    id="external_link"
+                                    name="external_link"
+                                    label="External Link"
+                                    value={data.external_link || ''}
+                                    onChange={(val) => setData('external_link', val)}
+                                    error={errors.external_link}
                                 />
+                            ) : (
+                                <>
+                                    <p>
+                                        File Name: <span className="font-bold">{editData?.file_name}</span>
+                                    </p>
+                                    <FormFileUpload
+                                        dropzoneOptions={{
+                                            maxFiles: 100,
+                                            maxSize: 1024 * 1024 * 50,
+                                            multiple: true,
+                                            accept: {},
+                                        }}
+                                        key={editData?.files?.map((img: any) => img.image || img).join('-')}
+                                        id="files"
+                                        label="Files"
+                                        files={files}
+                                        setFiles={setFiles}
+                                    />
+                                    {editData?.files?.length > 0 && (
+                                        <UploadedFile
+                                            fileClassName="bg-background"
+                                            label="Uploaded Files"
+                                            permission="item update"
+                                            files={editData?.files}
+                                            deletePath="/admin/items/files/"
+                                            basePath="/assets/files/items/"
+                                        />
+                                    )}
+                                </>
                             )}
                         </div>
                     </>

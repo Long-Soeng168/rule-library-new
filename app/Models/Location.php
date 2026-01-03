@@ -18,10 +18,6 @@ class Location extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
-    public function libraries()
-    {
-        return $this->hasMany(LibraryData::class, 'province_code', 'code');
-    }
 
     // Scope
     public function scopeType($query, string $typeCode)

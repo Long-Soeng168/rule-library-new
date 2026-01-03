@@ -4,7 +4,7 @@ import { ContentHeader } from '../Header/ContentHeader';
 import { BookScrollAreaHorizontal } from '../ScrollArea/BookScrollAreaHorizontal';
 
 export default function Feature2() {
-    const { librariesHeader, libraryData } = usePage<any>().props;
+    const { librariesHeader } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
     return (
         <div className="mt-20">
@@ -21,7 +21,7 @@ export default function Feature2() {
                 />
             </div>
             <BookScrollAreaHorizontal />
-            
+
             <div className="section-container mt-20">
                 <ContentHeader
                     // title={currentLocale === 'kh' ? librariesHeader?.name_kh || librariesHeader?.name : librariesHeader?.name}

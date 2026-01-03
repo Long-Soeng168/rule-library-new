@@ -6,8 +6,6 @@ use App\Http\Controllers\Admin\ItemCategoryController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\KeyValueController;
 use App\Http\Controllers\Admin\LanguageController;
-use App\Http\Controllers\Admin\LibraryDataController;
-use App\Http\Controllers\Admin\LibraryDataRegisterController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PageController;
@@ -106,18 +104,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('admin/items/files/{file}', [ItemController::class, 'destroy_file']);
     Route::post('admin/items/{item}/update', [ItemController::class, 'update']);
     Route::post('admin/items/{id}/recover', [ItemController::class, 'recover']);
-
-
-    // Library Data
-    Route::get('register-library', [LibraryDataRegisterController::class, 'register']);
-    Route::post('register-library', [LibraryDataRegisterController::class, 'store']);
-    Route::get('manage-library-data', [LibraryDataRegisterController::class, 'edit']);
-    Route::post('register-library/{library_data}/update', [LibraryDataRegisterController::class, 'update']);
-
-    Route::resource('admin/library-data', LibraryDataController::class)->parameters(['library-data' => 'library_data']);
-    Route::delete('admin/library-data/images/{image}', [LibraryDataController::class, 'destroy_image']);
-    Route::post('admin/library-data/{library_data}/update', [LibraryDataController::class, 'update']);
-    Route::post('admin/library-data/{id}/recover', [LibraryDataController::class, 'recover']);
 
     Route::get('admin/sample-content', [PageController::class, 'recover']);
 

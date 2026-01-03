@@ -102,8 +102,8 @@ class UserController extends Controller implements HasMiddleware
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|max:255|confirmed', // Laravel auto-validates against confirm_password
-            'phone' => 'required|numeric|digits_between:8,15|unique:users,phone',
-            'gender' => 'required|string|in:male,female,other',
+            'phone' => 'nullable|numeric|digits_between:8,15|unique:users,phone',
+            'gender' => 'nullable|string|in:male,female,other',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg,webp|max:4096',
             'roles' => 'required|array'
         ]);
@@ -178,8 +178,8 @@ class UserController extends Controller implements HasMiddleware
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6|max:255|confirmed', // Laravel auto-validates against confirm_password
-            'phone' => 'required|numeric|digits_between:8,15|unique:users,phone,' . $user->id,
-            'gender' => 'required|string|in:male,female,other',
+            'phone' => 'nullable|numeric|digits_between:8,15|unique:users,phone,' . $user->id,
+            'gender' => 'nullable|string|in:male,female,other',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg,webp|max:4096',
             'roles' => 'required|array'
         ]);

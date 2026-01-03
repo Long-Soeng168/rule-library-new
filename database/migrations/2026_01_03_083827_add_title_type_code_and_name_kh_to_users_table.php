@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('library_data_id')->nullable()->after('id'); // nullable if user might not have library data
-            $table->foreign('library_data_id')->references('id')->on('library_data')->onDelete('set null');
+            $table->string('name_kh')->nullable()->after('name');
+            $table->string('title_type_code')->nullable()->after('name_kh')->comment('Mr, Ms, Dr, Prof, ...');
+
+            $table->foreign('title_type_code')
+                ->references('code')
+                ->on('types')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
         });
     }
 
@@ -23,8 +29,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['library_data_id']);
-            $table->dropColumn('library_data_id');
+            $table->dropForeign(['title_type_code']);
+            $table->dropColumn(['title_type_code', 'name_kh']);
         });
     }
 };

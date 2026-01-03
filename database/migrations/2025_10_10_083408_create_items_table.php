@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name')->nullable();
-            $table->string('name_kh')->nullable();
+            $table->string('name', 500)->nullable();
+            $table->string('name_kh', 500)->nullable();
             $table->text('short_description')->nullable();
             $table->text('short_description_kh')->nullable();
             $table->longText('long_description')->nullable();
             $table->longText('long_description_kh')->nullable();
             $table->string('keywords', 500)->nullable();
             $table->string('status')->nullable();
-            $table->string('external_link')->nullable();
+            $table->string('external_link')->nullable()->comment('For Resource use Youtube Video URL.');
             $table->string('language_code')->nullable();
             $table->string('file_type_code')->nullable();
             $table->unsignedInteger('total_view_count')->default(0);
@@ -31,6 +31,7 @@ return new class extends Migration
             $table->unsignedInteger('total_page')->nullable();
 
             $table->string('thumbnail')->nullable();
+            $table->string('file_name')->nullable();
 
             $table->string('category_code')->nullable();
             $table->foreign('category_code')
@@ -56,7 +57,9 @@ return new class extends Migration
             $table->string('isbn')->nullable();
             $table->string('eisbn')->nullable();
             $table->string('doi')->nullable();
-            $table->string('student_names')->nullable();
+            $table->string('author_name')->nullable()->comment('For free type author name.');
+            $table->string('institution')->nullable()->comment('For institution that student go to internship.');
+            $table->integer('batch')->nullable()->comment('Year of graduation. e.g., the 5th group of students to ever attend');
 
             $table->year('published_year')->nullable();
             $table->unsignedTinyInteger('published_month')->nullable(); // 1–12

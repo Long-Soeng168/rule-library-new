@@ -40,10 +40,10 @@ export const Feature3 = () => {
 
     // show 7 + "See All" card when collapsed
     // const visibleCards = showAll ? libraryTypes : libraryTypes.slice(0, 7);
-    const visibleCards = showAll ? data : data.slice(0, 7);
+    const visibleCards = showAll ? data : data.slice(0, 10);
 
     return (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
             <MotionHighlight hover className="rounded-xl">
                 {visibleCards.map((item: any) => (
                     <Link href={`/resources/theses?major_code=${item.code}`} key={item.id} prefetch>
@@ -56,7 +56,7 @@ export const Feature3 = () => {
                                     image={`/assets/images/types/thumb/${item.image}`}
                                     alt={currentLocale === 'kh' ? item?.name_kh || item?.name : item?.name}
                                 /> */}
-                                <span className="flex size-10 text-primary items-center justify-center rounded-md border-none bg-primary/10">
+                                <span className="flex size-10 items-center justify-center rounded-md border-none bg-primary/10 text-primary">
                                     <item.icon />
                                 </span>
 
@@ -69,17 +69,19 @@ export const Feature3 = () => {
                     </Link>
                 ))}
             </MotionHighlight>
-            <div className="h-full w-full">
-                <button
-                    onClick={() => setShowAll(!showAll)}
-                    className="group flex h-full min-h-24 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border p-4 transition-all duration-300 hover:border-primary hover:bg-muted"
-                >
-                    <div className="flex size-10 items-center justify-around rounded-full bg-primary/5 group-hover:bg-primary/10">
-                        {showAll ? <ChevronUpIcon className="size-6 text-primary" /> : <ChevronDownIcon className="size-6 text-primary" />}
-                    </div>
-                    <p className="text-base">{showAll ? 'Show Less' : 'See All'}</p>
-                </button>
-            </div>
+            {data?.length > 10 && (
+                <div className="h-full w-full">
+                    <button
+                        onClick={() => setShowAll(!showAll)}
+                        className="group flex h-full min-h-24 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border p-4 transition-all duration-300 hover:border-primary hover:bg-muted"
+                    >
+                        <div className="flex size-10 items-center justify-around rounded-full bg-primary/5 group-hover:bg-primary/10">
+                            {showAll ? <ChevronUpIcon className="size-6 text-primary" /> : <ChevronDownIcon className="size-6 text-primary" />}
+                        </div>
+                        <p className="text-base">{showAll ? 'Show Less' : 'See All'}</p>
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

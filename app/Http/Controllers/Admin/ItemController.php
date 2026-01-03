@@ -97,7 +97,7 @@ class ItemController extends Controller implements HasMiddleware
 
         $query->with('created_user', 'updated_user', 'file_type', 'category');
 
-        $tableData = $query->paginate($perPage)->onEachSide(1);
+        $tableData = $query->paginate($perPage)->onEachSide(2);
 
         return Inertia::render('Admin/Item/Index', [
             'tableData' => $tableData,

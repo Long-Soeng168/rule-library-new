@@ -22,6 +22,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'id',
         'telegram_id',
         'photo_url',
         'name',
@@ -72,10 +73,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Item::class, 'publisher_id', 'id');
     }
-    public function library_data()
-    {
-        return $this->hasOne(LibraryData::class, 'user_id', 'id');
-    }
 
     public function author_items()
     {
@@ -102,15 +99,5 @@ class User extends Authenticatable
     public function scopeSort($query, $sortBy = 'id', $sortDirection = 'desc')
     {
         return $query->orderBy($sortBy, $sortDirection);
-    }
-
-    public function scopeWithoutLibraryData($query, $exceptId = null)
-    {
-        return $query->where(function ($q) use ($exceptId) {
-            $q->whereNull('library_data_id');
-            if ($exceptId) {
-                $q->orWhere('id', $exceptId);
-            }
-        });
     }
 }
