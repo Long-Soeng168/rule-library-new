@@ -79,7 +79,7 @@ export default function ResourceSidebar() {
                                 onChange={(val) => updateFilters({ category_code: val })}
                                 options={categories.map((item: any) => ({
                                     value: item.code,
-                                    label: currentLocale === 'kh' ? item.name_kh || item.name : item.name,
+                                    label: currentLocale === 'kh' ? (item.name_kh ?? item.name) : item.name,
                                     children: item.children,
                                 }))}
                             />
@@ -98,7 +98,7 @@ export default function ResourceSidebar() {
                                 onChange={(val) => updateFilters({ author_id: val })}
                                 options={authors.map((item: any) => ({
                                     value: item.id,
-                                    label: currentLocale === 'kh' ? item.name_kh || item.name : item.name,
+                                    label: currentLocale === 'kh' ? (item.name_kh ?? item.name) : item.name,
                                     items_count: item.author_items_count,
                                 }))}
                             />
@@ -117,7 +117,7 @@ export default function ResourceSidebar() {
                                 onChange={(val) => updateFilters({ publisher_id: val })}
                                 options={publishers.map((item: any) => ({
                                     value: item.id,
-                                    label: currentLocale === 'kh' ? item.name_kh || item.name : item.name,
+                                    label: currentLocale === 'kh' ? (item.name_kh ?? item.name) : item.name,
                                     items_count: item.publisher_items_count,
                                 }))}
                             />
@@ -135,7 +135,7 @@ export default function ResourceSidebar() {
                                 onChange={(val) => updateFilters({ advisor_id: val })}
                                 options={advisors.map((item: any) => ({
                                     value: item.id,
-                                    label: currentLocale === 'kh' ? item.name_kh || item.name : item.name,
+                                    label: currentLocale === 'kh' ? (item.name_kh ?? item.name) : item.name,
                                     items_count: item.advisor_items_count,
                                 }))}
                             />
@@ -153,7 +153,7 @@ export default function ResourceSidebar() {
                                 onChange={(val) => updateFilters({ language_code: val })}
                                 options={languages.map((item: any) => ({
                                     value: item.code,
-                                    label: currentLocale === 'kh' ? item.name_kh || item.name : item.name,
+                                    label: currentLocale === 'kh' ? (item.name_kh ?? item.name) : item.name,
                                     items_count: item.items_count,
                                 }))}
                             />

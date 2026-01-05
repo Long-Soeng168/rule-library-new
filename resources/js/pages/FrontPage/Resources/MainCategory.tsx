@@ -1,7 +1,7 @@
 import RefreshButton from '@/components/Button/RefreshButton';
 import { TooltipButton } from '@/components/Button/TooltipButton';
 import ByYearDialog from '@/components/Dialog/ByYearDialog';
-import PaginationTabs from '@/components/Pagination/PaginationTabs';
+import LoadingOnPrefetch from '@/components/Loading/LoadingOnPrefetch';
 import ResourceSearch from '@/components/Search/ResourceSearch';
 import ResourceList from '@/components/Section/ResourceList';
 import ResourceSortBySelect from '@/components/Select/ResourceSortBySelect';
@@ -9,31 +9,35 @@ import ResourceSidebar from '@/components/Sidebar/ResourceSidebar';
 import ResourceSidebarSheet from '@/components/Sidebar/ResourceSidebarSheet';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
+import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
-import { LayoutGridIcon, LayoutListIcon, SlidersHorizontalIcon } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
+import { SlidersHorizontalIcon } from 'lucide-react';
 import { useState } from 'react';
 
 const MainCategory = () => {
     const [isShowSidebar, setIsShowSidebar] = useState(true);
-    
+
+    const { mainCategory } = usePage<any>().props;
+    const { t, currentLocale } = useTranslation();
+
     return (
         <FrontPageLayout>
             <section className="section-container mb-40">
-                <div className="my-4">
-                    {/* <ResourceBreadcrumb /> */}
+                <div className="my-4"> 
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                                <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/resources">E-Resources</BreadcrumbLink>
+                                <BreadcrumbLink href="/resources">{t('E-Resources')}</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="#" className="text-foreground">
-                                    Theses
+                                <BreadcrumbLink href={`/resources/${mainCategory?.code}`} className="text-foreground">
+                                    {currentLocale == 'kh' ? (mainCategory.name_kh ?? mainCategory.name) : mainCategory.name}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                         </BreadcrumbList>
@@ -63,20 +67,22 @@ const MainCategory = () => {
                                 <ResourceSidebarSheet className="md:hidden" />
 
                                 {/* Search Input */}
-                                <div className="max-w-xl flex-1">
+                                <div className="max-w-full flex-1">
                                     <ResourceSearch />
                                 </div>
                             </div>
 
                             {/* Rigth Action Header */}
-                            <div className="flex w-full justify-end gap-2 md:w-auto">
+                            <div className="flex w-full justify-end gap-2 lg:w-auto">
                                 <RefreshButton />
                                 <ResourceSortBySelect />
                                 <ByYearDialog />
                             </div>
                         </div>
-                        <ResourceList className="mt-6" />
-                        <PaginationTabs containerClassName="mx-0 px-0" />
+                        <div className="h-6">
+                            <LoadingOnPrefetch />
+                        </div>
+                        <ResourceList />
                     </div>
                 </div>
             </section>

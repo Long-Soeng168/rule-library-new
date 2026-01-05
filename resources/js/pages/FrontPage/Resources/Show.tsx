@@ -1,7 +1,9 @@
 import ResourceDetail from '@/components/Section/ResourceDetail';
 import ScrollCardSection from '@/components/Section/ScrollCardSection';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
+import { usePage } from '@inertiajs/react';
 
 export const data: any[] = [
     {
@@ -37,66 +39,79 @@ export const data: any[] = [
         image_url: '/assets/sample_images/books/thesis1.jpg',
     },
 ];
-
-const thesisData = {
-    title: 'Your Thesis Title Here',
-    student: 'John Doe',
-    supervisor: 'Jane Smith',
-    details: {
-        by: 'ថៅ គឹមរ៉ុង - ចន សុធា',
-        advisor: 'ស សុភាព',
-        category: 'ធនាគារ និងហិរញ្ញវត្ថុ',
-        language: 'English',
-        year: 2023,
-        pages: 120,
-    },
-    description: 'A detailed study on the use of AI in web development.',
-};
+ 
 
 const Show = () => {
+    const { mainCategory, showData } = usePage<any>().props;
+    const { t, currentLocale } = useTranslation();
+
     return (
         <FrontPageLayout>
             <section className="section-container">
                 <div className="my-4">
-                    {/* <ResourceBreadcrumb /> */}
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                                <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/resources" className="">
-                                    Resources
-                                </BreadcrumbLink>
+                                <BreadcrumbLink href="/resources">{t('E-Resources')}</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/resources/theses" className="">
-                                    Theses
+                                <BreadcrumbLink href={`/resources/${mainCategory?.code}`}>
+                                    {currentLocale == 'kh' ? (mainCategory.name_kh ?? mainCategory.name) : mainCategory.name}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="/resources/theses" className="">
-                                    ធនាគារ និងហិរញ្ញវត្ថុ
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="#" className="text-foreground">
-                                    អភិបាលកិច្ចសាជីវកម្មក្នុងការបោះផ្សាយលក់មូលបត្រជាសាធារណៈរបស់ក្រុមហ៊ុន PPSEZ
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
+
+                            {showData?.category?.parent && (
+                                <>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink href={`/resources/${mainCategory?.code}?category_code=${showData?.category?.parent?.code}`}>
+                                            {currentLocale == 'kh'
+                                                ? (showData?.category?.parent.name_kh ?? showData?.category?.parent.name)
+                                                : showData?.category?.parent.name}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                </>
+                            )}
+                            {showData?.category && (
+                                <>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink href={`/resources/${mainCategory?.code}?category_code=${showData?.category?.code}`}>
+                                            {currentLocale == 'kh'
+                                                ? (showData?.category?.name_kh ?? showData?.category?.name)
+                                                : showData?.category?.name}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                </>
+                            )}
+
+                            {showData?.id && (
+                                <>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink
+                                            href={`/resources/${mainCategory?.code}/${showData?.id}`}
+                                            className="line-clamp-1 max-w-[30ch] text-foreground lg:max-w-[60ch]"
+                                        >
+                                            {currentLocale == 'kh' ? (showData?.name_kh ?? showData?.name) : showData?.name}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                </>
+                            )}
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
                 <div>
-                    <ResourceDetail item={thesisData} />
+                    <ResourceDetail />
                 </div>
             </section>
             <section className="mt-20 mb-20">
-                <ScrollCardSection containerClassName="mt-8" title="Related" />
+                <ScrollCardSection containerClassName="mt-8" />
             </section>
         </FrontPageLayout>
     );

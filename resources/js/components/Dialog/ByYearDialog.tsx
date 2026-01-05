@@ -11,68 +11,129 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import useTranslation from '@/hooks/use-translation';
+import { router } from '@inertiajs/react';
 import * as React from 'react';
 
 export default function ByYearDialog() {
-    const [startYear, setStartYear] = React.useState('');
-    const [endYear, setEndYear] = React.useState('');
+    const [open, setOpen] = React.useState(false);
+
+    const { t } = useTranslation();
+
+    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+    const initialQueryParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+
+    // Only one source of truth: filters
+    const [filters, setFilters] = React.useState({
+        from_year: initialQueryParams.get('from_year') || '',
+        to_year: initialQueryParams.get('to_year') || '',
+    });
+
+    const updateFilters = (updates: Partial<typeof filters>) => {
+        const newFilters = { ...filters, ...updates };
+        setFilters(newFilters);
+        applyFilter(newFilters);
+    };
+
+    const applyFilter = (appliedFilters?: typeof filters) => {
+        if (!currentPath) return;
+
+        const f = appliedFilters ?? filters;
+        const queryParams = new URLSearchParams(window.location.search);
+
+        Object.entries(f).forEach(([key, value]) => {
+            if (value) queryParams.set(key, value);
+            else queryParams.delete(key);
+        });
+
+        queryParams.set('page', '1');
+
+        router.visit(`${currentPath}?${queryParams.toString()}`, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Selected years:', { startYear, endYear });
-        // do something with the years here (API call, filter, etc.)
+
+        const start = parseInt(filters.from_year, 10);
+        const end = parseInt(filters.to_year, 10);
+
+        if (start && end && start > end) {
+            alert('Start year cannot be after end year');
+            return;
+        }
+
+        updateFilters({
+            from_year: filters.from_year,
+            to_year: filters.to_year,
+        });
+
+        setOpen(false);
     };
 
     return (
-        <Dialog>
-            <form onSubmit={handleSubmit}>
-                <DialogTrigger asChild>
-                    <Button variant="ghost" className="h-11 rounded-md bg-muted text-foreground hover:bg-primary hover:text-white">
-                        Select Year
-                    </Button>
-                </DialogTrigger>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button
+                    variant="ghost"
+                    className={`h-11 rounded-md border border-transparent bg-muted text-foreground hover:bg-primary hover:text-white ${(filters.from_year || filters.to_year) && 'border-primary ring-4 ring-primary/20'}`}
+                >
+                    {filters.from_year || filters.to_year ? (
+                        <>
+                            <span>{filters.from_year || '...'}</span>
+                            <span>→</span>
+                            <span>{filters.to_year || '...'}</span>
+                        </>
+                    ) : (
+                        t('Select Year')
+                    )}
+                </Button>
+            </DialogTrigger>
 
-                <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px]">
+                <form onSubmit={handleSubmit} className="grid gap-4">
                     <DialogHeader>
-                        <DialogTitle>Filter by Year</DialogTitle>
-                        <DialogDescription>Specify the start and end year to filter resources.</DialogDescription>
+                        <DialogTitle>{t('Filter by Published Year')}</DialogTitle>
+                        <DialogDescription></DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4">
                         <div className="grid gap-1">
-                            <Label htmlFor="start-year">From Year</Label>
+                            <Label htmlFor="start-year">{t('From Year')}</Label>
                             <Input
                                 id="start-year"
                                 type="number"
-                                min={2000}
-                                max={new Date().getFullYear()}
+                                min={1800}
+                                max={new Date().getFullYear() + 1}
                                 placeholder="e.g., 2010"
-                                value={startYear}
-                                onChange={(e) => setStartYear(e.target.value)}
+                                value={filters.from_year}
+                                onChange={(e) => updateFilters({ from_year: e.target.value })}
                             />
                         </div>
                         <div className="grid gap-1">
-                            <Label htmlFor="end-year">To Year</Label>
+                            <Label htmlFor="end-year">{t('To Year')}</Label>
                             <Input
                                 id="end-year"
                                 type="number"
-                                min={2000}
-                                max={new Date().getFullYear()}
+                                min={1800}
+                                max={new Date().getFullYear() + 1}
                                 placeholder="e.g., 2023"
-                                value={endYear}
-                                onChange={(e) => setEndYear(e.target.value)}
+                                value={filters.to_year}
+                                onChange={(e) => updateFilters({ to_year: e.target.value })}
                             />
                         </div>
                     </div>
 
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
+                            <Button variant="outline">{t('Cancel')}</Button>
                         </DialogClose>
-                        <Button type="submit">Apply</Button>
+                        <Button type="submit">{t('Apply')}</Button>
                     </DialogFooter>
-                </DialogContent>
-            </form>
+                </form>
+            </DialogContent>
         </Dialog>
     );
 }

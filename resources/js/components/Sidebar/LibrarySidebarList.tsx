@@ -26,8 +26,8 @@ export default function LibrarySidebarList({
     let visibleOptions = options.slice(0, limit);
     // if selected is not in visible slice, push it to front
     if (value) {
-        const selectedOption = options.find((o) => o.value === value);
-        if (selectedOption && !visibleOptions.some((o) => o.value === value)) {
+        const selectedOption = options.find((o) => o.value == value);
+        if (selectedOption && !visibleOptions.some((o) => o.value == value)) {
             visibleOptions = [...visibleOptions, selectedOption];
         }
     }
@@ -38,13 +38,13 @@ export default function LibrarySidebarList({
     const handleSelect = (val: string) => {
         if (onChange) {
             // toggle logic: if already selected -> clear it, else set new
-            onChange(value === val ? '' : val);
+            onChange(value == val ? '' : val);
         }
     };
 
     // detect if a child item is selected, then open its parent accordion
     const defaultOpenValue = (() => {
-        const parent = visibleOptions.find((item) => item.children?.some((child) => child.code === value));
+        const parent = visibleOptions.find((item) => item.children?.some((child) => child.code == value));
         return parent ? parent.value : value;
     })();
 
@@ -68,7 +68,7 @@ export default function LibrarySidebarList({
                                             className="size-4 rounded-full data-[state=checked]:border-primary data-[state=checked]:bg-true-primary dark:text-foreground"
                                         />
                                         <span className="flex flex-1 items-center justify-between gap-1 text-start leading-tight">
-                                            <span>{item.label}</span>
+                                            <span className='line-clamp-3'>{item.label}</span>
                                             {item.items_count && <span className="font-medium text-xs">({item.items_count})</span>}
                                         </span>
                                     </button>
@@ -92,7 +92,7 @@ export default function LibrarySidebarList({
                                         <CheckboxOption
                                             key={subItem.id}
                                             value={subItem.code}
-                                            label={currentLocale === 'kh' ? subItem.name_kh || subItem.name : subItem.name}
+                                            label={currentLocale == 'kh' ? subItem.name_kh || subItem.name : subItem.name}
                                             checkedValue={value}
                                             onChange={handleSelect}
                                         />
@@ -110,7 +110,7 @@ export default function LibrarySidebarList({
                     onClick={() => setIsOpenDialog(true)}
                     className="group mb-2 flex items-center gap-1 text-left text-sm font-semibold text-primary underline underline-offset-4 transition-all duration-300 hover:translate-x-1"
                 >
-                    See More{' '}
+                    {t("See More")}{' '}
                     <ArrowRight
                         className="translate-x-[-20px] opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
                         size={18}
@@ -151,14 +151,14 @@ export default function LibrarySidebarList({
                                             className="size-4 rounded-full data-[state=checked]:border-primary data-[state=checked]:bg-true-primary dark:text-foreground"
                                         />
                                         <span className="flex flex-1 items-center justify-between gap-1 text-start leading-tight">
-                                            <span>{item.label}</span>
+                                            <span className='line-clamp-3'>{item.label}</span>
                                             {item.items_count && <span className="font-medium text-xs">({item.items_count})</span>}
                                         </span>
                                     </button>
                                 </div>
                             </>
                         ))}
-                        {filteredOptions.length === 0 && <p className="py-4 text-center text-sm text-muted-foreground">No results found</p>}
+                        {filteredOptions.length == 0 && <p className="py-4 text-center text-sm text-muted-foreground">No results found</p>}
                     </div>
                 </DialogContent>
             </Dialog>

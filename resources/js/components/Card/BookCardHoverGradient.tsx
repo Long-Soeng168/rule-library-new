@@ -1,5 +1,4 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Link } from '@inertiajs/react';
 import { ChevronRightIcon } from 'lucide-react';
 import { styled } from 'styled-components';
 const BookCardHoverGradient = ({
@@ -14,13 +13,10 @@ const BookCardHoverGradient = ({
     image_url?: string;
 }) => {
     return (
-        <StyledWrapper>
+        <StyledWrapper className="h-full">
             <div className="relative h-full">
-                <Link
-                    href={`/resources/theses/1`}
-                    className="btn group relative z-10 h-full w-full overflow-hidden rounded-md border-2 border-background shadow hover:translate-[-8px] hover:border-transparent active:hover:translate-0 dark:border-border dark:hover:border-transparent"
-                >
-                    <div className="flex h-full flex-col border-none bg-background text-foreground">
+                <div className="btn group relative z-10 h-full w-full overflow-hidden rounded-md border-2 border-background shadow hover:translate-[-8px] hover:border-transparent active:hover:translate-0 dark:border-border dark:hover:border-transparent">
+                    <div className="flex h-full w-full flex-col border-none bg-background text-foreground">
                         <img src={image_url} alt={title} className="aspect-[7/10] w-full border-b bg-transparent object-cover" />
                         <div className="flex flex-1 flex-col justify-between">
                             <div className="p-2 pb-0">
@@ -29,10 +25,13 @@ const BookCardHoverGradient = ({
                                         <TooltipTrigger asChild>
                                             <button className="w-full text-start">
                                                 <p className="line-clamp-2 text-base leading-normal font-medium text-foreground">{title}</p>
+                                                {subTitle && (
+                                                    <p className="mt-1 line-clamp-2 text-sm leading-normal text-muted-foreground">{subTitle}</p>
+                                                )}
                                             </button>
                                         </TooltipTrigger>
                                         <TooltipContent
-                                            className="w-[var(--radix-tooltip-trigger-width)] max-w-none bg-true-primary text-true-primary"
+                                            className="w-[var(--radix-tooltip-trigger-width)] max-w-none bg-true-primary text-true-primary [&_svg]:bg-true-primary [&_svg]:text-true-primary"
                                             side="top"
                                         >
                                             <p className="text-base leading-normal text-primary-foreground dark:text-white">{title}</p>
@@ -50,7 +49,7 @@ const BookCardHoverGradient = ({
                     <div className="absolute right-2 bottom-2 flex size-5 translate-x-6 items-center justify-center rounded bg-primary/10 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 hover:scale-150">
                         <ChevronRightIcon className="size-5 font-bold" />
                     </div>
-                </Link>
+                </div>
                 <div className="absolute inset-0 z-0 h-full w-full rounded-lg border border-dashed border-foreground"></div>
             </div>
         </StyledWrapper>
@@ -61,7 +60,6 @@ const StyledWrapper = styled.div`
     .btn {
         display: flex;
         justify-content: center;
-        align-items: center;
         overflow: hidden;
         background-size: 300% 300%;
         cursor: pointer;

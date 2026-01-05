@@ -18,33 +18,117 @@ class ResourceController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function item_show(string $main_category_code, string $id, Request $request)
+    {
+        $showData = Item::findOrFail($id)->load('images', 'publisher', 'authors', 'advisor', 'language', 'category.parent');
+        $mainCategory = ItemMainCategory::select('id', 'code', 'name', 'name_kh', 'image')->where('code', $showData->main_category_code)->first();
+
+        $query = Item::query();
+
+        $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'category_code', 'created_at');
+        $relatedData = $query->where('category_code', $showData->category_code)->inRandomOrder()->limit(9)->get();
+        // return [
+        //     'mainCategory' => $mainCategory,
+        //     'showData' => $showData,
+        //     'relatedData' => $relatedData,
+        // ];
+        return Inertia::render(
+            'FrontPage/Resources/Show',
+            [
+                'mainCategory' => $mainCategory,
+                'showData' => $showData,
+                'relatedData' => $relatedData,
+            ]
+        );
+    }
     public function main_category(string $main_category_code, Request $request)
     {
-        $main_category = ItemMainCategory::where('code', $main_category_code)->firstOrFail();
+        $mainCategory = ItemMainCategory::select('id', 'code', 'name', 'name_kh', 'image')->where('code', $main_category_code)->firstOrFail();
 
         $perPage = $request->input('perPage', 16);
         $search = $request->input('search', '');
-        $sortBy = $request->input('sortBy', 'id');
-        $sortDirection = $request->input('sortDirection', 'desc');
-        $type_code = $request->input('type_code');
+
+        $sort_by = $request->input('sort_by');
+        $from_year = $request->input('from_year');
+        $to_year = $request->input('to_year');
+
         $category_code = $request->input('category_code');
+        $author_id = $request->input('author_id');
+        $publisher_id = $request->input('publisher_id');
+        $advisor_id = $request->input('advisor_id');
         $language_code = $request->input('language_code');
 
         $query = Item::query();
 
-        $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'main_category_code', 'created_at');
+        $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'category_code', 'main_category_code', 'created_at');
 
-        if ($type_code) {
-            $query->where('type_code', $type_code);
-        }
         if ($category_code) {
-            $query->where('category_code', $category_code);
+            $category = ItemCategory::where('code', $category_code)->first();
+            $categoryChildren = [];
+            if (!empty($category)) {
+                $categoryChildren = $category->allChildren()->pluck('code')->toArray();
+                // return $categoryChildren;
+            }
+            $query->where(function ($sub_query) use ($category_code, $categoryChildren) {
+                return $sub_query->where('category_code', $category_code)
+                    ->orWhereIn('category_code', $categoryChildren);
+            });
         }
+
         if ($language_code) {
             $query->where('language_code', $language_code);
         }
+        if ($publisher_id) {
+            $query->where('publisher_id', $publisher_id);
+        }
+        if ($advisor_id) {
+            $query->where('advisor_id', $advisor_id);
+        }
 
-        $query->orderBy($sortBy, $sortDirection);
+        if ($from_year && $to_year && $from_year > $to_year) {
+            [$from_year, $to_year] = [$to_year, $from_year];
+        }
+        if ($from_year && $to_year) {
+            $query->whereBetween('published_year', [(int)$from_year, (int)$to_year]);
+        } elseif ($from_year) {
+            $query->where('published_year', '>=', (int)$from_year);
+        } elseif ($to_year) {
+            $query->where('published_year', '<=', (int)$to_year);
+        }
+
+
+        if ($author_id) {
+            $query->whereHas(
+                'authors',
+                fn($q) =>
+                $q->where('author_id', $author_id)
+            );
+        }
+
+        if ($sort_by) {
+            match ($sort_by) {
+                'latest' =>
+                $query->orderBy('published_year', 'desc'),
+
+                'oldest' =>
+                $query->orderBy('published_year'),
+
+                'title-asc' =>
+                $query->orderBy('name'),
+
+                'title-desc' =>
+                $query->orderBy('name', 'desc'),
+
+                'most-read' =>
+                $query->orderBy('total_read_count', 'desc'),
+
+                default =>
+                $query->orderBy('id', 'desc'),
+            };
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
 
         if ($search) {
             $query->where(function ($sub_query) use ($search) {
@@ -64,41 +148,57 @@ class ResourceController extends Controller
 
         $tableData = $query->paginate($perPage)->onEachSide(2);
 
-        $categories = ItemCategory::where('parent_id', null)
+        $categories = ItemCategory::select('id', 'code', 'item_main_category_code', 'name', 'name_kh', 'image', 'order_index')->where('parent_id', null)
             ->where('item_main_category_code', $main_category_code)
             ->orderBy('order_index')
             ->with(['children' => function ($q) {
-                $q->orderBy('order_index');
+                $q->select('id', 'code', 'parent_id', 'name', 'name_kh', 'image', 'order_index')->orderBy('order_index');
             }])
             ->get();
 
-        $authors = User::role('Author')
-            ->orderByDesc('author_items_count')
-            ->orderBy('name')
-            ->select('id', 'name', 'name_kh', 'title_type_code')
-            ->withCount([
-                'author_items' => fn($q) =>
-                $q->where('main_category_code', $main_category_code),
-            ])
-            ->get();
-        $publishers = User::role('Publisher')
-            ->orderByDesc('publisher_items_count')
-            ->orderBy('name')
-            ->select('id', 'name', 'name_kh', 'title_type_code')
-            ->withCount([
-                'publisher_items' => fn($q) =>
-                $q->where('main_category_code', $main_category_code),
-            ])
-            ->get();
-        $advisors = User::role('Advisor')
-            ->orderByDesc('advisor_items_count')
-            ->orderBy('name')
-            ->select('id', 'name', 'name_kh', 'title_type_code')
-            ->withCount([
-                'advisor_items' => fn($q) =>
-                $q->where('main_category_code', $main_category_code),
-            ])
-            ->get();
+
+
+        $publishers = null;
+        $authors = null;
+
+        if ($main_category_code !== 'theses') {
+
+            $authors = User::role('Author')
+                ->orderByDesc('author_items_count')
+                ->orderBy('name')
+                ->select('id', 'name', 'name_kh', 'title_type_code')
+                ->withCount([
+                    'author_items' => fn($q) =>
+                    $q->where('main_category_code', $main_category_code),
+                ])
+                ->get();
+
+            $publishers = User::role('Publisher')
+                ->orderByDesc('publisher_items_count')
+                ->orderBy('name')
+                ->select('id', 'name', 'name_kh', 'title_type_code')
+                ->withCount([
+                    'publisher_items' => fn($q) =>
+                    $q->where('main_category_code', $main_category_code),
+                ])
+                ->get();
+        }
+
+
+
+        $advisors = null;
+        if ($main_category_code === 'theses') {
+
+            $advisors = User::role('Advisor')
+                ->orderByDesc('advisor_items_count')
+                ->orderBy('name')
+                ->select('id', 'name', 'name_kh', 'title_type_code')
+                ->withCount([
+                    'advisor_items' => fn($q) =>
+                    $q->where('main_category_code', $main_category_code),
+                ])
+                ->get();
+        }
 
         $languages = Language::select('id', 'code', 'name', 'name_kh', 'image')
             ->orderByDesc('items_count')
@@ -110,9 +210,18 @@ class ResourceController extends Controller
             // ->having('items_count', '>', 0)
             ->get();
 
-        // return $languages;
+        // return [
+        //     'mainCategory' => $mainCategory,
+        //     'tableData' => $tableData,
+        //     'languages' => $languages,
+        //     'categories' => $categories,
+        //     'authors' => $authors,
+        //     'publishers' => $publishers,
+        //     'advisors' => $advisors,
+        // ];
 
         return Inertia::render('FrontPage/Resources/MainCategory', [
+            'mainCategory' => $mainCategory,
             'tableData' => $tableData,
             'languages' => $languages,
             'categories' => $categories,

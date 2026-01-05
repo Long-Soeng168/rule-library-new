@@ -1,8 +1,7 @@
 import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
-import { router, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { RotateCwIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { TooltipButton } from './TooltipButton';
 
@@ -17,18 +16,6 @@ const RefreshButton = ({ className }: { className?: string }) => {
         window.location.href = window.location.pathname;
     };
 
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const start = router.on('start', () => setLoading(true));
-        const finish = router.on('finish', () => setLoading(false));
-
-        return () => {
-            start();
-            finish();
-        };
-    }, []);
-
     return (
         <TooltipButton tooltip={t('Refresh and Clear Filter')}>
             <Button
@@ -37,7 +24,7 @@ const RefreshButton = ({ className }: { className?: string }) => {
                 size="icon"
                 className={cn('size-11 rounded-md bg-muted text-foreground hover:bg-primary hover:text-white', className)}
             >
-                <RotateCwIcon className={`h-5 w-5 transition ${loading ? 'animate-spin' : ''}`} />
+                <RotateCwIcon className={`h-5 w-5 transition`} />
             </Button>
         </TooltipButton>
     );

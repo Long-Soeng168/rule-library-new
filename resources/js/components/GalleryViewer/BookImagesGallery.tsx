@@ -1,3 +1,4 @@
+import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { BookOpenIcon, FileDownIcon, Maximize2Icon, Minimize2Icon, RotateCwSquareIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
@@ -6,23 +7,9 @@ import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
-const images = [
-    'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(107).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(106).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(105).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(104).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(103).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(102).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(101).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(108).jpg',
-    // 'https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(109).jpg',
-];
-
-export default function BookImagesGallery({
-    images = ['https://www.elibrary-rule.com/assets/images/theses/Thesis2019%20(107).jpg'],
-    mainImageClassName = '',
-}) {
+export default function BookImagesGallery({ images = [''], mainImageClassName = '', alternative = '', aspectRatio = '7/10' }) {
     const [mainImage, setMainImage] = useState(images[0]);
+    const { t, currentLocale } = useTranslation();
 
     const [visible, setVisible] = useState(false);
     const [isFullScreen, setIsFullScreen] = useState(false);
@@ -72,13 +59,13 @@ export default function BookImagesGallery({
                             <Link href={`/view-pdf?file_name=file-sample_150kB.pdf&id=1&resource=items`}>
                                 <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
                                     <FileDownIcon size={20} />
-                                    <span>Download PDF</span>
+                                    <span>{t('Download PDF')}</span>
                                 </button>
                             </Link>
                             <Link href={`/view-pdf?file_name=file-sample_150kB.pdf&id=1&resource=items`}>
                                 <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
                                     <BookOpenIcon size={20} />
-                                    <span>Read PDF</span>
+                                    <span>{t('Read PDF')}</span>
                                 </button>
                             </Link>
                         </div>
@@ -86,15 +73,15 @@ export default function BookImagesGallery({
                 </div>
             )}
         >
-            <div className="flex flex-col items-center">
+            <div className="flex w-full flex-col items-center">
                 {/* Main image */}
                 {images.map((src, idx) => (
                     <PhotoView key={idx} src={src}>
                         <img
                             src={src}
-                            alt="Main preview"
+                            alt={alternative}
                             className={cn(
-                                `max-h-[800px] w-full max-w-sm cursor-pointer rounded-none border border-primary object-cover ${src === mainImage ? '' : 'hidden'}`,
+                                `max-h-[800px] w-full cursor-pointer rounded-none border border-primary object-cover sm:max-w-sm ${src === mainImage ? '' : 'hidden'} aspect-[${aspectRatio}]`,
                                 mainImageClassName,
                             )}
                         />
@@ -103,15 +90,15 @@ export default function BookImagesGallery({
 
                 {/* Thumbnails */}
                 {images?.length > 1 && (
-                    <ScrollArea className="w-full rounded-md whitespace-nowrap">
-                        <div className="flex w-full justify-center space-x-3 py-3">
+                    <ScrollArea className="w-full rounded-none whitespace-nowrap sm:max-w-sm">
+                        <div className="flex w-full justify-start space-x-2 pt-2">
                             {images.map((src, idx) => (
                                 <img
                                     key={idx}
                                     src={src}
-                                    alt={`Thumbnail ${idx + 1}`}
+                                    alt={alternative}
                                     onClick={() => setMainImage(src)}
-                                    className={`h-20 w-20 shrink-0 cursor-pointer rounded border object-cover transition-all ${
+                                    className={`size-[90px] shrink-0 cursor-pointer rounded-none border object-cover transition-all ${
                                         src === mainImage ? 'border-primary' : 'opacity-70 hover:opacity-100'
                                     }`}
                                 />

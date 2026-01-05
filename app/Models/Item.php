@@ -18,6 +18,22 @@ class Item extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+    public function authors()
+    {
+        return $this->belongsToMany(User::class, 'item_authors', 'item_id', 'author_id')->withTimestamps();
+    }
+    public function publisher()
+    {
+        return $this->belongsTo(User::class, 'publisher_id', 'id');
+    }
+    public function advisor()
+    {
+        return $this->belongsTo(User::class, 'advisor_id', 'id');
+    }
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_code', 'code');
+    }
     public function category()
     {
         return $this->belongsTo(ItemCategory::class, 'category_code', 'code');
@@ -31,10 +47,7 @@ class Item extends Model
         return $this->hasMany(ItemImage::class, 'item_id', 'id');
     }
 
-    public function authors()
-    {
-        return $this->belongsToMany(User::class, 'item_authors', 'item_id', 'author_id')->withTimestamps();
-    }
+
 
     public function files()
     {
