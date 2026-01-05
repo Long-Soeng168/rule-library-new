@@ -15,8 +15,7 @@ import { useState } from 'react';
 
 const MainCategory = () => {
     const [isShowSidebar, setIsShowSidebar] = useState(true);
-    const [cardLayout, setCardLayout] = useState<'grid' | 'list'>('grid');
-
+    
     return (
         <FrontPageLayout>
             <section className="section-container mb-40">
@@ -72,22 +71,12 @@ const MainCategory = () => {
                             {/* Rigth Action Header */}
                             <div className="flex w-full justify-end gap-2 md:w-auto">
                                 <RefreshButton />
-                                <TooltipButton tooltip={cardLayout === 'grid' ? 'Switch to List' : 'Switch to Grid'}>
-                                    <Button
-                                        onClick={() => setCardLayout(cardLayout === 'grid' ? 'list' : 'grid')}
-                                        variant="ghost"
-                                        size="icon"
-                                        className="size-11 rounded-md bg-muted text-foreground hover:bg-primary hover:text-white"
-                                    >
-                                        {cardLayout === 'grid' ? <LayoutGridIcon className="h-5 w-5" /> : <LayoutListIcon className="h-5 w-5" />}
-                                    </Button>
-                                </TooltipButton>
                                 <ResourceSortBySelect />
                                 <ByYearDialog />
                             </div>
                         </div>
-                        <ResourceList cardLayout={cardLayout} className="mt-6" />
-                        <PaginationTabs />
+                        <ResourceList className="mt-6" />
+                        <PaginationTabs containerClassName="mx-0 px-0" />
                     </div>
                 </div>
             </section>

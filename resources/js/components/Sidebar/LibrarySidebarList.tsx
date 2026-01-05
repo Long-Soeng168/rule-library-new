@@ -1,7 +1,10 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/animate-ui/radix/accordion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ArrowRight, Search } from 'lucide-react';
+import useTranslation from '@/hooks/use-translation';
+import { ArrowRight, ChevronDownIcon, Search } from 'lucide-react';
 import { useState } from 'react';
 import CheckboxOption from '../Checkbox/CheckboxOption';
+import { Checkbox } from '../ui/checkbox';
 
 export default function LibrarySidebarList({
     heading = 'All Lists',
@@ -11,7 +14,7 @@ export default function LibrarySidebarList({
     onChange,
 }: {
     heading?: string;
-    options: { value: string; label: string }[];
+    options: { value: string; label: string; items_count?: number; children?: any[] }[];
     limit?: number;
     value?: string; // current selected value
     onChange?: (val: string) => void; // callback for selection
@@ -29,7 +32,8 @@ export default function LibrarySidebarList({
         }
     }
 
-    const filteredOptions = options.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
+    // const filteredOptions = options.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
+    const filteredOptions = options.filter((item) => (item.label ?? '').toLowerCase().includes((search ?? '').toLowerCase()));
 
     const handleSelect = (val: string) => {
         if (onChange) {
@@ -38,11 +42,67 @@ export default function LibrarySidebarList({
         }
     };
 
+    // detect if a child item is selected, then open its parent accordion
+    const defaultOpenValue = (() => {
+        const parent = visibleOptions.find((item) => item.children?.some((child) => child.code === value));
+        return parent ? parent.value : value;
+    })();
+
+    const { t, currentLocale } = useTranslation();
+
     return (
         <div className="flex flex-col gap-2">
-            {visibleOptions.map((item) => (
-                <CheckboxOption key={item.value} value={item.value} label={item.label} checkedValue={value} onChange={handleSelect} />
-            ))}
+            <Accordion type="single" defaultValue={defaultOpenValue} collapsible className="w-full rounded-lg">
+                {visibleOptions.map((item) => (
+                    <AccordionItem value={item.value} className="h-auto border-b-0">
+                        <div className="flex">
+                            <div key={item.value} className="flex flex-1 cursor-pointer items-center gap-3 rounded-md hover:bg-muted">
+                                <div className="flex flex-1 items-center">
+                                    <button
+                                        onClick={() => handleSelect(item.value)}
+                                        className="flex flex-1 cursor-pointer items-center justify-start gap-2 rounded p-2 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:bg-muted"
+                                    >
+                                        <Checkbox
+                                            id={value}
+                                            checked={value ? item.value == value : false}
+                                            className="size-4 rounded-full data-[state=checked]:border-primary data-[state=checked]:bg-true-primary dark:text-foreground"
+                                        />
+                                        <span className="flex flex-1 items-center justify-between gap-1 text-start leading-tight">
+                                            <span>{item.label}</span>
+                                            {item.items_count && <span className="font-medium text-xs">({item.items_count})</span>}
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            {(item.children?.length ?? 0) > 0 && (
+                                <div>
+                                    <AccordionTrigger chevron={false} className="h-auto w-auto cursor-pointer py-1">
+                                        <span className="rounded p-1 font-semibold hover:bg-primary/10 hover:text-primary">
+                                            <ChevronDownIcon />
+                                        </span>
+                                    </AccordionTrigger>
+                                </div>
+                            )}
+                        </div>
+
+                        <AccordionContent>
+                            <ul className="p- ml-4 flex flex-col gap-2 border-l pl-2.5">
+                                {item.children?.map((subItem, index) => (
+                                    <li key={index} className="flex items-center gap-3 rounded hover:bg-muted">
+                                        <CheckboxOption
+                                            key={subItem.id}
+                                            value={subItem.code}
+                                            label={currentLocale === 'kh' ? subItem.name_kh || subItem.name : subItem.name}
+                                            checkedValue={value}
+                                            onChange={handleSelect}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
 
             {options.length > limit && (
                 <button
@@ -79,13 +139,24 @@ export default function LibrarySidebarList({
                     {/* List */}
                     <div className="show-scrollbar max-h-[300px] overflow-y-auto pr-2">
                         {filteredOptions.map((item) => (
-                            <CheckboxOption
-                                key={item.value}
-                                value={item.value}
-                                label={item.label}
-                                checked={value === item.value}
-                                onChange={handleSelect}
-                            />
+                            <>
+                                <div className="flex flex-1 items-center">
+                                    <button
+                                        onClick={() => handleSelect(item.value)}
+                                        className="flex flex-1 cursor-pointer items-center justify-start gap-2 rounded p-2 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:bg-muted"
+                                    >
+                                        <Checkbox
+                                            id={value}
+                                            checked={value ? item.value == value : false}
+                                            className="size-4 rounded-full data-[state=checked]:border-primary data-[state=checked]:bg-true-primary dark:text-foreground"
+                                        />
+                                        <span className="flex flex-1 items-center justify-between gap-1 text-start leading-tight">
+                                            <span>{item.label}</span>
+                                            {item.items_count && <span className="font-medium text-xs">({item.items_count})</span>}
+                                        </span>
+                                    </button>
+                                </div>
+                            </>
                         ))}
                         {filteredOptions.length === 0 && <p className="py-4 text-center text-sm text-muted-foreground">No results found</p>}
                     </div>

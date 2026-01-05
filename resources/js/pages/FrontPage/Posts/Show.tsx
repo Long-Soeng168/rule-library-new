@@ -1,99 +1,135 @@
+import { PostCard } from '@/components/Card/PostCard';
+import UploadedFile from '@/components/Form/UploadedFileDisplay';
 import PostmagesGallery from '@/components/GalleryViewer/PostmagesGallery';
+import { ContentHeader } from '@/components/Header/ContentHeader';
 import { MobileTableOfContents } from '@/components/TableContent/mobile-table-of-contents';
 import { TableOfContents } from '@/components/TableContent/table-of-contents';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
+import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
+import { formatToKhmerDateTime } from '@/lib/utils';
+import { usePage } from '@inertiajs/react';
+import { FilesIcon } from 'lucide-react';
 
-const About = () => {
+const Show = () => {
+    const { showData, relatedData } = usePage<any>().props;
+    const { t, currentLocale } = useTranslation();
+
     return (
         <FrontPageLayout>
             <ScrollProgress className="top-0 h-[4px]" />
-            <div className="section-container px-0">
-                <div className="relative z-10 mx-auto flex max-w-7xl divide-x divide-border px-4 md:px-0">
-                    <div className="pointer-events-none absolute left-1/2 mx-auto h-full w-[calc(100%-2rem)] max-w-7xl -translate-x-1/2 border-x border-border p-0 lg:w-full" />
-                    <main className="prose w-full max-w-none overflow-hidden p-4 pb-20 dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
-                        <h1 className="mt-6 text-primary leading-tight">ការប្រជុំបច្ចេកទេសបណ្ណាល័យនៅថ្ងៃទី២៤ ខែតុលា ឆ្នាំ២០២៥</h1>
-                        <section>
-                            <h2>1. Introduction</h2>
-                            <p>
-                                On October 24, 2025, the Royal University of Law and Economic Sciences (RULE) Library held a technical meeting to
-                                discuss ongoing and upcoming projects, review library operations, and coordinate strategies to improve services for
-                                students, faculty, and researchers.
-                            </p>
-                            <p>
-                                The meeting gathered librarians, IT staff, and administrative personnel to address key topics including library
-                                management systems, digital resources, and service quality enhancements. This session reflects the university’s
-                                commitment to modernizing library operations and ensuring that library services remain effective and user-friendly.
-                            </p>
-                        </section>
+            <div className="section-container">
+                <div className="relative z-10 mx-auto flex lg:border-0">
+                    <main className="w-full overflow-hidden pb-20 lg:border-r-0 lg:pr-6">
+                        <div className="pt-4 pb-2">
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink href="/posts" className="">
+                                            {t('Posts')}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                    {showData?.category?.id && (
+                                        <>
+                                            <BreadcrumbItem>
+                                                <BreadcrumbLink href={`/posts?category_code=${showData?.category_code}`} className="">
+                                                    {currentLocale == 'kh'
+                                                        ? (showData?.category?.name_kh ?? showData?.category?.name)
+                                                        : showData?.category?.name}
+                                                </BreadcrumbLink>
+                                            </BreadcrumbItem>
+                                            <BreadcrumbSeparator />
+                                        </>
+                                    )}
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink href="#" className="text-foreground">
+                                            {currentLocale == 'kh' ? (showData.title_kh ?? showData.title) : showData.title}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                </BreadcrumbList>
+                            </Breadcrumb>
+                        </div>
+                        <div className="prose w-full max-w-none dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
+                            <h1 className="mt-6 text-2xl leading-tight text-primary md:text-3xl">
+                                {currentLocale == 'kh' ? (showData.title_kh ?? showData.title) : showData.title}
+                            </h1>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                        currentLocale == 'kh'
+                                            ? (showData.long_description_kh ?? showData.long_description)
+                                            : showData.long_description,
+                                }}
+                            ></div>
+                        </div>
 
-                        <section>
-                            <h2>2. Participants</h2>
-                            <p>The technical meeting included the following participants:</p>
-                            <ul>
-                                <li>Library Director and senior librarians</li>
-                                <li>IT and digital services staff</li>
-                                <li>Administrative and support personnel from the library</li>
-                                <li>Representatives from partner institutions for collaborative projects</li>
-                            </ul>
-                            <p>
-                                All participants contributed their expertise to review current systems and propose solutions for better workflow and
-                                service delivery.
-                            </p>
-                        </section>
+                        {showData?.images?.length > 0 && (
+                            <PostmagesGallery images={showData?.images} containerClassName="pt-8" basePath="/assets/images/posts/" />
+                        )}
 
-                        <section>
-                            <h2>3. Meeting Agenda</h2>
-                            <p>The main agenda of the meeting included:</p>
-                            <ul>
-                                <li>Review of the library management system and its current functionalities</li>
-                                <li>Updates on digital resources and e-library access for students and staff</li>
-                                <li>Plans for cataloging new arrivals and improving the search system</li>
-                                <li>Discussion on staff training and professional development programs</li>
-                                <li>Coordination of upcoming events such as Reading Week and academic workshops</li>
-                            </ul>
-                        </section>
-
-                        <section>
-                            <h2>4. Key Outcomes</h2>
-                            <p>The meeting concluded with several important decisions and action plans, including:</p>
-                            <ul>
-                                <li>Implementation of a more efficient cataloging workflow to process new materials faster</li>
-                                <li>Enhancement of digital library platforms to allow remote access for students and faculty</li>
-                                <li>Scheduling periodic training sessions for library staff on new systems and tools</li>
-                                <li>Strengthening collaboration with partner institutions for access to additional resources and databases</li>
-                            </ul>
-                            <p>
-                                These initiatives are expected to improve library operations, increase accessibility of resources, and provide a
-                                better experience for all library users.
-                            </p>
-                        </section>
-
-                        <section>
-                            <h2>5. Conclusion</h2>
-                            <p>
-                                The technical meeting held on October 24, 2025, was a productive session that highlighted the library’s commitment to
-                                continuous improvement. By addressing both operational and technological aspects, RULE Library aims to support the
-                                academic and research needs of the university community effectively.
-                            </p>
-                            <p>
-                                Regular technical meetings like this ensure that the library remains up-to-date with modern practices and continues to
-                                provide high-quality services for students, faculty, and researchers.
-                            </p>
-                        </section>
-
-                        <PostmagesGallery containerClassName="pt-8" basePath="" />
+                        {showData?.files?.length > 0 && (
+                            <>
+                                <h2 className="mt-8 flex items-center gap-1 text-base font-bold">
+                                    <FilesIcon size={18} />
+                                    {t('Files')}
+                                </h2>
+                                <UploadedFile
+                                    fileClassName="bg-background rounded-sm"
+                                    containerClassName="mt-0"
+                                    label=""
+                                    files={showData?.files}
+                                    basePath="/assets/files/posts/"
+                                />
+                            </>
+                        )}
                     </main>
-                    <aside className="hidden w-[350px] flex-shrink-0 bg-muted/60 p-6 lg:block lg:p-10 dark:bg-muted/20">
+
+                    <aside className="hidden w-[350px] shrink-0 bg-muted/60 p-6 lg:block lg:p-10 dark:bg-muted/20">
                         <div className="sticky top-20 space-y-8">
                             <TableOfContents />
                         </div>
                     </aside>
                 </div>
             </div>
+            {relatedData?.length > 0 && (
+                <section>
+                    <div className="section-container">
+                        <ContentHeader
+                            link={`/posts?category_code=${showData?.category_code}`}
+                            title={t('Related Posts')}
+                            containerClassName="mt-12"
+                        />
+                        <div className="section-container mb-10 px-0">
+                            <div className={`relative grid grid-cols-1 overflow-hidden md:grid-cols-2 lg:grid-cols-3`}>
+                                {relatedData?.map((item: any) => {
+                                    return (
+                                        <PostCard
+                                            key={item.id}
+                                            url={`/posts/${item.id}`}
+                                            title={currentLocale == 'kh' ? (item.title_kh ?? item.title) : item.title}
+                                            description={
+                                                currentLocale == 'kh' ? (item.short_description_kh ?? item.short_description) : item.short_description
+                                            }
+                                            date={formatToKhmerDateTime(item.created_at, false)}
+                                            thumbnail={`/assets/images/posts/thumb/${item.thumbnail}`}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
+
             <MobileTableOfContents />
         </FrontPageLayout>
     );
 };
 
-export default About;
+export default Show;

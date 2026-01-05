@@ -6,7 +6,7 @@ import { TableOfContents } from './table-of-contents';
 export function MobileTableOfContents() {
     return (
         <Drawer>
-            <DrawerTrigger className="fixed right-3.5 bottom-30 z-50 rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 lg:hidden">
+            <DrawerTrigger className="fixed border right-3.5 bottom-30 z-50 rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 lg:hidden">
                 <List size={20} />
             </DrawerTrigger>
 

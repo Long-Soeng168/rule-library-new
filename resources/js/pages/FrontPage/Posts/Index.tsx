@@ -1,22 +1,16 @@
 import { PostCard } from '@/components/Card/PostCard';
+import PaginationTabs from '@/components/Pagination/PaginationTabs';
+import TableDataSearch from '@/components/Search/TableDataSearch';
 import { TagFilter } from '@/components/tag-filter';
 import { FlickeringGrid } from '@/components/ui/flickering-grid';
-import { samplePosts } from '@/data/post-sample-data';
+import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
-import { useState } from 'react';
-
-const formatDate = (date: Date) => date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-
-// --- SAMPLE DATA ---
-
-const postCategories = ['All Posts', 'Library News', 'Events & Workshops', 'Library Knowledge', 'User Manual'];
-
-const tagCounts = { UI: 2, React: 1, Design: 3 };
+import { formatToKhmerDateTime } from '@/lib/utils';
+import { usePage } from '@inertiajs/react';
 
 const Index = () => {
-    const [selectedTag, setSelectedTag] = useState<string | null>('All Posts');
-    const filteredBlogs = samplePosts; // for now, no filtering
-    const allTags = postCategories;
+    const { tableData, categories } = usePage<any>().props;
+    const { t, currentLocale } = useTranslation();
 
     return (
         <FrontPageLayout>
@@ -30,40 +24,42 @@ const Index = () => {
                 <div className="relative z-10 flex min-h-[100px] flex-col justify-center gap-6 pt-10">
                     <div className="section-container mx-auto w-full">
                         <div className="flex flex-col gap-2">
-                            <h1 className="text-4xl font-medium tracking-tighter md:text-5xl">Posts</h1>
-                            <p className="text-sm text-muted-foreground md:text-base lg:text-lg">Latest posts and updates from RULE Library.</p>
+                            <h1 className="text-4xl font-medium tracking-tighter md:text-5xl">{t('Posts')}</h1>
+                            <p className="text-sm text-muted-foreground md:text-base lg:text-lg">
+                                {t('Latest posts and updates from RULE Library.')}
+                            </p>
                         </div>
                     </div>
                 </div>
-                {allTags.length > 0 && (
+                <div className="section-container mt-4 flex flex-1">
+                    <TableDataSearch className="rounded-none" placeholder="Search Posts..." />
+                </div>
+                {categories.length > 0 && (
                     <div className="section-container z-20 mx-auto w-full py-6">
-                        <TagFilter tags={allTags} selectedTag={selectedTag || ''} tagCounts={tagCounts} />
+                        <TagFilter tags={[{ name: 'All Posts', code: '', posts_count: tableData.total }, ...categories]} />
                     </div>
                 )}
 
                 {/* Blog List */}
-                <div className="section-container">
-                    <div
-                        className={`relative grid grid-cols-1 overflow-hidden border-x border-border md:grid-cols-2 lg:grid-cols-3 ${
-                            filteredBlogs.length < 4 ? 'border-b' : 'border-b-0'
-                        }`}
-                    >
-                        {filteredBlogs.map((blog) => {
-                            const date = new Date(blog.data.date);
-                            const formattedDate = formatDate(date);
-
+                <div className="section-container mb-10">
+                    <div className={`relative grid grid-cols-1 overflow-hidden md:grid-cols-2 lg:grid-cols-3`}>
+                        {tableData?.data?.map((item: any) => {
                             return (
                                 <PostCard
-                                    key={blog.url}
-                                    url={`/posts/1`}
-                                    title={blog.data.title}
-                                    description={blog.data.description}
-                                    date={formattedDate}
-                                    thumbnail={blog.data.thumbnail}
+                                    key={item.id}
+                                    url={`/posts/${item.id}`}
+                                    title={currentLocale == 'kh' ? (item.title_kh ?? item.title) : item.title}
+                                    description={
+                                        currentLocale == 'kh' ? (item.short_description_kh ?? item.short_description) : item.short_description
+                                    }
+                                    date={formatToKhmerDateTime(item.created_at, false)}
+                                    thumbnail={`/assets/images/posts/thumb/${item.thumbnail}`}
                                 />
                             );
                         })}
                     </div>
+
+                    <PaginationTabs containerClassName="px-0" />
                 </div>
             </div>
         </FrontPageLayout>

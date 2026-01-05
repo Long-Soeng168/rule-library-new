@@ -1,19 +1,32 @@
 <?php
 
 use App\Http\Controllers\FrontPage\FrontPageController;
+use App\Http\Controllers\FrontPage\PostController;
+use App\Http\Controllers\FrontPage\ResourceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [FrontPageController::class, 'index'])->name('home');
 
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{post}', [PostController::class, 'show']);
+
+Route::get('/resources/{main_category_code}', [ResourceController::class, 'main_category']); //e.g: /resources/theses, /resources/publicaitons
+
+Route::get('/resources', function () {
+    return Inertia::render('FrontPage/Resources/Index');
+});
+// Route::get('/resources/theses', function () {
+//     return Inertia::render('FrontPage/Resources/MainCategory');
+// });
+Route::get('/resources/theses/1', function () {
+    return Inertia::render('FrontPage/Resources/Show');
+});
+
+
+
 Route::get('/profile', function () {
     return Inertia::render('FrontPage/Profile/Index');
-});
-Route::get('/posts', function () {
-    return Inertia::render('FrontPage/Posts/Index');
-});
-Route::get('/posts/{post}', function () {
-    return Inertia::render('FrontPage/Posts/Show');
 });
 
 Route::get('/scan-qr', function () {
@@ -36,16 +49,6 @@ Route::get('/our-staffs', function () {
 });
 Route::get('/our-staffs-structure', function () {
     return Inertia::render('FrontPage/About/OurStaffsStructure');
-});
-
-Route::get('/resources', function () {
-    return Inertia::render('FrontPage/Resources/Index');
-});
-Route::get('/resources/theses', function () {
-    return Inertia::render('FrontPage/Resources/MainCategory');
-});
-Route::get('/resources/theses/1', function () {
-    return Inertia::render('FrontPage/Resources/Show');
 });
 
 

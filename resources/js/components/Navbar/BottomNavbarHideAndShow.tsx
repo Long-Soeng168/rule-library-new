@@ -44,7 +44,7 @@ export default function BottomNavbarHideAndShow() {
         >
             <div className="flex items-center justify-around py-2">
                 {navItems.map((item, i) => (
-                    <Link href={item.url} prefetch>
+                    <Link key={item.label} href={item.url} prefetch>
                         <button key={i} className="flex flex-col items-center text-xs text-gray-600 transition-colors hover:text-primary">
                             {item.icon}
                             <span className="mt-1">{item.label}</span>

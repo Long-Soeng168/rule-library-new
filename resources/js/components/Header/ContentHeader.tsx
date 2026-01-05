@@ -16,7 +16,7 @@ export function ContentHeader({ title, description, link, containerClassName }: 
                 <Link href={link} prefetch className="group relative inline-flex items-center gap-2">
                     {/* Title + animated underline wrapper */}
                     <div className="flex flex-col">
-                        <h2 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h2>
+                        <p className="text-2xl font-bold tracking-tight md:text-3xl">{title}</p>
 
                         {/* Animate underline left → right */}
                         <div className="h-[3px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>

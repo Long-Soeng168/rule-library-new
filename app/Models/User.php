@@ -35,7 +35,8 @@ class User extends Authenticatable
         'updated_by',
         'password',
 
-        'library_data_id',
+        'name_kh',
+        'title_type_code',
     ];
 
     /**
@@ -72,6 +73,10 @@ class User extends Authenticatable
     public function publisher_items()
     {
         return $this->hasMany(Item::class, 'publisher_id', 'id');
+    }
+    public function advisor_items()
+    {
+        return $this->hasMany(Item::class, 'advisor_id', 'id');
     }
 
     public function author_items()

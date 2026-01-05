@@ -40,9 +40,9 @@ export default function Footer() {
 
                         {/* Company Info */}
                         <div className="lg:justify-self-center">
-                            <p className="mb-4 text-xl font-bold">
+                            <div className="mb-4 text-xl font-bold">
                                 {t('Information')} <Separator className="w-auto bg-white" />
-                            </p>
+                            </div>
                             <ul className="flex flex-col gap-3">
                                 {website_info?.address && (
                                     <li className="flex gap-2">
@@ -79,9 +79,9 @@ export default function Footer() {
 
                         {/* Quick Links */}
                         <div className="lg:justify-self-center">
-                            <p className="mb-4 text-xl font-bold">
+                            <div className="mb-4 text-xl font-bold">
                                 {t("Quick Links")} <Separator className="w-auto bg-white" />
-                            </p>
+                            </div>
                             <ul className="space-y-2">
                                 <li>
                                     <Link prefetch href="/" className="flex items-center gap-2 hover:underline">
@@ -109,13 +109,13 @@ export default function Footer() {
 
                         {/* Social Media */}
                         <div className="lg:justify-self-center">
-                            <p className="mb-4 text-xl font-bold">
+                            <div className="mb-4 text-xl font-bold">
                                 {t('Social Media')} <Separator className="w-auto bg-white" />
-                            </p>
+                            </div>
                             <ul className="space-y-3">
                                 {media_links?.length > 0 &&
                                     media_links?.map((item: any) => (
-                                        <li>
+                                        <li key={item.id}>
                                             <a href={item.link} className="flex items-center gap-2 hover:underline">
                                                 <img className="size-8" src={`/assets/images/links/thumb/${item.image}`} alt="" />
                                                 {currentLocale === 'kh' ? item?.name_kh || item?.name : item?.name}

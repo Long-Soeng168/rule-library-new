@@ -39,7 +39,7 @@ const BookCardHoverGradientListLayout = ({
                         <div className="flex h-full flex-1 flex-col justify-between overflow-y-scroll [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
                             <div className="p-2">
                                 <p className="line-clamp-6 text-sm leading-normal font-medium text-foreground lg:text-lg">
-                                    អភិបាលកិច្ចសាជីវកម្មក្នុងការបោះផ្សាយលក់មូលបត្រជាសាធារណៈរបស់ក្រុមហ៊ុន PPSEZ
+                                    {title}
                                 </p>
                                 {/* Right Column: Details */}
                                 <div className="mt-2 max-w-sm text-[8px] lg:mt-4 lg:text-[14px]">

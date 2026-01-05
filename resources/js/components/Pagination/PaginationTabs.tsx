@@ -50,9 +50,9 @@ export default function PaginationTabs({
 
     return (
         <div className={cn('flex flex-wrap items-center gap-2 p-6', containerClassName)}>
-            <div className="flex items-center gap-2 p-2">
+            <div className="flex items-center gap-2 py-4">
                 <Select value={rowsPerPage} onValueChange={handleRowsPerPageChange}>
-                    <SelectTrigger disabled={perPageList[0] >= tableData.total} className="h-9 cursor-pointer space-x-1 rounded">
+                    <SelectTrigger disabled={perPageList[0] >= tableData.total} className="h-9 cursor-pointer space-x-1 rounded-none">
                         <SelectValue>
                             {rowsPerPage} / {t('page')}
                         </SelectValue>
@@ -75,14 +75,14 @@ export default function PaginationTabs({
                 </span>
             </div>
 
-            <div className="flex w-full max-w-full flex-wrap justify-end gap-2 p-2">
+            <div className="flex w-full max-w-full flex-wrap justify-end gap-2 p-0">
                 {links.map((item: any, index: number) => (
                     <Link
                         key={item.label + index}
                         preserveScroll
                         href={item.url ? `${item.url}&${queryString}` : '#'}
                         className={cn(
-                            'flex h-9 min-w-9 items-center justify-center rounded border px-4 whitespace-nowrap transition-all duration-300',
+                            'flex h-9 min-w-9 items-center justify-center rounded-none border px-4 whitespace-nowrap transition-all duration-300',
                             !item.url && 'cursor-not-allowed text-foreground/40',
                             item.url && 'hover:border-primary hover:shadow-[4px_4px_0px_0px] hover:shadow-primary dark:hover:shadow-white',
                             item.active && 'bg-primary text-primary-foreground hover:border-primary-foreground dark:hover:border-black',

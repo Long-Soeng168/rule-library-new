@@ -53,14 +53,14 @@ const PostsHomePageSection = () => {
             {/* Post List */}
             <div className="section-container">
                 <Carousel setApi={setApi} opts={{ align: 'start' }} className="w-full">
-                    <div className="border-l max-md:border-r">
+                    <div>
                         <CarouselContent className="ml-0">
                             {filteredBlogs.map((blog) => {
                                 const date = new Date(blog.data.date);
                                 const formattedDate = formatDate(date);
 
                                 return (
-                                    <CarouselItem key={blog.url} className="gap-0 overflow-hidden border-b px-0 md:basis-1/2 lg:basis-1/3">
+                                    <CarouselItem key={blog.url} className="gap-0 overflow-hidden px-0 md:basis-1/2 lg:basis-1/3">
                                         <PostCard
                                             url={`/posts/1`}
                                             title={blog.data.title}

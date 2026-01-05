@@ -1,53 +1,87 @@
 import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerTrigger } from '@/components/ui/drawer';
 import { router } from '@inertiajs/react';
 import { ChevronDown } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface TagFilterProps {
-    tags: string[];
-    selectedTag: string;
-    tagCounts?: Record<string, number>;
+    tags: {
+        code: string;
+        name: string;
+        posts_count?: number;
+    }[];
 }
 
-export function TagFilter({ tags, selectedTag, tagCounts }: TagFilterProps) {
-    const handleTagClick = (tag: string) => {
-        const params = new URLSearchParams();
-        if (tag !== 'All') {
-            params.set('tag', tag);
+export function TagFilter({ tags }: TagFilterProps) {
+    const searchParams = new URLSearchParams(window.location.search);
+    const initialTag = searchParams.get('category_code') || '';
+
+    const [selectedTag, setSelectedTag] = useState<string | null>(initialTag);
+
+    useEffect(() => {
+        setSelectedTag(initialTag);
+    }, [initialTag]);
+
+    const applyTag = (tag: string | null) => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (tag) {
+            params.set('category_code', tag);
+        } else {
+            params.delete('category_code');
         }
-        router.visit(`/posts?${params.toString()}`);
+
+        params.set('page', '1');
+
+        router.get(
+            `/posts?${params.toString()}`,
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
+    };
+
+    const handleTagClick = (tag: string) => {
+        const next = selectedTag === tag ? '' : tag;
+        setSelectedTag(next);
+        applyTag(next);
     };
 
     const DesktopTagFilter = () => (
         <div className="hidden flex-wrap gap-2 md:flex">
-            {tags.map((tag) => (
-                <button
-                    key={tag}
-                    onClick={() => handleTagClick(tag)}
-                    className={`flex h-8 cursor-pointer items-center rounded-lg border px-1 px-3 text-sm transition-colors ${
-                        selectedTag === tag ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-muted'
-                    }`}
-                >
-                    <span>{tag}</span>
-                    {tagCounts?.[tag] && (
-                        <span
-                            className={`ml-2 flex h-6 min-w-6 items-center justify-center rounded-md border text-xs font-medium ${
-                                selectedTag === tag
-                                    ? 'border-border/40 bg-background text-primary dark:border-primary-foreground'
-                                    : 'border-border dark:border-border'
-                            }`}
-                        >
-                            {tagCounts[tag]}
-                        </span>
-                    )}
-                </button>
-            ))}
+            {tags.map((item) => {
+                const active = selectedTag === item.code;
+
+                return (
+                    <button
+                        key={item.code}
+                        onClick={() => handleTagClick(item.code)}
+                        className={`flex h-8 items-center gap-2 border px-3 text-sm transition-colors ${
+                            active ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-muted'
+                        }`}
+                    >
+                        <span>{item.name}</span>
+
+                        {item.posts_count !== undefined && (
+                            <span
+                                className={`flex items-center justify-center text-xs font-semibold text-primary ${
+                                    active ? 'text-primary-foreground' : ''
+                                }`}
+                            >
+                                ({item.posts_count})
+                            </span>
+                        )}
+                    </button>
+                );
+            })}
         </div>
     );
 
     const MobileTagFilter = () => (
         <Drawer>
-            <DrawerTrigger className="flex w-full items-center justify-between rounded-lg border border-border px-4 py-2 transition-colors hover:bg-muted md:hidden">
-                <span className="text-sm font-medium capitalize">{selectedTag}</span>
+            <DrawerTrigger className="flex w-full items-center justify-between rounded-none border px-4 py-2 md:hidden">
+                <span className="text-sm font-medium">{selectedTag ? tags.find((t) => t.code === selectedTag)?.name : 'All Category'}</span>
                 <ChevronDown className="h-4 w-4" />
             </DrawerTrigger>
 
@@ -57,27 +91,28 @@ export function TagFilter({ tags, selectedTag, tagCounts }: TagFilterProps) {
                 </DrawerHeader>
 
                 <DrawerBody>
-                    <div className="space-y-2">
-                        {tags.map((tag) => (
-                            <button
-                                key={tag}
-                                onClick={() => handleTagClick(tag)}
-                                className="flex w-full cursor-pointer items-center justify-between text-sm font-medium transition-colors"
-                            >
-                                <span
-                                    className={`flex w-full cursor-pointer items-center justify-between text-sm font-medium transition-colors ${
-                                        selectedTag === tag ? 'text-primary underline underline-offset-4' : 'text-muted-foreground'
-                                    }`}
+                    <div className="space-y-3">
+                        {tags.map((item) => {
+                            const active = selectedTag === item.code;
+
+                            return (
+                                <button
+                                    key={item.code}
+                                    onClick={() => handleTagClick(item.code)}
+                                    className="flex w-full items-center justify-between text-sm"
                                 >
-                                    {tag}
-                                </span>
-                                {tagCounts?.[tag] && (
-                                    <span className="ml-2 flex h-6 min-w-6 flex-shrink-0 items-center justify-center rounded-md border border-border">
-                                        {tagCounts[tag]}
+                                    <span className={active ? 'text-primary underline underline-offset-4' : 'text-muted-foreground'}>
+                                        {item.name}
                                     </span>
-                                )}
-                            </button>
-                        ))}
+
+                                    {item.posts_count !== undefined && (
+                                        <span className="flex items-center justify-center text-xs font-semibold text-primary">
+                                            ({item.posts_count})
+                                        </span>
+                                    )}
+                                </button>
+                            );
+                        })}
                     </div>
                 </DrawerBody>
             </DrawerContent>

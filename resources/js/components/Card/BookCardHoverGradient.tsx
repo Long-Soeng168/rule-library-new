@@ -1,8 +1,7 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Link } from '@inertiajs/react';
 import { ChevronRightIcon } from 'lucide-react';
 import { styled } from 'styled-components';
-import { Badge } from '../ui/badge';
-import { Link } from '@inertiajs/react';
 const BookCardHoverGradient = ({
     badgeText,
     title,
@@ -14,47 +13,39 @@ const BookCardHoverGradient = ({
     subTitle?: string;
     image_url?: string;
 }) => {
-    
-    
     return (
         <StyledWrapper>
-            <div className="relative">
+            <div className="relative h-full">
                 <Link
                     href={`/resources/theses/1`}
-                    className="btn group relative z-10 h-full w-full overflow-hidden rounded-md border-2 border-background shadow hover:translate-[-8px] active:hover:translate-0 hover:border-transparent dark:border-border dark:hover:border-transparent"
+                    className="btn group relative z-10 h-full w-full overflow-hidden rounded-md border-2 border-background shadow hover:translate-[-8px] hover:border-transparent active:hover:translate-0 dark:border-border dark:hover:border-transparent"
                 >
-                    <div className="h-full border-none bg-background text-foreground">
+                    <div className="flex h-full flex-col border-none bg-background text-foreground">
                         <img src={image_url} alt={title} className="aspect-[7/10] w-full border-b bg-transparent object-cover" />
                         <div className="flex flex-1 flex-col justify-between">
-                            <div className="p-2">
+                            <div className="p-2 pb-0">
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
                                             <button className="w-full text-start">
-                                                <p className="line-clamp-2 text-base leading-normal font-medium text-foreground">
-                                                    អភិបាលកិច្ចសាជីវកម្មក្នុងការបោះផ្សាយលក់មូលបត្រជាសាធារណៈរបស់ក្រុមហ៊ុន PPSEZ
-                                                </p>
+                                                <p className="line-clamp-2 text-base leading-normal font-medium text-foreground">{title}</p>
                                             </button>
                                         </TooltipTrigger>
                                         <TooltipContent
                                             className="w-[var(--radix-tooltip-trigger-width)] max-w-none bg-true-primary text-true-primary"
                                             side="top"
                                         >
-                                            <p className="text-base leading-normal text-primary-foreground dark:text-white">
-                                                អភិបាលកិច្ចសាជីវកម្មក្នុងការបោះផ្សាយលក់មូលបត្រជាសាធារណៈរបស់ក្រុមហ៊ុន PPSEZ
-                                            </p>
+                                            <p className="text-base leading-normal text-primary-foreground dark:text-white">{title}</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
-
-                                {/* <p className="card__description">{subTitle}</p> */}
-                                <div className="mt-2 flex flex-wrap gap-2">
-                                    <Badge variant="secondary" className="rounded">
-                                        ធនាគារ និងហិរញ្ញវត្ថុ
-                                    </Badge>
-                                </div>
                             </div>
                         </div>
+                        {/* <div className="flex flex-wrap gap-2 p-2">
+                            <Badge variant="secondary" className="rounded-xs">
+                                ធនាគារ និងហិរញ្ញវត្ថុ
+                            </Badge>
+                        </div> */}
                     </div>
                     <div className="absolute right-2 bottom-2 flex size-5 translate-x-6 items-center justify-center rounded bg-primary/10 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 hover:scale-150">
                         <ChevronRightIcon className="size-5 font-bold" />
