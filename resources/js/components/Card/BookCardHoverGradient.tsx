@@ -26,7 +26,7 @@ const BookCardHoverGradient = ({
                                             <button className="w-full text-start">
                                                 <p className="line-clamp-2 text-base leading-normal font-medium text-foreground">{title}</p>
                                                 {subTitle && (
-                                                    <p className="mt-1 line-clamp-2 text-sm leading-normal text-muted-foreground">{subTitle}</p>
+                                                    <p className="mt-1 line-clamp-1 text-sm leading-normal text-muted-foreground">{subTitle}</p>
                                                 )}
                                             </button>
                                         </TooltipTrigger>

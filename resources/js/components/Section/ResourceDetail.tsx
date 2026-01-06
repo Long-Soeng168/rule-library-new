@@ -53,10 +53,10 @@ const ResourceDetail = () => {
                     {showData?.authors?.length > 0 ? (
                         <div className="flex items-center justify-start gap-4 pb-1">
                             <span className="w-[120px] shrink-0 border-r">{mainCategory?.code == 'theses' ? t('Researched by') : t('Author')}</span>
-                            <div className="flex items-center">
+                            <div className="flex items-center flex-wrap">
                                 {showData?.authors?.length > 0 &&
                                     showData?.authors?.map((author: any, index: number) => (
-                                        <div key={author?.id}>
+                                        <span className='flex items-center' key={author?.id}>
                                             {index > 0 && <span className="px-2">-</span>}
                                             <Link
                                                 href={`/resources/${mainCategory?.code}?author_id=${author?.id || ''}`}
@@ -64,7 +64,7 @@ const ResourceDetail = () => {
                                             >
                                                 {currentLocale == 'kh' ? (author?.name_kh ?? author?.name) : author?.name}
                                             </Link>
-                                        </div>
+                                        </span>
                                     ))}
                             </div>
                         </div>

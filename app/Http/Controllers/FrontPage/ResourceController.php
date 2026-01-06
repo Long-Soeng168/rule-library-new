@@ -26,7 +26,10 @@ class ResourceController extends Controller
         $query = Item::query();
 
         $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'category_code', 'created_at');
-        $relatedData = $query->where('category_code', $showData->category_code)->inRandomOrder()->limit(9)->get();
+        $relatedData = $query->where('category_code', $showData->category_code)
+            ->where('id', '!=', $id)
+            ->inRandomOrder()->limit(9)
+            ->get();
         // return [
         //     'mainCategory' => $mainCategory,
         //     'showData' => $showData,

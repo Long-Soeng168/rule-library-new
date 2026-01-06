@@ -80,6 +80,7 @@ export default function PaginationTabs({
                     <Link
                         key={item.label + index}
                         preserveScroll
+                        prefetch
                         href={item.url ? `${item.url}&${queryString}` : '#'}
                         className={cn(
                             'flex h-9 min-w-9 items-center justify-center rounded-none border px-4 whitespace-nowrap transition-all duration-300',

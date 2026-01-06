@@ -21,8 +21,8 @@ export default function ScrollCardSection({ title, containerClassName }: { title
                         <Link key={item?.id} href={`/resources/${mainCategory?.code}/${item?.id}`}>
                             <BookCardHoverGradient
                                 key={item?.id}
-                                title={currentLocale == 'kh' ? (item.name_kh ?? item.name) : item.name}
-                                subTitle={currentLocale == 'kh' ? (item.short_description_kh ?? item.short_description) : item.short_description}
+                                title={item.name_kh ? item.name_kh : item.name}
+                                subTitle={item.name_kh ? item.name : ''}
                                 image_url={`/assets/images/items/thumb/${item.thumbnail}`}
                             />
                         </Link>

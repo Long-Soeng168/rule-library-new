@@ -27,7 +27,7 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                     className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
                 >
                     <BookOpenTextIcon className="text-muted-foreground" size={16} />
-                    E-Resources
+                    {t("E-Resources")}
                 </Link>
                 <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
             </li>
@@ -39,7 +39,7 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                     className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
                 >
                     <NewspaperIcon className="text-muted-foreground" size={16} />
-                    Posts
+                    {t("Posts")}
                 </Link>
                 <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
             </li>
@@ -51,7 +51,7 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                     className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
                 >
                     <InfoIcon className="text-muted-foreground" size={16} />
-                    About
+                    {t("About")}
                     <ChevronDown className="ml-2 text-muted-foreground" size={16} />
                 </Link>
                 <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
@@ -60,23 +60,23 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                 <ul className="absolute top-full left-0 z-20 mt-0 hidden w-full flex-col border bg-background shadow-lg group-hover:flex dark:border-white/30">
                     <li>
                         <Link prefetch href="/about" className="block px-3 py-2 text-sm text-foreground hover:bg-muted dark:hover:bg-none">
-                            About
+                            {t("About")}
                         </Link>
                     </li>
                     <li>
                         <Link prefetch href="/our-journey" className="block px-3 py-2 text-sm text-foreground hover:bg-muted dark:hover:bg-none">
-                            Our Journey
+                            {t("Our Journey")}
                         </Link>
                     </li>
                     <li>
                         <Link prefetch href="/our-staffs" className="block px-3 py-2 text-sm text-foreground hover:bg-muted dark:hover:bg-none">
-                            Our Staffs
+                            {t("Our Staffs")}
                         </Link>
                     </li>
                 </ul>
             </li>
 
-            <li className={`group ${orientation === 'vertical' ? 'w-full' : 'w-auto'}`}>
+            {/* <li className={`group ${orientation === 'vertical' ? 'w-full' : 'w-auto'}`}>
                 <Link
                     prefetch
                     href="/profile"
@@ -86,7 +86,7 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                     Profile
                 </Link>
                 <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
-            </li>
+            </li> */}
         </ul>
     );
 };
