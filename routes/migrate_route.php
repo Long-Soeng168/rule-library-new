@@ -237,10 +237,12 @@ Route::get('/compress_images_to_webp/{start}/{end}', function ($start, $end) {
                 $uploadedFile,
                 $newFolder,
                 600,
-                false // false to keep original filename, true if you want timestamp prefix
+                false
             );
 
-            if ($newFileName) {
+            $newFilePath = public_path($newFolder . '/' . $newFileName);
+
+            if ($newFileName && File::exists($newFilePath)) {
                 $item->update(['thumbnail' => $newFileName]);
             } else {
                 $failedItemIds[] = $item->id;
