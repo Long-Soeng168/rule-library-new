@@ -242,7 +242,8 @@ Route::get('/compress_images_to_webp/{start}/{end}', function ($start, $end) {
 
             $newFilePath = public_path($newFolder . '/' . $newFileName);
 
-            if ($newFileName && File::exists($newFilePath)) {
+            // if ($newFileName && File::exists($newFilePath)) {
+            if ($newFileName) {
                 $item->update(['thumbnail' => $newFileName]);
             } else {
                 $failedItemIds[] = $item->id;
