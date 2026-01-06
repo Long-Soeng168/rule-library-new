@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\ImageHelper;
+use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -93,6 +95,7 @@ Route::get('/migrate_publications_to_items', function () {
     // return 'Success.';
 });
 
+
 Route::get('/migrate_theses_to_items', function () {
     // set_time_limit(0);
 
@@ -183,4 +186,73 @@ Route::get('/migrate_users', function () {
     // }
 
     // return 'Success';
+});
+
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\UploadedFile;
+
+Route::get('/compress_images_to_webp', function () {
+    set_time_limit(0);
+
+    $items = Item::whereBetween('id', [1, 20])
+        ->orderBy('id')
+        ->get();
+
+    $oldFolder = public_path('assets/images/items');
+    $newFolder = 'assets/images/compressed_item_images';
+
+    // Ensure new folder exists
+    if (!File::exists(public_path($newFolder))) {
+        File::makeDirectory(public_path($newFolder), 0755, true, true);
+    }
+
+    $failedItemIds = [];
+
+    foreach ($items as $item) {
+        if (!$item->thumbnail) {
+            $failedItemIds[] = $item->id;
+            continue;
+        }
+
+        $oldImagePath = $oldFolder . '/' . $item->thumbnail;
+
+        if (!File::exists($oldImagePath)) {
+            $failedItemIds[] = $item->id;
+            continue;
+        }
+
+        try {
+            // Wrap disk file as UploadedFile so your helper can use it
+            $uploadedFile = new UploadedFile(
+                $oldImagePath,
+                $item->thumbnail,
+                File::mimeType($oldImagePath),
+                null,
+                true // mark as test file (prevents move issues)
+            );
+
+            // Call your helper
+            $newFileName = ImageHelper::uploadAndResizeImageWebp(
+                $uploadedFile,
+                $newFolder,
+                600,
+                false // false to keep original filename, true if you want timestamp prefix
+            );
+
+            if ($newFileName) {
+                $item->update(['thumbnail' => $newFileName]);
+            } else {
+                $failedItemIds[] = $item->id;
+            }
+        } catch (\Throwable $e) {
+            $failedItemIds[] = $item->id;
+        }
+    }
+
+    return response()->json([
+        'status' => 'done',
+        'failed_ids' => $failedItemIds,
+        'failed_count' => count($failedItemIds),
+    ]);
 });
