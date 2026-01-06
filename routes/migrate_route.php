@@ -193,69 +193,69 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\UploadedFile;
 
 Route::get('/compress_images_to_webp/{start}/{end}', function ($start, $end) {
-    set_time_limit(0);
+    // set_time_limit(0);
 
-    $items = Item::whereBetween('id', [(int)$start, (int)$end])
-        ->orderBy('id')
-        ->get();
+    // $items = Item::whereBetween('id', [(int)$start, (int)$end])
+    //     ->orderBy('id')
+    //     ->get();
 
-    $oldFolder = public_path('assets/images/before_compress_items');
-    $newFolder = 'assets/images/items';
+    // $oldFolder = public_path('assets/images/before_compress_items');
+    // $newFolder = 'assets/images/items';
 
-    // Ensure new folder exists
-    if (!File::exists(public_path($newFolder))) {
-        File::makeDirectory(public_path($newFolder), 0755, true, true);
-    }
+    // // Ensure new folder exists
+    // if (!File::exists(public_path($newFolder))) {
+    //     File::makeDirectory(public_path($newFolder), 0755, true, true);
+    // }
 
-    $failedItemIds = [];
+    // $failedItemIds = [];
 
-    foreach ($items as $item) {
-        if (!$item->thumbnail) {
-            $failedItemIds[] = $item->id;
-            continue;
-        }
+    // foreach ($items as $item) {
+    //     if (!$item->thumbnail) {
+    //         $failedItemIds[] = $item->id;
+    //         continue;
+    //     }
 
-        $oldImagePath = $oldFolder . '/' . $item->thumbnail;
+    //     $oldImagePath = $oldFolder . '/' . $item->thumbnail;
 
-        if (!File::exists($oldImagePath)) {
-            $failedItemIds[] = $item->id;
-            continue;
-        }
+    //     if (!File::exists($oldImagePath)) {
+    //         $failedItemIds[] = $item->id;
+    //         continue;
+    //     }
 
-        try {
-            // Wrap disk file as UploadedFile so your helper can use it
-            $uploadedFile = new UploadedFile(
-                $oldImagePath,
-                $item->thumbnail,
-                File::mimeType($oldImagePath),
-                null,
-                true // mark as test file (prevents move issues)
-            );
+    //     try {
+    //         // Wrap disk file as UploadedFile so your helper can use it
+    //         $uploadedFile = new UploadedFile(
+    //             $oldImagePath,
+    //             $item->thumbnail,
+    //             File::mimeType($oldImagePath),
+    //             null,
+    //             true // mark as test file (prevents move issues)
+    //         );
 
-            // Call your helper
-            $newFileName = ImageHelper::uploadAndResizeImageWebp(
-                $uploadedFile,
-                $newFolder,
-                600,
-                false
-            );
+    //         // Call your helper
+    //         $newFileName = ImageHelper::uploadAndResizeImageWebp(
+    //             $uploadedFile,
+    //             $newFolder,
+    //             600,
+    //             false
+    //         );
 
-            $newFilePath = public_path($newFolder . '/' . $newFileName);
+    //         $newFilePath = public_path($newFolder . '/' . $newFileName);
 
-            // if ($newFileName && File::exists($newFilePath)) {
-            if ($newFileName) {
-                $item->update(['thumbnail' => $newFileName]);
-            } else {
-                $failedItemIds[] = $item->id;
-            }
-        } catch (\Throwable $e) {
-            $failedItemIds[] = $item->id;
-        }
-    }
+    //         // if ($newFileName && File::exists($newFilePath)) {
+    //         if ($newFileName) {
+    //             $item->update(['thumbnail' => $newFileName]);
+    //         } else {
+    //             $failedItemIds[] = $item->id;
+    //         }
+    //     } catch (\Throwable $e) {
+    //         $failedItemIds[] = $item->id;
+    //     }
+    // }
 
-    return response()->json([
-        'status' => 'done',
-        'failed_ids' => $failedItemIds,
-        'failed_count' => count($failedItemIds),
-    ]);
+    // return response()->json([
+    //     'status' => 'done',
+    //     'failed_ids' => $failedItemIds,
+    //     'failed_count' => count($failedItemIds),
+    // ]);
 });
