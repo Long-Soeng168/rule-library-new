@@ -192,15 +192,15 @@ Route::get('/migrate_users', function () {
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\UploadedFile;
 
-Route::get('/compress_images_to_webp', function () {
+Route::get('/compress_images_to_webp/{start}/{end}', function ($start, $end) {
     set_time_limit(0);
 
-    $items = Item::whereBetween('id', [1, 20])
+    $items = Item::whereBetween('id', [(int)$start, (int)$end])
         ->orderBy('id')
         ->get();
 
-    $oldFolder = public_path('assets/images/items');
-    $newFolder = 'assets/images/compressed_item_images';
+    $oldFolder = public_path('assets/images/before_compress_items');
+    $newFolder = 'assets/images/items';
 
     // Ensure new folder exists
     if (!File::exists(public_path($newFolder))) {
