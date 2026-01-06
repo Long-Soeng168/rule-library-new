@@ -83,6 +83,7 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                             className={cn(
                                 `max-h-[800px] w-full cursor-pointer rounded-none border border-primary object-cover sm:max-w-sm ${src === mainImage ? '' : 'hidden'} aspect-[${aspectRatio}]`,
                                 mainImageClassName,
+                                `${images?.length == 1 && 'aspect-auto'}`
                             )}
                         />
                     </PhotoView>
