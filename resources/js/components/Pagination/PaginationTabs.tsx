@@ -69,7 +69,7 @@ export default function PaginationTabs({
                 </Select>
 
                 <span className="text-sm whitespace-nowrap text-muted-foreground">
-                    {t('Showing')}
+                    {t('Showing')}{' '}
                     <span className="font-medium">{tableData.from}</span> {t('to')} <span className="font-medium">{tableData.to}</span> {t('of')}{' '}
                     <b>{tableData.total}</b> {t('results')}
                 </span>
