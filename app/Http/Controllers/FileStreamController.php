@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class FileStreamController extends Controller
 {
@@ -16,6 +17,7 @@ class FileStreamController extends Controller
         $resource = $request->input('resource');
         $id = $request->input('id');
         $file_name = $request->input('file_name');
+        $is_download  = (int) $request->input('is_download', 0);
 
         // Optional: validate that all parameters exist
         if (!$resource || !$id || !$file_name) {
@@ -25,7 +27,7 @@ class FileStreamController extends Controller
         $fileUrl = "/stream_pdf/{$resource}/{$id}/{$file_name}";
 
         $item = null;
-        $canDownload = false;
+        $canDownload = true;
         $previousRoute = '/';
 
         if ($resource == 'items') {
@@ -33,10 +35,33 @@ class FileStreamController extends Controller
 
             $previousRoute = "/resources/theses/{$item->id}";
 
-            if ($item) {
-                // Compare the file_status property
-                $canDownload = $item->file_status === 'downloadable';
+            // if ($item) {
+            //     $canDownload = $item->file_status === 'downloadable';
+            // }
+        }
+
+        if ($is_download === 1) {
+            if (!$canDownload) {
+                abort(403, 'This file is not downloadable.');
             }
+
+            $filePath = public_path("assets/files/{$resource}/{$file_name}");
+
+            if (!File::exists($filePath)) {
+                return response()->json(['error' => 'File not found'], 404);
+            }
+
+            $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+
+            $baseName = strtolower($item->name);        // lower case
+            $baseName = str_replace(' ', '_', $baseName); // spaces → _
+
+            $downloadName = $baseName . '.' . $extension;
+
+            return response()->download(
+                $filePath,
+                $downloadName
+            );
         }
 
         return Inertia::render('ViewPDF/Index', [

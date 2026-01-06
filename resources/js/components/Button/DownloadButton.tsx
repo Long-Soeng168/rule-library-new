@@ -1,17 +1,19 @@
+import useTranslation from '@/hooks/use-translation';
 import { DownloadIcon } from 'lucide-react';
 import { styled } from 'styled-components';
 
 const DownloadButton = () => {
-    
+    const { t } = useTranslation();
+
     return (
         <StyledWrapper>
             <button className="button group w-full p-2">
                 <span className="button_lg px-4 py-2 dark:bg-white">
                     <span className="button_sl" />
-                    <span className="button_text flex items-center gap-2 text-true-primary group-hover:text-white">
+                    <span className="button_text flex items-center gap-2 text-true-primary group-hover:text-white group-focus:text-white">
                         {/* <img src="/assets/icons/gif/download.gif" className="size-8" /> */}
                         <DownloadIcon />
-                        <span className="flex-1 text-center">Download</span>
+                        <span className="flex-1 text-center">{t('Download')}</span>
                     </span>
                 </span>
             </button>

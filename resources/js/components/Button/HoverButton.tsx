@@ -6,7 +6,7 @@ const HoverButton = ({ title = 'See More' }: { title?: string }) => {
     const { t } = useTranslation();
     return (
         <StyledWrapper>
-            <button className="learn-more">
+            <button className="learn-more -translate-x-2">
                 <span className="circle bg-primary dark:bg-true-primary" aria-hidden="true">
                     <span className="icon arrow" />
                 </span>
@@ -31,7 +31,7 @@ const StyledWrapper = styled.div`
     }
 
     button.learn-more {
-        width: 11rem;
+        width: 9.2rem;
         height: auto;
     }
 
@@ -83,7 +83,7 @@ const StyledWrapper = styled.div`
         right: 0;
         bottom: 0;
         padding: 0.35rem 0;
-        margin: 0 0 0 1.85rem;
+        margin: 0 0 0 1.95rem;
         font-weight: 700;
         line-height: 1.6;
         text-align: center;
@@ -96,7 +96,7 @@ const StyledWrapper = styled.div`
 
     button:hover .circle .icon.arrow {
         background: #fff;
-        transform: translate(1rem, 0);
+        transform: translate(0.6rem, 0);
     }
 
     button:hover .button-text {

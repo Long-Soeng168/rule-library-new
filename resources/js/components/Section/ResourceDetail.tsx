@@ -27,11 +27,15 @@ const ResourceDetail = () => {
 
                 <div className="mt-2 flex gap-2">
                     <Link href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`} className="flex-1">
-                        <DownloadButton />
-                    </Link>
-                    <Link href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&download=1`} className="flex-1">
                         <ReadButton />
                     </Link>
+                    <a
+                        download
+                        href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&is_download=1`}
+                        className="flex-1"
+                    >
+                        <DownloadButton />
+                    </a>
                 </div>
             </div>
 
@@ -53,17 +57,17 @@ const ResourceDetail = () => {
                     {showData?.authors?.length > 0 ? (
                         <div className="flex items-center justify-start gap-4 pb-1">
                             <span className="w-[120px] shrink-0 border-r">{mainCategory?.code == 'theses' ? t('Researched by') : t('Author')}</span>
-                            <div className="flex items-center flex-wrap">
+                            <div className="flex flex-wrap items-center">
                                 {showData?.authors?.length > 0 &&
                                     showData?.authors?.map((author: any, index: number) => (
-                                        <span className='flex items-center' key={author?.id}>
-                                            {index > 0 && <span className="px-2">-</span>}
+                                        <span className="flex items-center" key={author?.id}>
                                             <Link
                                                 href={`/resources/${mainCategory?.code}?author_id=${author?.id || ''}`}
                                                 className="line-clamp-2 cursor-pointer text-primary underline-offset-4 hover:underline"
                                             >
                                                 {currentLocale == 'kh' ? (author?.name_kh ?? author?.name) : author?.name}
                                             </Link>
+                                            {index < showData.authors.length - 1 && <span className="px-2">-</span>}
                                         </span>
                                     ))}
                             </div>
@@ -94,7 +98,7 @@ const ResourceDetail = () => {
                     {showData?.category && (
                         <div className="flex items-center justify-start gap-4 pb-1">
                             <span className="w-[120px] shrink-0 border-r">{t('Category')}</span>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                                 {showData?.category?.parent && (
                                     <>
                                         <Link

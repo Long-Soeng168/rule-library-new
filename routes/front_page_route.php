@@ -11,20 +11,9 @@ Route::get('/', [FrontPageController::class, 'index'])->name('home');
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{post}', [PostController::class, 'show']);
 
+Route::get('/resources', [ResourceController::class, 'index']); //e.g: /resources/theses, /resources/publicaitons
 Route::get('/resources/{main_category_code}', [ResourceController::class, 'main_category']); //e.g: /resources/theses, /resources/publicaitons
 Route::get('/resources/{main_category_code}/{id}', [ResourceController::class, 'item_show']); //e.g: /resources/theses, /resources/publicaitons
-
-Route::get('/resources', function () {
-    return Inertia::render('FrontPage/Resources/Index');
-});
-// Route::get('/resources/theses', function () {
-//     return Inertia::render('FrontPage/Resources/MainCategory');
-// });
-// Route::get('/resources/theses/1', function () {
-//     return Inertia::render('FrontPage/Resources/Show');
-// });
-
-
 
 Route::get('/profile', function () {
     return Inertia::render('FrontPage/Profile/Index');

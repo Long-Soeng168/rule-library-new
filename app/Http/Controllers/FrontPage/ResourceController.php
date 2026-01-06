@@ -15,18 +15,68 @@ use Inertia\Inertia;
 
 class ResourceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function index(Request $request)
+    {
+        $mainCategories = ItemMainCategory::with([
+            'items' => function ($q) {
+                $q->select(
+                    'id',
+                    'main_category_code', // REQUIRED
+                    'name',
+                    'name_kh',
+                    'short_description',
+                    'short_description_kh',
+                    'thumbnail',
+                    'category_code',
+                    'created_at'
+                )
+                    ->orderByDesc('created_at')
+                    ->limit(2);
+            },
+        ])
+            ->select('id', 'code', 'name', 'name_kh', 'image')
+            ->orderBy('order_index')
+            ->get();
+
+        $query = Item::query();
+
+        $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'category_code', 'created_at');
+        // $relatedData = $query->where('category_code', $showData->category_code)
+        //     ->where('main_category_code',  $main_category_code)
+        //     ->where('id', '!=', $id)
+        //     ->inRandomOrder()->limit(9)
+        //     ->get();
+
+        // return [
+        //     'mainCategories' => $mainCategories,
+        // ];
+
+        return Inertia::render(
+            'FrontPage/Resources/Index',
+            [
+                'mainCategories' => $mainCategories,
+            ]
+        );
+    }
+
     public function item_show(string $main_category_code, string $id, Request $request)
     {
         $showData = Item::findOrFail($id)->load('images', 'publisher', 'authors', 'advisor', 'language', 'category.parent');
         $mainCategory = ItemMainCategory::select('id', 'code', 'name', 'name_kh', 'image')->where('code', $showData->main_category_code)->first();
 
+
+        // URL main category != actual item main category → redirect
+        if ($mainCategory && $mainCategory->code !== $main_category_code) {
+            return redirect()
+                ->to("/resources/{$mainCategory->code}/{$id}")
+                ->setStatusCode(301); // SEO-friendly
+        }
         $query = Item::query();
 
         $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'category_code', 'created_at');
         $relatedData = $query->where('category_code', $showData->category_code)
+            ->where('main_category_code',  $main_category_code)
             ->where('id', '!=', $id)
             ->inRandomOrder()->limit(9)
             ->get();
@@ -234,23 +284,7 @@ class ResourceController extends Controller
         ]);
     }
 
-    public function show(Post $post)
-    {
-        $query = Post::query();
-        $query->where('status', 'published');
-        $query->where('category_code', $post->category_code);
-        $query->where('id', '!=', $post->id);
-        $query->orderBy('id', 'desc');
-        $query->select('id', 'title', 'title_kh', 'short_description', 'short_description_kh', 'thumbnail', 'created_at', 'category_code');
 
-        $relatedData = $query->limit(6)->get();
-        // return $relatedData;
-
-        return Inertia::render('FrontPage/Posts/Show', [
-            'showData' => $post->load('images', 'files', 'category'),
-            'relatedData' => $relatedData,
-        ]);
-    }
 
     /**
      * Show the form for editing the specified resource.

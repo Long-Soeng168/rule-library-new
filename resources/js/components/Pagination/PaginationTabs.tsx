@@ -3,6 +3,7 @@ import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import LoadingOnPrefetch from '../Loading/LoadingOnPrefetch';
 
 export default function PaginationTabs({
     containerClassName,
@@ -49,10 +50,10 @@ export default function PaginationTabs({
     };
 
     return (
-        <div className={cn('flex flex-wrap items-center gap-2 p-6', containerClassName)}>
-            <div className="flex items-center gap-2 py-4">
+        <div className={cn('flex flex-wrap items-center p-6 pb-0', containerClassName)}>
+            <div className="flex w-full flex-wrap items-center gap-2 pt-4">
                 <Select value={rowsPerPage} onValueChange={handleRowsPerPageChange}>
-                    <SelectTrigger disabled={perPageList[0] >= tableData.total} className="h-9 cursor-pointer space-x-1 rounded-none">
+                    <SelectTrigger disabled={perPageList[0] >= tableData.total} className="h-9 max-w-fit cursor-pointer space-x-1 rounded-none">
                         <SelectValue>
                             {rowsPerPage} / {t('page')}
                         </SelectValue>
@@ -69,9 +70,13 @@ export default function PaginationTabs({
                 </Select>
 
                 <span className="text-sm whitespace-nowrap text-muted-foreground">
-                    {t('Showing')}{' '}
-                    <span className="font-medium">{tableData.from}</span> {t('to')} <span className="font-medium">{tableData.to}</span> {t('of')}{' '}
-                    <b>{tableData.total}</b> {t('results')}
+                    {t('Showing')} <span className="font-medium">{tableData.from}</span> {t('to')} <span className="font-medium">{tableData.to}</span>{' '}
+                    {t('of')} <b>{tableData.total}</b> {t('results')}
+                </span>
+            </div>
+            <div className="flex h-8 w-full justify-start">
+                <span>
+                    <LoadingOnPrefetch />
                 </span>
             </div>
 
