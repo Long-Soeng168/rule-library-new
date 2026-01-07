@@ -9,9 +9,9 @@ export default function ResourceMainCategory() {
     const { t, currentLocale } = useTranslation();
 
     return (
-        <ScrollArea className="h-full w-full overflow-x-auto py-5">
+        <ScrollArea className="h-full w-full overflow-x-auto pb-8">
             {/* Actual Max width padding-x and 5 cols items = 1280 - (16*2) -  (16*4) = 1184px (236.8px each)*/}
-            <div className="section-container grid grid-cols-4 gap-2 px-4 md:gap-4">
+            <div className="section-container grid grid-cols-3 gap-2 px-4 md:gap-4">
                 <MotionHighlight hover className="rounded-md">
                     {mainCategories.map((item: any) => (
                         <Link key={item?.id} prefetch href={`/resources/${item?.code}`}>

@@ -19,7 +19,7 @@ const ResourceDetail = () => {
     return (
         <div className="flex-wrap gap-6 sm:flex">
             {/* Left Column: Title and Actions */}
-            <div className="sm:max-w-sm">
+            <div className="sm:max-w-sm sm:min-w-xs">
                 <div className="flex items-center justify-center">
                     <BookImagesGallery images={images} alternative={showData?.name} />
                     {/* <img src="/assets/sample_images/books/thesis1.jpg" alt="University Logo" className="h-auto w-full border border-primary" /> */}

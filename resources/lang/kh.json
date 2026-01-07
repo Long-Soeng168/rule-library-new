@@ -5,6 +5,7 @@
     "Library": "បណ្ណាល័យ",
     "Libraries": "បណ្ណាល័យ",
     "About": "អំពី",
+    "About Us": "អំពីបណ្ណាល័យ",
     "Contact": "ទំនាក់ទំនង",
     "Contact Us": "ទំនាក់ទំនងមកពួកយើង",
 
@@ -156,6 +157,7 @@
     "See More": "មើលច្រើនទៀត",
     "Related": "ដែលពាក់ព័ន្ធ",
 
+    "Latest Posts": "ប៉ុស្ដិ៍ចុងក្រោយ",
     "All Posts": "ប៉ុស្ដិ៍ទាំងអស់",
     "Post": "ប៉ុស្ដិ៍",
     "Posts": "ប៉ុស្ដិ៍",
@@ -334,6 +336,8 @@
     "Hide Filter": "លាក់តម្រង",
     "Show Filter": "បង្ហាញតម្រង",
     "E-Resources": "ធនធានអេឡិចត្រូនិក",
+    "Search E-Resources...": "ស្វែងរក ធនធានអេឡិចត្រូនិក...",
+    "Search E-Resources": "ស្វែងរក ធនធានអេឡិចត្រូនិក",
     "Advisor": "គ្រូណែនាំ",
     "Advisors": "គ្រូណែនាំ",
     "Search Posts...": "ស្វែងរកប៉ុស្តិ៍...",
@@ -351,6 +355,7 @@
     "ALSO AVAILABLE FROM": "អាចរកបានពី",
     "Share this book": "ចែកសៀវភៅនេះ",
     "Read": "អាន",
+    "Read File": "អានឯកសារ",
     "Download": "ទាញយក",
     "Buy": "ទិញ",
     "Related Books": "សៀវភៅដែលពាក់ព័ន្ធ",

@@ -40,13 +40,17 @@ class PostController extends Controller
 
         if ($search) {
             $query->where(function ($sub_query) use ($search) {
-                return $sub_query->where('title', 'LIKE', "%{$search}%")
-                    ->orWhere('title_kh', 'LIKE', "%{$search}%")
-                    ->orWhere('id', 'LIKE', "%{$search}%")
-                    ->orWhere('category_code', 'LIKE', "%{$search}%")
-                    ->orWhere('keywords', 'LIKE', "%{$search}%")
-                    ->orWhere('short_description', 'LIKE', "%{$search}%")
-                    ->orWhere('short_description_kh', 'LIKE', "%{$search}%");
+                return $sub_query->where(function ($w) use ($search) {
+                    $w->where('title', 'like', "%{$search}%")
+                        ->orWhere('title_kh', 'like', "%{$search}%")
+                        ->orWhere('keywords', 'like', "%{$search}%")
+                        ->orWhere('short_description', 'like', "%{$search}%")
+                        ->orWhere('short_description_kh', 'like', "%{$search}%");
+
+                    if (is_numeric($search)) {
+                        $w->orWhere('id', $search);
+                    }
+                });
             });
         }
 

@@ -18,8 +18,10 @@ class ResourceController extends Controller
 
     public function index(Request $request)
     {
+        $search = $request->input('search', '');
+
         $mainCategories = ItemMainCategory::with([
-            'items' => function ($q) {
+            'items' => function ($q) use ($search) {
                 $q->select(
                     'id',
                     'main_category_code', // REQUIRED
@@ -30,23 +32,27 @@ class ResourceController extends Controller
                     'thumbnail',
                     'category_code',
                     'created_at'
-                )
-                    ->orderByDesc('created_at')
-                    ->limit(2);
+                )->when($search, function ($sub) use ($search) {
+                    $sub->where(function ($w) use ($search) {
+                        $w->where('name', 'like', "%{$search}%")
+                            ->orWhere('name_kh', 'like', "%{$search}%")
+                            ->orWhere('keywords', 'like', "%{$search}%")
+                            ->orWhere('author_name', 'like', "%{$search}%")
+                            ->orWhere('short_description', 'like', "%{$search}%")
+                            ->orWhere('short_description_kh', 'like', "%{$search}%");
+
+                        if (is_numeric($search)) {
+                            $w->orWhere('id', $search);
+                        }
+                    });
+                })
+                    ->orderByDesc('id')
+                    ->limit(9);
             },
         ])
             ->select('id', 'code', 'name', 'name_kh', 'image')
             ->orderBy('order_index')
             ->get();
-
-        $query = Item::query();
-
-        $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'category_code', 'created_at');
-        // $relatedData = $query->where('category_code', $showData->category_code)
-        //     ->where('main_category_code',  $main_category_code)
-        //     ->where('id', '!=', $id)
-        //     ->inRandomOrder()->limit(9)
-        //     ->get();
 
         // return [
         //     'mainCategories' => $mainCategories,
@@ -56,6 +62,7 @@ class ResourceController extends Controller
             'FrontPage/Resources/Index',
             [
                 'mainCategories' => $mainCategories,
+                'search' => $search,
             ]
         );
     }
@@ -184,14 +191,19 @@ class ResourceController extends Controller
 
 
         if ($search) {
-            $query->where(function ($sub_query) use ($search) {
-                return $sub_query->where('name', 'LIKE', "%{$search}%")
-                    ->orWhere('name_kh', 'LIKE', "%{$search}%")
-                    ->orWhere('id', 'LIKE', "%{$search}%")
-                    ->orWhere('category_code', 'LIKE', "%{$search}%")
-                    ->orWhere('keywords', 'LIKE', "%{$search}%")
-                    ->orWhere('short_description', 'LIKE', "%{$search}%")
-                    ->orWhere('short_description_kh', 'LIKE', "%{$search}%");
+            $query->when($search, function ($sub) use ($search) {
+                $sub->where(function ($w) use ($search) {
+                    $w->where('name', 'like', "%{$search}%")
+                        ->orWhere('name_kh', 'like', "%{$search}%")
+                        ->orWhere('keywords', 'like', "%{$search}%")
+                        ->orWhere('author_name', 'like', "%{$search}%")
+                        ->orWhere('short_description', 'like', "%{$search}%")
+                        ->orWhere('short_description_kh', 'like', "%{$search}%");
+
+                    if (is_numeric($search)) {
+                        $w->orWhere('id', $search);
+                    }
+                });
             });
         }
 

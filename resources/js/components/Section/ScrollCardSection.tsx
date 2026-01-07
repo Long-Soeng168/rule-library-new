@@ -13,7 +13,10 @@ export default function ScrollCardSection({ title, containerClassName }: { title
     return (
         <div className={cn('section-container', containerClassName)}>
             <div>
-                <ContentHeader link={`/resources/${mainCategory?.code}?category_code=${showData?.category?.code || ''}`} title={title || t('Related')} />
+                <ContentHeader
+                    link={`/resources/${mainCategory?.code}?category_code=${showData?.category?.code || ''}`}
+                    title={title || t('Related')}
+                />
             </div>
             {relatedData?.length > 0 ? (
                 <div className={cn('grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5')}>

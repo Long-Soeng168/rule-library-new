@@ -1,4 +1,5 @@
 import { PostCard } from '@/components/Card/PostCard';
+import LoadingOnPrefetch from '@/components/Loading/LoadingOnPrefetch';
 import PaginationTabs from '@/components/Pagination/PaginationTabs';
 import TableDataSearch from '@/components/Search/TableDataSearch';
 import { TagFilter } from '@/components/tag-filter';
@@ -32,10 +33,13 @@ const Index = () => {
                     </div>
                 </div>
                 <div className="section-container mt-4 flex flex-1">
-                    <TableDataSearch className="rounded-none" placeholder="Search Posts..." />
+                    <TableDataSearch className="rounded-none" placeholder={t('Search Posts...')} />
+                </div>
+                <div className="h-6">
+                    <LoadingOnPrefetch />
                 </div>
                 {categories.length > 0 && (
-                    <div className="section-container z-20 mx-auto w-full py-6">
+                    <div className="section-container z-20 mx-auto w-full mb-6">
                         <TagFilter tags={[{ name: 'All Posts', code: '', posts_count: tableData.total }, ...categories]} />
                     </div>
                 )}

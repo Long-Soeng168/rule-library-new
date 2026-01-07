@@ -3,11 +3,14 @@ import { SearchIcon } from 'lucide-react';
 import { TooltipButton } from '../Button/TooltipButton';
 import { Button } from '../ui/button';
 import LibrarySearch from './LibrarySearch';
+import useTranslation from '@/hooks/use-translation';
 const LibrarySearchSheet = () => {
+    const { t } = useTranslation();
+
     return (
         <div>
             <Sheet>
-                <TooltipButton tooltip="Search E-Resources">
+                <TooltipButton tooltip={t("Search E-Resources")}>
                     <SheetTrigger asChild>
                         <Button
                             variant="secondary"
@@ -21,9 +24,9 @@ const LibrarySearchSheet = () => {
 
                 <SheetContent side="top" className="gap-0">
                     <SheetHeader className="text-center">
-                        <SheetTitle>Search E-Resources</SheetTitle>
+                        <SheetTitle>{t("Search E-Resources")}</SheetTitle>
                     </SheetHeader>
-                    <div className="relative mx-auto mb-6 w-full max-w-2xl px-4">
+                    <div className="relative mx-auto w-full max-w-2xl px-4">
                         <LibrarySearch debounceSearch={false} />
                     </div>
                 </SheetContent>

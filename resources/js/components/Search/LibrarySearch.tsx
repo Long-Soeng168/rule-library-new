@@ -3,8 +3,10 @@ import { router } from '@inertiajs/react';
 import debounce from 'debounce';
 import { LibraryIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import LoadingOnPrefetch from '../Loading/LoadingOnPrefetch';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import useTranslation from '@/hooks/use-translation';
 
 interface LibrarySearchProps {
     debounceSearch?: boolean; // default true
@@ -14,7 +16,7 @@ const LibrarySearch = ({ debounceSearch = true }: LibrarySearchProps) => {
     const initialQueryParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
     const [search, setSearch] = useState(initialQueryParams.get('search') || '');
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
-    const isOnLibrariesPage = currentPath === '/libraries';
+    const isOnLibrariesPage = currentPath === '/resources';
 
     // Only debounce if enabled
     const debouncedSearch = useCallback(
@@ -39,7 +41,7 @@ const LibrarySearch = ({ debounceSearch = true }: LibrarySearchProps) => {
         } else {
             const queryParams = new URLSearchParams();
             if (search) queryParams.set('search', search);
-            router.get(`/libraries?${queryParams.toString()}`);
+            router.get(`/resources?${queryParams.toString()}`);
         }
     };
 
@@ -50,6 +52,8 @@ const LibrarySearch = ({ debounceSearch = true }: LibrarySearchProps) => {
         }
     };
 
+    const { t, currentLocale } = useTranslation();
+
     return (
         <div className="relative mx-auto w-full max-w-2xl">
             <div
@@ -57,7 +61,7 @@ const LibrarySearch = ({ debounceSearch = true }: LibrarySearchProps) => {
                     'flex items-center rounded-full border border-primary bg-muted p-2 ring-primary/20 transition-colors focus-within:ring-4 dark:ring-primary/50',
                 )}
             >
-                <Button variant="ghost" size="icon" className="rounded-full hidden sm:inline-block pl-2 hover:bg-accent">
+                <Button variant="ghost" size="icon" className="hidden rounded-full pl-2 hover:bg-accent sm:inline-block">
                     <LibraryIcon className="h-5 w-5 text-primary" />
                 </Button>
 
@@ -69,13 +73,16 @@ const LibrarySearch = ({ debounceSearch = true }: LibrarySearchProps) => {
                         if (isOnLibrariesPage && debounceSearch) debouncedSearch(e.target.value);
                     }}
                     onKeyDown={handleKeyDown}
-                    placeholder="Search E-Resources..."
+                    placeholder={t("Search E-Resources...")}
                     className="flex-1 border-0 bg-transparent pl-2 text-base shadow-none focus-visible:ring-0 sm:pl-3 sm:text-lg"
                 />
 
                 <Button variant="ghost" size="icon" className="rounded-full bg-primary/10 hover:bg-primary/20" onClick={handleSearch}>
                     <SearchIcon className="h-5 w-5 text-primary" />
                 </Button>
+            </div>
+            <div className="h-8">
+                <LoadingOnPrefetch />
             </div>
         </div>
     );

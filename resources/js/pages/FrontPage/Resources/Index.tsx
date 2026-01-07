@@ -1,25 +1,27 @@
-import SpaceAnimateButton from '@/components/Button/SpaceAnimateButton';
 import LibrarySearch from '@/components/Search/LibrarySearch';
 import ResourceMainCategory from '@/components/Section/ResourceMainCategory';
-import ScrollCardSection from '@/components/Section/ScrollCardSection';
+import ResourcesListSection from '@/components/Section/ResourcesListSection';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
-import { Link } from '@inertiajs/react';
 
 const Index = () => {
+    const { t } = useTranslation();
+
     return (
         <FrontPageLayout>
             <section className="mb-20">
                 <div className="section-container my-4">
-                    {/* <ResourceBreadcrumb /> */}
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                                <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="#">E-Resources</BreadcrumbLink>
+                                <BreadcrumbLink className="text-foreground" href="/resources">
+                                    {t('E-Resources')}
+                                </BreadcrumbLink>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
@@ -31,10 +33,7 @@ const Index = () => {
                     <ResourceMainCategory />
                 </div>
 
-                {/* Theses */}
-                <ScrollCardSection containerClassName='mt-8' title="Theses" />
-                <ScrollCardSection containerClassName='mt-16' title="Publications" />
-                <ScrollCardSection containerClassName='mt-16' title="Journals" />
+                <ResourcesListSection containerClassName="mt-8" title="Theses" />
             </section>
         </FrontPageLayout>
     );

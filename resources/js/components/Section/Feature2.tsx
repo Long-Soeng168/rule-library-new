@@ -4,37 +4,23 @@ import { ContentHeader } from '../Header/ContentHeader';
 import { BookScrollAreaHorizontal } from '../ScrollArea/BookScrollAreaHorizontal';
 
 export default function Feature2() {
-    const { librariesHeader } = usePage<any>().props;
+    const { mainCategories } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
     return (
         <div className="mt-20">
-            <div className="section-container">
-                <ContentHeader
-                    // title={currentLocale === 'kh' ? librariesHeader?.name_kh || librariesHeader?.name : librariesHeader?.name}
-                    // description={
-                    //     currentLocale === 'kh'
-                    //         ? librariesHeader?.short_description_kh || librariesHeader?.short_description
-                    //         : librariesHeader?.short_description
-                    // }
-                    link="/resources/theses"
-                    title="Theses"
-                />
-            </div>
-            <BookScrollAreaHorizontal />
+            <div className="section-container space-y-12">
+                {mainCategories?.map((mainCate: any) => (
+                    <div key={mainCate.code}>
+                        <ContentHeader
+                            containerClassName="px-1"
+                            link={`/resources/${mainCate.code}`}
+                            title={currentLocale === 'kh' ? mainCate?.name_kh || mainCate?.name : mainCate?.name}
+                        />
 
-            <div className="section-container mt-20">
-                <ContentHeader
-                    // title={currentLocale === 'kh' ? librariesHeader?.name_kh || librariesHeader?.name : librariesHeader?.name}
-                    // description={
-                    //     currentLocale === 'kh'
-                    //         ? librariesHeader?.short_description_kh || librariesHeader?.short_description
-                    //         : librariesHeader?.short_description
-                    // }
-                    link="/resources/theses"
-                    title="Publications"
-                />
+                        <BookScrollAreaHorizontal items={mainCate.items} mainCategoryCode={mainCate.code} />
+                    </div>
+                ))}
             </div>
-            <BookScrollAreaHorizontal />
         </div>
     );
 }

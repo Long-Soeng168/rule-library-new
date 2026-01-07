@@ -5,9 +5,11 @@ namespace App\Http\Controllers\FrontPage;
 use App\Http\Controllers\Controller;
 
 use App\Models\Faq;
+use App\Models\ItemMainCategory;
 use App\Models\KeyValue;
 use App\Models\Location;
 use App\Models\Page;
+use App\Models\Post;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -20,39 +22,47 @@ class FrontPageController extends Controller
      */
     public function index()
     {
-        $homepageHero = Page::where('code', 'homepage-hero')->first();
-        $librariesHeader = Page::where('code', 'libraries')->first();
-        $libraryTypeHeader = Page::where('code', 'types-of-libraries')->first();
-        $sourceOfFundingHeader = Page::where('code', 'sources-of-funding')->first();
-        $provinceHeader = Page::where('code', 'provinces')->first();
-        $claStatisticHeader = Page::where('code', 'cambodia-library-association-statistic')->first();
         $whatWeOfferHeader = Page::where('code', 'what-we-offer')->with('children')->first();
-
-        $libraryTypes = Type::group('library-type-group')->get();
-        $fundingTypes = Type::group('source-of-funding-type-group')->get();
-
-        $provincesData = Location::type('province')
-            ->orderBy('order_index')
-            ->limit(4)
-            ->get();
-
         $keyValueData = KeyValue::all();
         $faqData = Faq::all();
 
+        $mainCategories = ItemMainCategory::with([
+            'items' => function ($q) {
+                $q->select(
+                    'id',
+                    'main_category_code', // REQUIRED
+                    'name',
+                    'name_kh',
+                    'short_description',
+                    'short_description_kh',
+                    'thumbnail',
+                    'category_code',
+                    'created_at'
+                )
+                    ->orderByDesc('id')
+                    ->limit(6);
+            },
+        ])
+            ->select('id', 'code', 'name', 'name_kh', 'image')
+            ->orderBy('order_index')
+            ->get();
+
+        $query = Post::query();
+
+
+        $query->where('status', 'published');
+        $query->orderByDesc('id');
+        $query->select('id', 'title', 'title_kh', 'short_description', 'short_description_kh', 'thumbnail', 'created_at');
+
+        $posts = $query->limit(4)->get();
 
         return Inertia::render('FrontPage/Index', [
-            'homepageHero' => $homepageHero,
-            'librariesHeader' => $librariesHeader,
-            'libraryTypeHeader' => $libraryTypeHeader,
-            'sourceOfFundingHeader' => $sourceOfFundingHeader,
-            'provinceHeader' => $provinceHeader,
-            'claStatisticHeader' => $claStatisticHeader,
             'whatWeOfferHeader' => $whatWeOfferHeader,
-            'libraryTypes' => $libraryTypes,
-            'fundingTypes' => $fundingTypes,
-            'provincesData' => $provincesData,
             'keyValueData' => $keyValueData,
             'faqData' => $faqData,
+
+            'mainCategories' => $mainCategories,
+            'posts' => $posts,
         ]);
     }
 }
