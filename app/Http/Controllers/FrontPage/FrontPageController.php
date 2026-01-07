@@ -39,6 +39,7 @@ class FrontPageController extends Controller
                     'category_code',
                     'created_at'
                 )
+                    ->where('status', 'published')
                     ->orderByDesc('id')
                     ->limit(6);
             },

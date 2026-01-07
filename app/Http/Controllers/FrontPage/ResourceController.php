@@ -46,6 +46,7 @@ class ResourceController extends Controller
                         }
                     });
                 })
+                    ->where('status', 'published')
                     ->orderByDesc('id')
                     ->limit(9);
             },
@@ -83,6 +84,7 @@ class ResourceController extends Controller
 
         $query->select('id', 'name', 'name_kh', 'short_description', 'short_description_kh', 'thumbnail', 'category_code', 'created_at');
         $relatedData = $query->where('category_code', $showData->category_code)
+            ->where('status', 'published')
             ->where('main_category_code',  $main_category_code)
             ->where('id', '!=', $id)
             ->inRandomOrder()->limit(9)
@@ -207,8 +209,8 @@ class ResourceController extends Controller
             });
         }
 
-        $query->where('main_category_code', $main_category_code);
         $query->where('status', 'published');
+        $query->where('main_category_code', $main_category_code);
         $query->orderBy('id', 'desc');
 
         $tableData = $query->paginate($perPage)->onEachSide(2);
