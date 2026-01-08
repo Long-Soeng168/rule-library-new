@@ -63,6 +63,7 @@ class ItemCategoryController extends Controller implements HasMiddleware
             $query->where(function ($sub_query) use ($search) {
                 return $sub_query->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('name_kh', 'LIKE', "%{$search}%")
+                    ->orWhere('code', 'LIKE', "%{$search}%")
                     ->orWhere('id', 'LIKE', "%{$search}%")
                     ->orWhere('short_description', 'LIKE', "%{$search}%")
                     ->orWhere('short_description_kh', 'LIKE', "%{$search}%");

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FrontPage;
 use App\Http\Controllers\Controller;
 
 use App\Models\Faq;
+use App\Models\ItemCategory;
 use App\Models\ItemMainCategory;
 use App\Models\KeyValue;
 use App\Models\Location;
@@ -56,6 +57,17 @@ class FrontPageController extends Controller
         $query->select('id', 'title', 'title_kh', 'short_description', 'short_description_kh', 'thumbnail', 'created_at');
 
         $posts = $query->limit(4)->get();
+
+        $thesisCategories = ItemCategory::select('id', 'code', 'item_main_category_code', 'name', 'name_kh', 'image', 'order_index')->where('parent_id', null)
+            ->where('item_main_category_code', 'theses')
+            ->orderBy('order_index')
+            ->get();
+        $publicationCategories = ItemCategory::select('id', 'code', 'item_main_category_code', 'name', 'name_kh', 'image', 'order_index')->where('parent_id', null)
+            ->where('item_main_category_code', 'publications')
+            ->orderBy('order_index')
+            ->get();
+
+        return $publicationCategories;
 
         return Inertia::render('FrontPage/Index', [
             'whatWeOfferHeader' => $whatWeOfferHeader,
