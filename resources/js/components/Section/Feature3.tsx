@@ -19,7 +19,7 @@ export const Feature3 = ({ data, showLimit = 10 }: { data: any; showLimit?: numb
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
             <MotionHighlight hover className="rounded-xl">
                 {visibleCards?.map((item: any) => (
-                    <Link href={`/resources/theses?category_code=${item.code}`} key={item.id} prefetch>
+                    <Link href={`/resources/${item?.item_main_category_code}?category_code=${item.code}`} key={item.id} prefetch>
                         <div key={item.id} data-id={item.id} className="group relative h-full cursor-pointer">
                             <div className="flex h-full flex-col rounded-xl border p-4 transition-all duration-300 hover:border-primary hover:shadow-md">
                                 <TableCellAvatar
