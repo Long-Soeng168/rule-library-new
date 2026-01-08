@@ -7,7 +7,7 @@ import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
-export default function BookImagesGallery({ images = [''], mainImageClassName = '', alternative = '', aspectRatio = '7/10' }) {
+export default function BookImagesGallery({ images = [''], mainImageClassName = '', alternative = '', aspectRatio = '7/10', readUrl = '#' }) {
     const [mainImage, setMainImage] = useState(images[0]);
     const { t, currentLocale } = useTranslation();
 
@@ -56,16 +56,16 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                 <div className="absolute right-0 bottom-0 left-0 z-10 flex bg-transparent">
                     <div className="z-20 mx-auto flex w-full items-center justify-center text-sm text-white lg:justify-end">
                         <div className="flex w-full justify-center gap-2 bg-black/50 p-2">
-                            <Link href={`/view-pdf?file_name=file-sample_150kB.pdf&id=1&resource=items`}>
-                                <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
-                                    <FileDownIcon size={20} />
-                                    <span>{t('Download PDF')}</span>
-                                </button>
-                            </Link>
-                            <Link href={`/view-pdf?file_name=file-sample_150kB.pdf&id=1&resource=items`}>
+                            <Link href={`${readUrl}`}>
                                 <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
                                     <BookOpenIcon size={20} />
-                                    <span>{t('Read PDF')}</span>
+                                    <span>{t('Read File')}</span>
+                                </button>
+                            </Link>
+                            <Link href={`${readUrl}&is_download=1`}>
+                                <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
+                                    <FileDownIcon size={20} />
+                                    <span>{t('Download')}</span>
                                 </button>
                             </Link>
                         </div>
@@ -83,7 +83,7 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                             className={cn(
                                 `max-h-[800px] w-full cursor-pointer rounded-none border border-primary object-cover sm:max-w-sm ${src === mainImage ? '' : 'hidden'} aspect-[${aspectRatio}]`,
                                 mainImageClassName,
-                                `${images?.length == 1 && 'aspect-auto'}`
+                                `${images?.length == 1 && 'aspect-auto'}`,
                             )}
                         />
                     </PhotoView>
