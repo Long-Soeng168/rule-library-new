@@ -21,7 +21,7 @@ const Hero = () => {
                     <Link href={`/about`} prefetch>
                         <AnimatedGradientTextBadge />
                     </Link>
-                    <h1 className="mt-4 mb-5 px-1 text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+                    <h1 className="mt-4 mb-5 px-1 text-2xl max-w-full leading-tight font-extrabold tracking-tight sm:text-4xl md:text-5xl">
                         {/* {currentLocale === 'kh' ? homepageHero?.name_kh || homepageHero?.name : homepageHero?.name} */}
                         {currentLocale === 'kh' ? (
                             <p>
