@@ -4,7 +4,6 @@ import Accordion1 from '@/components/Section/Accordion1';
 import Feature1 from '@/components/Section/Feature1';
 import Feature2 from '@/components/Section/Feature2';
 import { Feature3 } from '@/components/Section/Feature3';
-import { Feature3Copy } from '@/components/Section/Feature3Copy';
 import Feature6 from '@/components/Section/Feature6';
 import Hero from '@/components/Section/Hero';
 import PostsHomePageSection from '@/components/Section/PostsHomePageSection';
@@ -13,7 +12,7 @@ import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 const Index = () => {
-    const { website_info, app_url } = usePage<any>().props;
+    const { website_info, app_url, thesisCategories, publicationCategories } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
 
     const description =
@@ -54,46 +53,22 @@ const Index = () => {
 
             {/* Theses Major */}
             <div className="section-container mt-20">
-                <ContentHeader
-                    // title={currentLocale === 'kh' ? libraryTypeHeader?.name_kh || libraryTypeHeader?.name : libraryTypeHeader?.name}
-                    // description={
-                    //     currentLocale === 'kh'
-                    //         ? libraryTypeHeader?.short_description_kh || libraryTypeHeader?.short_description
-                    //         : libraryTypeHeader?.short_description
-                    // }
-                    title="Thesis by Major"
-                    description="Browse all theses, organized by major."
-                />
+                <ContentHeader title={t('Thesis by Major')} description={t('Browse all theses, organized by major.')} />
 
-                <Feature3 />
+                <Feature3 data={thesisCategories} />
             </div>
 
             <div className="section-container mt-20">
-                <ContentHeader
-                    // title={currentLocale === 'kh' ? libraryTypeHeader?.name_kh || libraryTypeHeader?.name : libraryTypeHeader?.name}
-                    // description={
-                    //     currentLocale === 'kh'
-                    //         ? libraryTypeHeader?.short_description_kh || libraryTypeHeader?.short_description
-                    //         : libraryTypeHeader?.short_description
-                    // }
-                    title="Publications by Categories"
-                    description="Browse all publications, organized by category."
-                />
+                <ContentHeader title={t('Publications by Categories')} description={t('Browse all publications, organized by category.')} />
 
-                <Feature3Copy />
+                <Feature3 data={publicationCategories} />
             </div>
 
             {/* Libraries Statistics */}
             <div className="section-container mt-40">
                 <ContentHeader
-                    // title={currentLocale === 'kh' ? claStatisticHeader?.name_kh || claStatisticHeader?.name : claStatisticHeader?.name}
-                    // description={
-                    //     currentLocale === 'kh'
-                    //         ? claStatisticHeader?.short_description_kh || claStatisticHeader?.short_description
-                    //         : claStatisticHeader?.short_description
-                    // }
-                    title="Library Overview"
-                    description="A quick look at how our library is being used — from online reads to in-person visits."
+                    title={t("Library Overview")}
+                    description={t("A quick look at how our library is being used — from online reads to in-person visits.")}
                 />
 
                 <Feature6 />

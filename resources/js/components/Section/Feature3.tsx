@@ -1,65 +1,34 @@
 import { MotionHighlight } from '@/components/animate-ui/effects/motion-highlight';
 import useTranslation from '@/hooks/use-translation';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import SmallOverlayTopRightButton from '../Button/SmallOverlayTopRightButton';
 
-import {
-    Banknote,
-    Briefcase,
-    Calculator,
-    ChevronDownIcon,
-    ChevronUpIcon,
-    Globe,
-    Plane,
-    Scale,
-    Scroll,
-    Sigma,
-    TrendingUp,
-    Wallet,
-} from 'lucide-react';
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import TableCellAvatar from '../Avatar/TableCellAvatar';
 
-const data = [
-    { code: '1', icon: Globe, name: 'International Relations' },
-    { code: '2', icon: Sigma, name: 'Mathematical Economics' },
-    { code: '3', icon: Wallet, name: 'Accounting' },
-    { code: '4', icon: Plane, name: 'Tourism' },
-    { code: '5', icon: Briefcase, name: 'Business Management' },
-    { code: '6', icon: Banknote, name: 'Banking and Finance' },
-    { code: '7', icon: Scroll, name: 'Public Administration' },
-    { code: '8', icon: Scale, name: 'Law' },
-    { code: '9', icon: TrendingUp, name: 'Development Economics' },
-    { code: '10', icon: Calculator, name: 'Mathematics' },
-];
-
-export const Feature3 = () => {
-    const [showAll, setShowAll] = useState(false);
-
-    const { libraryTypes } = usePage<any>().props;
+export const Feature3 = ({ data, showLimit = 10 }: { data: any; showLimit?: number }) => {
     const { t, currentLocale } = useTranslation();
 
+    const [showAll, setShowAll] = useState(false);
     // show 7 + "See All" card when collapsed
     // const visibleCards = showAll ? libraryTypes : libraryTypes.slice(0, 7);
-    const visibleCards = showAll ? data : data.slice(0, 10);
+    const visibleCards = showAll ? data : data.slice(0, showLimit);
 
     return (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
             <MotionHighlight hover className="rounded-xl">
-                {visibleCards.map((item: any) => (
-                    <Link href={`/resources/theses?major_code=${item.code}`} key={item.id} prefetch>
+                {visibleCards?.map((item: any) => (
+                    <Link href={`/resources/theses?category_code=${item.code}`} key={item.id} prefetch>
                         <div key={item.id} data-id={item.id} className="group relative h-full cursor-pointer">
                             <div className="flex h-full flex-col rounded-xl border p-4 transition-all duration-300 hover:border-primary hover:shadow-md">
-                                {/* <TableCellAvatar
+                                <TableCellAvatar
                                     className="flex size-10 items-center justify-center rounded-md border-none bg-primary/10"
                                     imageClassName="object-contain p-1"
                                     altTextClassName="text-primary rounded-none bg-primary/5"
-                                    image={`/assets/images/types/thumb/${item.image}`}
+                                    image={`/assets/images/item_categories/thumb/${item.image}`}
                                     alt={currentLocale === 'kh' ? item?.name_kh || item?.name : item?.name}
-                                /> */}
-                                <span className="flex size-10 items-center justify-center rounded-md border-none bg-primary/10 text-primary">
-                                    <item.icon />
-                                </span>
-
+                                />
                                 <p className="mt-2 text-base font-medium">{currentLocale === 'kh' ? item?.name_kh || item?.name : item?.name}</p>
 
                                 {/* Hover icon overlay (top-right with animation) */}
@@ -69,7 +38,7 @@ export const Feature3 = () => {
                     </Link>
                 ))}
             </MotionHighlight>
-            {data?.length > 10 && (
+            {data?.length > showLimit && (
                 <div className="h-full w-full">
                     <button
                         onClick={() => setShowAll(!showAll)}

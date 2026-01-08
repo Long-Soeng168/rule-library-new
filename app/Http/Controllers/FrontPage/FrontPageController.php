@@ -67,7 +67,7 @@ class FrontPageController extends Controller
             ->orderBy('order_index')
             ->get();
 
-        return $publicationCategories;
+        // return $publicationCategories;
 
         return Inertia::render('FrontPage/Index', [
             'whatWeOfferHeader' => $whatWeOfferHeader,
@@ -75,6 +75,8 @@ class FrontPageController extends Controller
             'faqData' => $faqData,
 
             'mainCategories' => $mainCategories,
+            'thesisCategories' => $thesisCategories,
+            'publicationCategories' => $publicationCategories,
             'posts' => $posts,
         ]);
     }
