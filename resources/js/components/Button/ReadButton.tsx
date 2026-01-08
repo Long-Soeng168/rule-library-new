@@ -10,10 +10,10 @@ const ReadButton = () => {
             <button className="button group w-full p-2">
                 <span className="button_lg px-4 py-2 dark:bg-white">
                     <span className="button_sl" />
-                    <span className="button_text flex items-center gap-2  text-true-primary group-hover:text-white group-focus:text-white">
+                    <span className="button_text flex items-center gap-2 text-true-primary group-hover:text-white group-active:text-white focus:text-white">
                         {/* <img src="/assets/icons/gif/reading.gif" className="size-8" /> */}
                         <BookOpenTextIcon />
-                        <span className="flex-1 text-center">{t('Read PDF')}</span>
+                        <span className="flex-1 text-center">{t('Read File')}</span>
                     </span>
                 </span>
             </button>
