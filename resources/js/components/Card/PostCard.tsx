@@ -7,18 +7,19 @@ interface BlogCardProps {
     title: string;
     description: string;
     date: string;
+    categoryName: string;
     thumbnail?: string;
     showRightBorder?: boolean;
 }
 
-export function PostCard({ url, title, description, date, thumbnail }: BlogCardProps) {
+export function PostCard({ url, title, description, date, categoryName, thumbnail }: BlogCardProps) {
     return (
         <Link href={url} className={cn('group relative block h-full border')}>
             <div className="flex h-full flex-col">
                 {thumbnail && (
                     <div className="relative aspect-video w-full overflow-hidden">
                         <img src={thumbnail} alt={title} className="w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                        <Badge className="absolute right-1 bottom-1 rounded-none bg-primary/80">{date}</Badge>
+                        {categoryName && <Badge className="absolute right-1 bottom-1 rounded-none bg-primary/80">{categoryName}</Badge>}
                     </div>
                 )}
 

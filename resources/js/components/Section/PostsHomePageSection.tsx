@@ -42,6 +42,7 @@ const PostsHomePageSection = () => {
                                 <PostCard
                                     url={`/posts/${post.id}`}
                                     title={currentLocale === 'kh' ? (post.title_kh ?? post.title) : post.title}
+                                    categoryName={currentLocale == 'kh' ? (post.category?.name_kh ?? post.category?.name) : post.category?.name}
                                     description={
                                         currentLocale === 'kh' ? (post.short_description_kh ?? post.short_description) : post.short_description
                                     }

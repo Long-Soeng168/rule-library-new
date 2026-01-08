@@ -56,7 +56,8 @@ class PostController extends Controller
 
         $query->where('status', 'published');
         $query->orderBy('id', 'desc');
-        $query->select('id', 'title', 'title_kh', 'short_description', 'short_description_kh', 'thumbnail', 'created_at');
+        $query->select('id', 'title', 'title_kh', 'category_code', 'short_description', 'short_description_kh', 'thumbnail', 'created_at');
+        $query->with('category');
 
         $tableData = $query->paginate($perPage)->onEachSide(1);
 

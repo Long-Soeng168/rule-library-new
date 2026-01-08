@@ -39,7 +39,7 @@ const Index = () => {
                     <LoadingOnPrefetch />
                 </div>
                 {categories.length > 0 && (
-                    <div className="section-container z-20 mx-auto w-full mb-6">
+                    <div className="section-container z-20 mx-auto mb-6 w-full">
                         <TagFilter tags={[{ name: 'All Posts', code: '', posts_count: tableData.total }, ...categories]} />
                     </div>
                 )}
@@ -53,6 +53,7 @@ const Index = () => {
                                     key={item.id}
                                     url={`/posts/${item.id}`}
                                     title={currentLocale == 'kh' ? (item.title_kh ?? item.title) : item.title}
+                                    categoryName={currentLocale == 'kh' ? (item.category?.name_kh ?? item.category?.name) : item.category?.name}
                                     description={
                                         currentLocale == 'kh' ? (item.short_description_kh ?? item.short_description) : item.short_description
                                     }

@@ -49,14 +49,15 @@ class FrontPageController extends Controller
             ->orderBy('order_index')
             ->get();
 
-        $query = Post::query();
+        $postQuery = Post::query();
 
 
-        $query->where('status', 'published');
-        $query->orderByDesc('id');
-        $query->select('id', 'title', 'title_kh', 'short_description', 'short_description_kh', 'thumbnail', 'created_at');
+        $postQuery->where('status', 'published');
+        $postQuery->orderByDesc('id');
+        $postQuery->select('id', 'title', 'title_kh', 'category_code', 'short_description', 'short_description_kh', 'thumbnail', 'created_at');
+        $postQuery->with('category');
 
-        $posts = $query->limit(4)->get();
+        $posts = $postQuery->limit(4)->get();
 
         $thesisCategories = ItemCategory::select('id', 'code', 'item_main_category_code', 'name', 'name_kh', 'image', 'order_index')->where('parent_id', null)
             ->where('item_main_category_code', 'theses')
