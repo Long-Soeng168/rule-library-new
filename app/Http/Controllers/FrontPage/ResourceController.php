@@ -37,9 +37,7 @@ class ResourceController extends Controller
                         $w->where('name', 'like', "%{$search}%")
                             ->orWhere('name_kh', 'like', "%{$search}%")
                             ->orWhere('keywords', 'like', "%{$search}%")
-                            ->orWhere('author_name', 'like', "%{$search}%")
-                            ->orWhere('short_description', 'like', "%{$search}%")
-                            ->orWhere('short_description_kh', 'like', "%{$search}%");
+                            ->orWhere('author_name', 'like', "%{$search}%");
 
                         if (is_numeric($search)) {
                             $w->orWhere('id', $search);
@@ -198,9 +196,7 @@ class ResourceController extends Controller
                     $w->where('name', 'like', "%{$search}%")
                         ->orWhere('name_kh', 'like', "%{$search}%")
                         ->orWhere('keywords', 'like', "%{$search}%")
-                        ->orWhere('author_name', 'like', "%{$search}%")
-                        ->orWhere('short_description', 'like', "%{$search}%")
-                        ->orWhere('short_description_kh', 'like', "%{$search}%");
+                        ->orWhere('author_name', 'like', "%{$search}%");
 
                     if (is_numeric($search)) {
                         $w->orWhere('id', $search);

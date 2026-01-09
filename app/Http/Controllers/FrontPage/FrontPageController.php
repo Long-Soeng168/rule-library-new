@@ -24,7 +24,6 @@ class FrontPageController extends Controller
     public function index()
     {
         $whatWeOfferHeader = Page::where('code', 'what-we-offer')->with('children')->first();
-        $keyValueData = KeyValue::all();
         $faqData = Faq::all();
 
         $mainCategories = ItemMainCategory::with([
@@ -65,6 +64,9 @@ class FrontPageController extends Controller
             ->get();
         $publicationCategories = ItemCategory::select('id', 'code', 'item_main_category_code', 'name', 'name_kh', 'image', 'order_index')->where('parent_id', null)
             ->where('item_main_category_code', 'publications')
+            ->orderBy('order_index')
+            ->get();
+        $keyValueData = KeyValue::select('id', 'value', 'name', 'name_kh', 'image', 'order_index', 'short_description', 'short_description_kh')
             ->orderBy('order_index')
             ->get();
 
