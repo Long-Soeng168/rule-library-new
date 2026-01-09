@@ -1,5 +1,4 @@
 import StaffCard from '@/components/Card/StaffCard';
-import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { Tree, TreeNode } from 'react-organizational-chart';
 import { styled } from 'styled-components';
 
@@ -17,18 +16,22 @@ const StyledNode = styled.div`
 const OurStaffsStructure = () => {
     return (
         <>
-            <div className="section-container pb-10">
+            <div className="section-container">
                 <header className="my-8 text-center">
                     <h1 className="text-3xl font-bold text-foreground md:text-4xl">រចនាសម្ព័ន្ធបណ្ណាល័យ ស.ភ.ន.វ.ស.</h1>
                 </header>
-                <div className="max-w-full overflow-x-scroll text-center">
+                <div className="max-w-full overflow-x-scroll pb-20 text-center">
                     <Tree
-                        lineWidth="2px"
+                        lineWidth="1px"
                         lineColor="#9ca3af"
-                        lineBorderRadius="10px"
+                        lineBorderRadius="8px"
                         label={
                             <StyledNode>
-                                <StaffCard name="Dr. Ngann Sundet" role="Managing Director" imageUrl="/assets/rule_library/profiles/sundet.jpeg" />
+                                <StaffCard
+                                    name="បណ្ឌិត ង៉ាន់ ស៊ុនដេត"
+                                    role="Managing Director"
+                                    imageUrl="/assets/rule_library/profiles/sundet.jpeg"
+                                />
                             </StyledNode>
                         }
                     >
@@ -41,22 +44,14 @@ const OurStaffsStructure = () => {
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
-                                            </StyledNode>
-                                        }
-                                    />
-                                    <TreeNode
-                                        label={
-                                            <StyledNode className="broder-r bg-black">
-                                                {' '}
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="គឹម ច័ន្ទត្រាបុត្រ" role="Technical Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="អ៊ុង សុបញ្ញាម៉ូនិក" role="Administrator" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -68,16 +63,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            {' '}
-                                            <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                            <StaffCard name="សេង វណ្ណា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                {' '}
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="លី រ៉ានី" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -85,16 +78,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            {' '}
-                                            <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                            <StaffCard name="កញ្ញា រិន សុទ្ធាលីនណា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                {' '}
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="កញ្ញា ជ្រា មុនីនាថ" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -106,16 +97,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            {' '}
-                                            <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                            <StaffCard name="កែ សម្បត្តិនីតា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                {' '}
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="ឈិន ដារិត" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -123,16 +112,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            {' '}
-                                            <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                            <StaffCard name="ហ៊ាង ចាន់តាលីឡា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                {' '}
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="វ៉ាង រ៉ាវុធ" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -144,16 +131,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            {' '}
-                                            <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                            <StaffCard name="ម៉ៅ បូរ៉ា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                {' '}
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="គឹម សូរិយា" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -161,16 +146,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            {' '}
-                                            <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                            <StaffCard name="ហេង ណារ័ត្ន" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                {' '}
-                                                <StaffCard name="Staff Name" role="Staff Role" imageUrl={``} />
+                                                <StaffCard name="ឡុង សឹង" role="Librarian" imageUrl="/assets/rule_library/profiles/long_soeng.jpg" />
                                             </StyledNode>
                                         }
                                     />

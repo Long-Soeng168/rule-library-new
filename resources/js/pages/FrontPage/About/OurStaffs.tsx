@@ -1,10 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import AvatarLogoFallback from '@/components/Avatar/AvatarLogoFallback';
 import { staffSampleData } from '@/data/staff-sample-data';
 import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { usePage } from '@inertiajs/react';
-import { Image as ImageIcon } from 'lucide-react';
+import { UserCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import OurStaffsStructure from './OurStaffsStructure';
 
@@ -77,14 +78,25 @@ export default function StaffPage() {
                                                         <div key={shiftName}>
                                                             <h3 className="mt-5 mb-3 text-xl font-semibold text-foreground">{shiftName}</h3>
                                                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                                                                {staffArr.map((staff, i) => (
+                                                                {staffArr.map((staff: any, i) => (
                                                                     <div
                                                                         key={i}
                                                                         className="flex h-full flex-col rounded-lg border border-border bg-background p-5 shadow transition hover:shadow-md dark:bg-white/8"
                                                                     >
                                                                         <div className="mb-4 flex items-start">
-                                                                            <div className="mr-4 flex h-16 w-16 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
-                                                                                <ImageIcon className="h-8 w-8" />
+                                                                            <div className="mr-4 flex size-23 items-center justify-center rounded-lg border border-border bg-muted text-muted-foreground">
+                                                                                <AvatarLogoFallback
+                                                                                    className="size-full rounded"
+                                                                                    imageClassName="size-full object-cover"
+                                                                                    image={staff.image || ''}
+                                                                                    alt={staff.name}
+                                                                                    fallbackNode={
+                                                                                        <UserCircle2
+                                                                                            className="size-10 text-muted-foreground"
+                                                                                            strokeWidth={1.5}
+                                                                                        />
+                                                                                    }
+                                                                                />
                                                                             </div>
                                                                             <div className="flex-grow">
                                                                                 <h3 className="text-lg font-bold text-foreground">{staff.name}</h3>
