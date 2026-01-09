@@ -1,92 +1,71 @@
 import useTranslation from '@/hooks/use-translation';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpenTextIcon, ChevronDown, HomeIcon, InfoIcon, NewspaperIcon, UserIcon } from 'lucide-react';
 
 export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizontal' | 'vertical' }) => {
     const { t } = useTranslation();
+    const { url } = usePage();
+
+    const isActive = (href: string) => {
+        // for exact match, you can do: return url === href
+        // for prefix match (like /about/*), use startsWith
+        return url === href || url.startsWith(href + '/');
+    };
+
+    const menuItems = [
+        { href: '/', icon: <HomeIcon size={16} />, label: t('Home') },
+        { href: '/resources', icon: <BookOpenTextIcon size={16} />, label: t('E-Resources') },
+        { href: '/posts', icon: <NewspaperIcon size={16} />, label: t('Posts') },
+        {
+            href: '/about',
+            icon: <InfoIcon size={16} />,
+            label: t('About'),
+            dropdown: [
+                { href: '/about', label: t('About') },
+                { href: '/our-journey', label: t('Our Journey') },
+                { href: '/our-staffs', label: t('Our Staffs') },
+            ],
+        },
+    ];
 
     return (
         <ul className={`flex flex-1 justify-start gap-2 ${orientation === 'vertical' ? 'w-full flex-col items-start gap-3' : ''}`}>
-            <li className={`group ${orientation === 'vertical' ? 'w-full' : 'w-auto'}`}>
-                <Link
-                    prefetch
-                    href="/"
-                    className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
-                >
-                    <HomeIcon className="text-muted-foreground" size={16} />
-                    {t('Home')}
-                </Link>
+            {menuItems.map((item, idx) => (
+                <li key={idx} className={`group ${orientation === 'vertical' ? 'w-full' : 'w-auto'} relative`}>
+                    <Link
+                        prefetch
+                        href={item.href}
+                        className={`relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium transition-colors 
+                            ${isActive(item.href) ? 'text-true-primary' : 'text-foreground'} 
+                            hover:bg-muted dark:hover:bg-none`}
+                    >
+                        {item.icon}
+                        {item.label}
+                        {item.dropdown && <ChevronDown className="ml-2 text-muted-foreground" size={16} />}
+                    </Link>
 
-                <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
-            </li>
+                    <div className={`h-0.5 w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100
+                        ${isActive(item.href) ? 'scale-x-100' : ''}`}></div>
 
-            <li className={`group ${orientation === 'vertical' ? 'w-full' : 'w-auto'}`}>
-                <Link
-                    prefetch
-                    href="/resources"
-                    className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
-                >
-                    <BookOpenTextIcon className="text-muted-foreground" size={16} />
-                    {t("E-Resources")}
-                </Link>
-                <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
-            </li>
-
-            <li className={`group ${orientation === 'vertical' ? 'w-full' : 'w-auto'}`}>
-                <Link
-                    prefetch
-                    href="/posts"
-                    className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
-                >
-                    <NewspaperIcon className="text-muted-foreground" size={16} />
-                    {t("Posts")}
-                </Link>
-                <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
-            </li>
-
-            <li className={`group relative ${orientation === 'vertical' ? 'w-full' : 'w-auto'}`}>
-                <Link
-                    prefetch
-                    href="/about"
-                    className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
-                >
-                    <InfoIcon className="text-muted-foreground" size={16} />
-                    {t("About")}
-                    <ChevronDown className="ml-2 text-muted-foreground" size={16} />
-                </Link>
-                <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
-
-                {/* Dropdown */}
-                <ul className="absolute top-full left-0 z-20 mt-0 hidden w-full flex-col border bg-background shadow-lg group-hover:flex dark:border-white/30">
-                    <li>
-                        <Link prefetch href="/about" className="block px-3 py-2 text-sm text-foreground hover:bg-muted dark:hover:bg-none">
-                            {t("About")}
-                        </Link>
-                    </li>
-                    <li>
-                        <Link prefetch href="/our-journey" className="block px-3 py-2 text-sm text-foreground hover:bg-muted dark:hover:bg-none">
-                            {t("Our Journey")}
-                        </Link>
-                    </li>
-                    <li>
-                        <Link prefetch href="/our-staffs" className="block px-3 py-2 text-sm text-foreground hover:bg-muted dark:hover:bg-none">
-                            {t("Our Staffs")}
-                        </Link>
-                    </li>
-                </ul>
-            </li>
-
-            {/* <li className={`group ${orientation === 'vertical' ? 'w-full' : 'w-auto'}`}>
-                <Link
-                    prefetch
-                    href="/profile"
-                    className="relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted dark:hover:bg-none"
-                >
-                    <UserIcon className="text-muted-foreground" size={16} />
-                    Profile
-                </Link>
-                <div className="h-[2px] w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100"></div>
-            </li> */}
+                    {item.dropdown && (
+                        <ul className="absolute top-full left-0 z-20 mt-0 hidden w-full flex-col border bg-background shadow-lg group-hover:flex dark:border-white/30">
+                            {item.dropdown.map((sub, sidx) => (
+                                <li key={sidx}>
+                                    <Link
+                                        prefetch
+                                        href={sub.href}
+                                        className={`block px-3 py-2 text-sm transition-colors 
+                                            ${isActive(sub.href) ? 'text-true-primary' : 'text-foreground'} 
+                                            hover:bg-muted dark:hover:bg-none`}
+                                    >
+                                        {sub.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </li>
+            ))}
         </ul>
     );
 };

@@ -7,7 +7,7 @@ import { ContentHeader } from '../Header/ContentHeader';
 import NoDataDisplay from '../NoDataDisplay';
 import { PlaceholderPattern } from '../ui/placeholder-pattern';
 
-export default function ResourcesListSection({ title, containerClassName }: { title?: string; containerClassName?: string }) {
+export default function ResourcesListSection({ containerClassName }: { containerClassName?: string }) {
     const { mainCategories, search } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
 

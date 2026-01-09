@@ -10,7 +10,7 @@ import { formatToKhmerDateTime } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
 
 const Index = () => {
-    const { tableData, categories } = usePage<any>().props;
+    const { tableData, totalDataCount, categories } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
 
     return (
@@ -40,7 +40,7 @@ const Index = () => {
                 </div>
                 {categories.length > 0 && (
                     <div className="section-container z-20 mx-auto mb-6 w-full">
-                        <TagFilter tags={[{ name: 'All Posts', code: '', posts_count: tableData.total }, ...categories]} />
+                        <TagFilter tags={[{ name: t('All Category'), code: '', posts_count: totalDataCount }, ...categories]} />
                     </div>
                 )}
 

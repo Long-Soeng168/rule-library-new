@@ -20,11 +20,18 @@ export function SheetLogo() {
             <div className="flex w-full flex-col flex-wrap items-center gap-4">
                 <Avatar className="size-18">
                     <AvatarImage src={logo} alt={name || 'Logo'} className="rounded object-contain dark:hidden" />
-                    <AvatarImage src={logoDark} alt={name || 'Logo'} className="hidden rounded dark:block" />
+                    <AvatarImage src={logoDark} alt={name || 'Logo'} className="hidden rounded object-contain dark:block" />
                     <AvatarFallback>{name?.charAt(0) || 'L'}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col items-center">
-                    {name && <p className="text-base leading-tight font-semibold text-foreground sm:text-lg">{name}</p>}
+                    <div className="text-center whitespace-nowrap">
+                        <p className="text-base font-medium whitespace-nowrap text-muted-foreground md:text-[16px]">គេហទំព័របណ្ណាល័យនៃ</p>
+                        <p className="text-lg leading-tight font-bold text-foreground md:text-[20px]">សាកលវិទ្យាល័យភូមិន្ទនីតិសាស្ត្រ</p>
+                        <p className="text-lg leading-tight font-bold text-foreground md:text-[20px]">និងវិទ្យាសាស្ត្រសេដ្ឋកិច្ច</p>
+                        <p className="mt-1 text-sm leading-tight font-medium text-foreground md:text-[13px]">Royal University of Law and Economics</p>
+                        {/* <p className="text-sm leading-tight font-semibold text-foreground md:text-lg">{website_info.name_kh}</p> */}
+                        {/* <p className="leading-tight font-semibold text-foreground md:text-sm">{name}</p> */}
+                    </div>
                 </div>
             </div>
         </Link>

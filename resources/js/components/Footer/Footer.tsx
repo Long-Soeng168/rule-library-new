@@ -1,6 +1,6 @@
 import useTranslation from '@/hooks/use-translation';
 import { Link, usePage } from '@inertiajs/react';
-import { HouseIcon, InfoIcon, LibraryIcon, MailIcon, MapPinIcon, PhoneIcon } from 'lucide-react';
+import { BookOpenTextIcon, HouseIcon, InfoIcon, MailIcon, MapPinIcon, NewspaperIcon, PhoneIcon } from 'lucide-react';
 import { StarsBackground } from '../animate-ui/backgrounds/stars';
 import PWAInstallPrompt from '../Button/PWAInstallPrompt';
 import { FooterLogo } from '../Logo/FooterLogo';
@@ -10,12 +10,24 @@ import { Separator } from '../ui/separator';
 export default function Footer() {
     const { website_info, media_links } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
+
+    const { url } = usePage();
+
+    const isActive = (href: string) => url === href || url.startsWith(href + '/');
+
+    const defaultItems = [
+        { href: '/', icon: <HouseIcon size={18} />, label: t('Home') },
+        { href: '/resources', icon: <BookOpenTextIcon size={18} />, label: t('E-Resources') },
+        { href: '/posts', icon: <NewspaperIcon size={18} />, label: t('Posts') },
+        { href: '/about', icon: <InfoIcon size={18} />, label: t('About') },
+    ];
+
     return (
         <footer className="relative border-t bg-primary to-transparent text-white dark:bg-gray-950">
             <StarsBackground className="absolute inset-0 hidden dark:block" />
 
             <div className="section-container mx-auto">
-                <div className="relative z-10 mx-auto max-w-7xl pt-14 pb-20">
+                <div className="relative z-10 mx-auto max-w-7xl pt-14 pb-28 lg:pb-24">
                     {/* Background Banner */}
                     <div className="absolute right-0 bottom-0 z-0 h-auto w-full max-w-[2000px]">
                         {/* <img
@@ -80,30 +92,21 @@ export default function Footer() {
                         {/* Quick Links */}
                         <div className="lg:justify-self-center">
                             <div className="mb-4 text-xl font-bold">
-                                {t("Quick Links")} <Separator className="w-auto bg-white" />
+                                {t('Quick Links')} <Separator className="w-auto bg-white" />
                             </div>
                             <ul className="space-y-2">
-                                <li>
-                                    <Link prefetch href="/" className="flex items-center gap-2 hover:underline">
-                                        <HouseIcon size={18} /> {t('Home')}
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <Link prefetch href="/about" className="flex items-center gap-2 hover:underline">
-                                        <InfoIcon size={18} /> {t('About')}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link prefetch href="/contact" className="flex items-center gap-2 hover:underline">
-                                        <PhoneIcon size={18} /> {t('Contact Us')}
-                                    </Link>
-                                </li>
-                                {/* <li>
-                                    <Link prefetch href="#" className="flex items-center gap-2 hover:underline">
-                                        <ClipboardListIcon size={18} /> Annual Report
-                                    </Link>
-                                </li> */}
+                                {defaultItems.map((item, idx) => (
+                                    <li key={idx}>
+                                        <Link
+                                            prefetch
+                                            href={item.href}
+                                            className={`flex items-center gap-2 rounded px-2 py-1 transition-colors ${isActive(item.href) ? 'font-semibold text-white underline underline-offset-4' : 'text-white'} hover:underline`}
+                                        >
+                                            {item.icon}
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
 
@@ -123,6 +126,9 @@ export default function Footer() {
                                         </li>
                                     ))}
                             </ul>
+                            <div className="mt-8 w-auto">
+                                <PWAInstallPrompt />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,13 +142,13 @@ export default function Footer() {
                                 __html: currentLocale === 'kh' ? website_info?.copyright_kh || website_info?.copyright : website_info?.copyright,
                             }}
                         />
-                        {/* <a href='https://alphalib.org/' className="text-sm">
-                            {t("Deverloped By")} : <b className='hover:underline underline-offset-4'>Alphalib</b>
-                        </a> */}
+                        <Link prefetch href={`/our-staffs`} className="text-sm">
+                            {t('Deverloped By')} : <b className="underline-offset-4 hover:underline">{t('E-Library Staff')}</b>
+                        </Link>
                     </div>
                 </div>
             </div>
-            
+
             <div className="absolute top-4 right-4 z-10">
                 <SwitchDarkMode3D />
             </div>

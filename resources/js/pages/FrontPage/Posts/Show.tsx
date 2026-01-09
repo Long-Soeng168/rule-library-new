@@ -70,7 +70,12 @@ const Show = () => {
                         </div>
 
                         {showData?.images?.length > 0 && (
-                            <PostmagesGallery images={showData?.images} containerClassName="pt-8" basePath="/assets/images/posts/" />
+                            <PostmagesGallery
+                                label={t('Images')}
+                                images={showData?.images}
+                                containerClassName="pt-8"
+                                basePath="/assets/images/posts/"
+                            />
                         )}
 
                         {showData?.files?.length > 0 && (
@@ -113,6 +118,9 @@ const Show = () => {
                                             key={item.id}
                                             url={`/posts/${item.id}`}
                                             title={currentLocale == 'kh' ? (item.title_kh ?? item.title) : item.title}
+                                            categoryName={
+                                                currentLocale == 'kh' ? (item.category?.name_kh ?? item.category?.name) : item.category?.name
+                                            }
                                             description={
                                                 currentLocale == 'kh' ? (item.short_description_kh ?? item.short_description) : item.short_description
                                             }

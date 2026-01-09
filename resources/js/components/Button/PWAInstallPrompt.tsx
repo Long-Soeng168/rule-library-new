@@ -18,41 +18,55 @@ export default function PWAInstallPrompt() {
     useEffect(() => {
         if (typeof window === 'undefined') return;
 
+        // 1. Standard Device Detection
         const ua = window.navigator.userAgent.toLowerCase();
-
-        // iOS detection
-        const ios = /iphone|ipad|ipod/.test(ua) || (ua.includes('mac') && 'ontouchend' in document); // iPadOS reports as Mac sometimes
+        const ios = /iphone|ipad|ipod/.test(ua) || (ua.includes('mac') && 'ontouchend' in document);
         setIsIOS(ios);
 
-        // macOS Safari detection
         const macSafari = ua.includes('macintosh') && ua.includes('safari') && !ua.includes('chrome');
         setIsMacSafari(macSafari);
 
-        // standalone mode (already installed)
         const standalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true;
         setIsStandalone(standalone);
 
-        // Android/Chrome beforeinstallprompt
+        // 2. Persistent Check (For Inertia navigation)
+        // If the event was already captured on a previous page, re-apply it to state
+        if ((window as any).savedPrompt) {
+            setDeferredPrompt((window as any).savedPrompt);
+            setVisible(true);
+        }
+
+        // 3. Android/Chrome Listener
         const handler = (e: any) => {
             e.preventDefault();
+            // Save to both local state and global window object
+            (window as any).savedPrompt = e;
             setDeferredPrompt(e);
             setVisible(true);
         };
+
         window.addEventListener('beforeinstallprompt', handler);
         return () => window.removeEventListener('beforeinstallprompt', handler);
     }, []);
 
     const handleInstall = async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
+        // Check both local state and the global window object
+        const prompt = deferredPrompt || (window as any).savedPrompt;
+
+        if (!prompt) return;
+
+        prompt.prompt();
+        const { outcome } = await prompt.userChoice;
+
         if (outcome === 'accepted') {
             console.log('✅ User accepted install');
+            // Clean up both to ensure the prompt doesn't show again
+            (window as any).savedPrompt = null;
+            setDeferredPrompt(null);
+            setVisible(false);
         } else {
             console.log('❌ User dismissed install');
         }
-        setDeferredPrompt(null);
-        setVisible(false);
     };
 
     // Already installed → don’t show anything
@@ -91,28 +105,28 @@ export default function PWAInstallPrompt() {
                 <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     <DialogContent className="space-y-4 sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle>{t("Install App")}</DialogTitle>
-                            <DialogDescription>{t("Follow these steps to add this app to your iPhone or iPad home screen:")}</DialogDescription>
+                            <DialogTitle>{t('Install App')}</DialogTitle>
+                            <DialogDescription>{t('Follow these steps to add this app to your iPhone or iPad home screen:')}</DialogDescription>
                         </DialogHeader>
 
                         <div className="flex flex-col gap-3">
                             <div>
-                                {t("1. Tap the")}
+                                {t('1. Tap the')}
                                 <Badge variant="outline" className="mx-2 inline-flex items-center gap-1 text-sm">
                                     Share <img className="size-5" src="/assets/icons/ios-share.png" alt="Share" />
                                 </Badge>
-                                {t("at the bottom in Safari")}
+                                {t('at the bottom in Safari')}
                             </div>
 
                             <div>
-                                {t("2. Scroll down and tap")}
+                                {t('2. Scroll down and tap')}
                                 <Badge variant="outline" className="mx-2 inline-flex items-center gap-1 text-sm">
                                     Add to Home Screen <PlusSquare className="ml-0.5" />
                                 </Badge>
                             </div>
 
                             <div className="mt-2 text-sm text-muted-foreground">
-                                {t("After adding, the app will appear on your home screen like a native app.")}
+                                {t('After adding, the app will appear on your home screen like a native app.')}
                             </div>
                         </div>
                     </DialogContent>
@@ -137,9 +151,9 @@ export default function PWAInstallPrompt() {
                 <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>{t("Install on Mac")}</DialogTitle>
+                            <DialogTitle>{t('Install on Mac')}</DialogTitle>
                             <DialogDescription>
-                                {t("In Safari, go to the menu bar")} → <b>File</b> → <b>Add to Dock</b>.
+                                {t('In Safari, go to the menu bar')} → <b>File</b> → <b>Add to Dock</b>.
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>

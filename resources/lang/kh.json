@@ -163,6 +163,8 @@
     "Posts": "ប៉ុស្ដិ៍",
     "Post Category": "ប្រភេទប៉ុស្ដិ៍",
     "Post Categories": "ប្រភេទប៉ុស្ដិ៍",
+    "Select Category": "ជ្រើសរើសប្រភេទ",
+    "All Category": "ប្រភេទទាំងអស់",
     "Search Category...": "ស្វែងរកប្រភេទ...",
     "Select Category...": "ជ្រើសរើសប្រភេទ...",
     "Category": "ប្រភេទ",
@@ -315,7 +317,13 @@
     "Change Password": "ប្ដូរពាក្យសម្ងាត់",
 
     "en": "kh",
-
+    
+    "Our Journey": "ដំណើររបស់យើង",
+    "Our Staffs": "បុគ្គលិករបស់យើង",
+    "Install this app for quick access": "ដំឡើងកម្មវិធីនេះសម្រាប់ចូលប្រើរហ័ស",
+    "Install": "ដំឡើង",
+    "Deverloped By": "អភិវឌ្ឍដោយ",
+    "E-Library Staff": "បុគ្គលិកបណ្ណាល័យអេឡិចត្រូនិក",
     "Researched by": "ស្រាវជ្រាវដោយ",
 
     "Loading...": "កំពុង​ផ្ទុក...",

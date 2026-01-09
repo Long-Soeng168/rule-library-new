@@ -33,7 +33,7 @@ const Index = () => {
                     <ResourceMainCategory />
                 </div>
 
-                <ResourcesListSection containerClassName="mt-8" title="Theses" />
+                <ResourcesListSection containerClassName="mt-8" />
             </section>
         </FrontPageLayout>
     );

@@ -1,4 +1,5 @@
 import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerTrigger } from '@/components/ui/drawer';
+import useTranslation from '@/hooks/use-translation';
 import { router } from '@inertiajs/react';
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -7,6 +8,7 @@ interface TagFilterProps {
     tags: {
         code: string;
         name: string;
+        name_kh: string;
         posts_count?: number;
     }[];
 }
@@ -14,6 +16,7 @@ interface TagFilterProps {
 export function TagFilter({ tags }: TagFilterProps) {
     const searchParams = new URLSearchParams(window.location.search);
     const initialTag = searchParams.get('category_code') || '';
+    const { t, currentLocale } = useTranslation();
 
     const [selectedTag, setSelectedTag] = useState<string | null>(initialTag);
 
@@ -61,7 +64,7 @@ export function TagFilter({ tags }: TagFilterProps) {
                             active ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-muted'
                         }`}
                     >
-                        <span>{item.name}</span>
+                        <span>{currentLocale == 'kh' ? (item.name_kh ?? item.name) : item.name}</span>
 
                         {item.posts_count !== undefined && (
                             <span
@@ -81,13 +84,13 @@ export function TagFilter({ tags }: TagFilterProps) {
     const MobileTagFilter = () => (
         <Drawer>
             <DrawerTrigger className="flex w-full items-center justify-between rounded-none border px-4 py-2 md:hidden">
-                <span className="text-sm font-medium">{selectedTag ? tags.find((t) => t.code === selectedTag)?.name : 'All Category'}</span>
+                <span className="text-sm font-medium">{selectedTag ? tags.find((t) => t.code === selectedTag)?.name : t('All Category')}</span>
                 <ChevronDown className="h-4 w-4" />
             </DrawerTrigger>
 
             <DrawerContent className="md:hidden">
                 <DrawerHeader>
-                    <h3 className="text-sm font-semibold">Select Category</h3>
+                    <h3 className="text-sm font-semibold">{t('Select Category')}</h3>
                 </DrawerHeader>
 
                 <DrawerBody>
@@ -102,7 +105,7 @@ export function TagFilter({ tags }: TagFilterProps) {
                                     className="flex w-full items-center justify-between text-sm"
                                 >
                                     <span className={active ? 'text-primary underline underline-offset-4' : 'text-muted-foreground'}>
-                                        {item.name}
+                                        {currentLocale == 'kh' ? (item.name_kh ?? item.name) : item.name}
                                     </span>
 
                                     {item.posts_count !== undefined && (
