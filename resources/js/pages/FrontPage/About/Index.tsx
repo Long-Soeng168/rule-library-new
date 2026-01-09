@@ -4,9 +4,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { MobileTableOfContents } from '@/components/TableContent/mobile-table-of-contents';
 import { TableOfContents } from '@/components/TableContent/table-of-contents';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
+import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
 
 const Index = () => {
+    const { t, currentLocale } = useTranslation();
+
     return (
         <FrontPageLayout>
             <ScrollProgress className="top-0 h-[4px]" />
@@ -14,7 +17,7 @@ const Index = () => {
                 <div className="relative z-10 mx-auto flex max-w-7xl divide-x divide-border px-4 md:px-0">
                     <div className="pointer-events-none absolute left-1/2 mx-auto h-full w-[calc(100%-2rem)] max-w-7xl -translate-x-1/2 border-x border-border p-0 lg:w-full" />
                     <main className="prose w-full max-w-none overflow-hidden p-4 pb-20 dark:prose-invert prose-h2:mb-0.5 prose-h3:mb-0.5 prose-p:m-0 prose-ul:m-0">
-                        <h1 className="mt-6 leading-tight text-primary">About RULE Library</h1>
+                        <h1 className="mt-6 leading-tight text-primary underline underline-offset-4">{t('About RULE Library')}</h1>
                         <section>
                             <h2>1. Introduction</h2>
                             <p>
