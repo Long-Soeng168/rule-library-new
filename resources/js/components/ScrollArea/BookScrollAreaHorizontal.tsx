@@ -51,7 +51,7 @@ export function BookScrollAreaHorizontal({ items, mainCategoryCode }: { items: a
 
             {/* Desktop */}
             <div className="overflow-x-hidden max-lg:hidden">
-                <BooksCarousel items={items} />
+                <BooksCarousel items={items} mainCategoryCode={mainCategoryCode} />
             </div>
         </>
     );

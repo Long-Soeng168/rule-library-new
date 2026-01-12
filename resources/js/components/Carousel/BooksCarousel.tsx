@@ -6,7 +6,7 @@ import HoverButton from '../Button/HoverButton';
 import BookCardHoverGradient from '../Card/BookCardHoverGradient';
 import { PlaceholderPattern } from '../ui/placeholder-pattern';
 
-const BooksCarousel = ({ items }: { items: any[] }) => {
+const BooksCarousel = ({ items, mainCategoryCode }: { items: any[]; mainCategoryCode: string }) => {
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
@@ -44,7 +44,7 @@ const BooksCarousel = ({ items }: { items: any[] }) => {
                     <CarouselItem key="SeeMore" className="px-2 py-1 md:basis-1/2 lg:basis-1/5">
                         <div className="relative flex h-full items-center justify-center rounded-md border border-transparent p-1 shadow dark:border-white/20">
                             <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />
-                            <Link href={`/resources`} prefetch>
+                            <Link href={`/resources/${mainCategoryCode}`} prefetch>
                                 <HoverButton />
                             </Link>
                         </div>
