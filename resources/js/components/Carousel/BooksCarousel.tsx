@@ -24,7 +24,7 @@ const BooksCarousel = ({ items, mainCategoryCode }: { items: any[]; mainCategory
 
     return (
         <div className="overflow-hidden">
-            <Carousel setApi={setApi} opts={{ align: 'start' }} className="w-full overflow-hidden">
+            <Carousel setApi={setApi} opts={{ align: 'start' }} className="w-full overflow-hidden pb-4">
                 <CarouselContent className="-ml-1 p-2 pr-1.5">
                     {items?.map((item) => (
                         <CarouselItem key={item.id} className="pl-1 md:basis-1/2 lg:basis-1/5">
@@ -68,8 +68,8 @@ const BooksCarousel = ({ items, mainCategoryCode }: { items: any[]; mainCategory
                     </div>
 
                     <div className="space-x-2">
-                        <CarouselPrevious className="static top-0 left-4 z-10 h-10 w-10 translate-y-0 transform rounded-none border border-neutral-300 bg-background/50 shadow-none backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-background hover:shadow-lg" />
-                        <CarouselNext className="static top-0 right-4 z-10 h-10 w-10 translate-y-0 transform rounded-none border border-neutral-300 bg-background/50 shadow-none backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-background hover:shadow-lg" />
+                        <CarouselPrevious className="static top-0 left-4 z-10 h-10 w-10 translate-y-0 transform rounded-md border border-neutral-300 bg-background/50 shadow-none backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-background hover:shadow-lg" />
+                        <CarouselNext className="static top-0 right-4 z-10 h-10 w-10 translate-y-0 transform rounded-md border border-neutral-300 bg-background/50 shadow-none backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-background hover:shadow-lg" />
                     </div>
                 </div>
             </Carousel>

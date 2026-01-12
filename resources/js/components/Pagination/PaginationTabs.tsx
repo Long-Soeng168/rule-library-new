@@ -7,9 +7,11 @@ import LoadingOnPrefetch from '../Loading/LoadingOnPrefetch';
 
 export default function PaginationTabs({
     containerClassName,
+    buttonClassName,
     perPageList = [10, 20, 50, 100, 200],
 }: {
     containerClassName?: string;
+    buttonClassName?: string;
     perPageList?: number[];
 }) {
     const { t } = useTranslation();
@@ -53,7 +55,10 @@ export default function PaginationTabs({
         <div className={cn('flex flex-wrap items-center p-6 pb-0', containerClassName)}>
             <div className="flex w-full flex-wrap items-center gap-2 pt-4">
                 <Select value={rowsPerPage} onValueChange={handleRowsPerPageChange}>
-                    <SelectTrigger disabled={perPageList[0] >= tableData.total} className="h-9 max-w-fit cursor-pointer space-x-1 rounded-none">
+                    <SelectTrigger
+                        disabled={perPageList[0] >= tableData.total}
+                        className={cn('h-9 max-w-fit cursor-pointer space-x-1 rounded-none', buttonClassName)}
+                    >
                         <SelectValue>
                             {rowsPerPage} / {t('page')}
                         </SelectValue>
@@ -92,6 +97,7 @@ export default function PaginationTabs({
                             !item.url && 'cursor-not-allowed text-foreground/40',
                             item.url && 'hover:border-primary hover:shadow-[4px_4px_0px_0px] hover:shadow-primary dark:hover:shadow-white',
                             item.active && 'bg-primary text-primary-foreground hover:border-primary-foreground dark:hover:border-black',
+                            buttonClassName,
                         )}
                     >
                         <span dangerouslySetInnerHTML={{ __html: t(renderLabel(item.label)) }} />

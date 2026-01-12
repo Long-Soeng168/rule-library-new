@@ -28,7 +28,7 @@ const ResourceList = ({ className }: { className?: string }) => {
                     </Link>
                 ))}
             </div>
-            <PaginationTabs perPageList={[16, 32, 64, 128, 256]} containerClassName="mx-0 px-0" />
+            <PaginationTabs perPageList={[16, 32, 64, 128, 256]} containerClassName="mx-0 px-0" buttonClassName='rounded-sm' />
         </>
     );
 };
