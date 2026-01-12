@@ -34,7 +34,6 @@ const ResourceDetail = () => {
                         <ReadButton />
                     </Link>
                     <a
-                        download
                         href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&is_download=1`}
                         className="flex-1"
                     >

@@ -62,12 +62,12 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                                     <span>{t('Read File')}</span>
                                 </button>
                             </Link>
-                            <Link href={`${readUrl}&is_download=1`}>
+                            <a href={`${readUrl}&is_download=1`}>
                                 <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
                                     <FileDownIcon size={20} />
                                     <span>{t('Download')}</span>
                                 </button>
-                            </Link>
+                            </a>
                         </div>
                     </div>
                 </div>
