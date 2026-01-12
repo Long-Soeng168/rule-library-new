@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { router, usePage } from '@inertiajs/react';
 import { RotateCwIcon } from 'lucide-react';
 import { useState } from 'react';
+import ByYearDialog from '../Dialog/ByYearDialog';
 
 export default function ResourceSidebar() {
     const { categories, authors, publishers, advisors, languages } = usePage<any>().props;
@@ -21,6 +22,8 @@ export default function ResourceSidebar() {
         publisher_id: initialQueryParams.get('publisher_id') || '',
         advisor_id: initialQueryParams.get('advisor_id') || '',
         language_code: initialQueryParams.get('language_code') || '',
+        from_year: initialQueryParams.get('from_year') || '',
+        to_year: initialQueryParams.get('to_year') || '',
     });
 
     const updateFilters = (updates: Partial<typeof filters>) => {
@@ -47,21 +50,32 @@ export default function ResourceSidebar() {
         router.visit(`${currentPath}?${queryParams.toString()}`, { preserveState: true, preserveScroll: true });
     };
 
-    const resetFilter = () =>
-        updateFilters({
+    const resetFilter = () => {
+        // 1. Reset local state immediately for UI responsiveness
+        setFilters({
             category_code: '',
             grade_code: '',
             author_id: '',
             publisher_id: '',
             advisor_id: '',
             language_code: '',
+            from_year: '',
+            to_year: '',
         });
+
+        // 2. Visit the current path without any query parameters
+        // We set preserveState to false so the component fully reloads with clean props
+        router.visit(currentPath, {
+            preserveState: false,
+            preserveScroll: true,
+        });
+    };
 
     return (
         <>
             <Accordion
                 type="multiple"
-                defaultValue={['categories', 'authors', 'publishers', 'advisors', 'languages']}
+                defaultValue={['categories', 'authors', 'publishers', 'advisors', 'languages', 'publishedYears']}
                 className={cn(
                     'w-full rounded-lg border px-4',
                     Object.values(filters).some((val) => !!val) && 'border-primary ring-4 ring-primary/20',
@@ -86,6 +100,13 @@ export default function ResourceSidebar() {
                         </AccordionContent>
                     </AccordionItem>
                 )}
+
+                <AccordionItem value="publishedYears" key="publishedYears">
+                    <AccordionTrigger className="font-semibold">{t('Published Year')}</AccordionTrigger>
+                    <AccordionContent>
+                        <ByYearDialog key={filters.from_year + filters.to_year} />
+                    </AccordionContent>
+                </AccordionItem>
 
                 {authors?.length > 0 && (
                     <AccordionItem value="authors" key="authors">

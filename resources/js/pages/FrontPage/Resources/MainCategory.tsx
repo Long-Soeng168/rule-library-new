@@ -1,6 +1,5 @@
 import RefreshButton from '@/components/Button/RefreshButton';
 import { TooltipButton } from '@/components/Button/TooltipButton';
-import ByYearDialog from '@/components/Dialog/ByYearDialog';
 import LoadingOnPrefetch from '@/components/Loading/LoadingOnPrefetch';
 import ResourceSearch from '@/components/Search/ResourceSearch';
 import ResourceList from '@/components/Section/ResourceList';
@@ -24,7 +23,7 @@ const MainCategory = () => {
     return (
         <FrontPageLayout>
             <section className="section-container mb-40">
-                <div className="my-4"> 
+                <div className="my-4">
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
@@ -76,7 +75,6 @@ const MainCategory = () => {
                             <div className="flex w-full justify-end gap-2 lg:w-auto">
                                 <RefreshButton />
                                 <ResourceSortBySelect />
-                                <ByYearDialog />
                             </div>
                         </div>
                         <div className="h-6">

@@ -26,45 +26,58 @@ export default function LibrarySidebarList({
     let visibleOptions = options.slice(0, limit);
     // if selected is not in visible slice, push it to front
     if (value) {
-        const selectedOption = options.find((o) => o.value == value);
-        if (selectedOption && !visibleOptions.some((o) => o.value == value)) {
+        // find parent if value is a child code
+        const selectedOption = options.find((o) => o.value === value || o.children?.some((child) => child.code === value));
+        if (selectedOption && !visibleOptions.some((o) => o.value === selectedOption.value)) {
             visibleOptions = [...visibleOptions, selectedOption];
         }
     }
 
-    // const filteredOptions = options.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
     const filteredOptions = options.filter((item) => (item.label ?? '').toLowerCase().includes((search ?? '').toLowerCase()));
-
-    const handleSelect = (val: string) => {
-        if (onChange) {
-            // toggle logic: if already selected -> clear it, else set new
-            onChange(value == val ? '' : val);
-        }
-    };
 
     // detect if a child item is selected, then open its parent accordion
     const defaultOpenValue = (() => {
-        const parent = visibleOptions.find((item) => item.children?.some((child) => child.code == value));
-        return parent ? parent.value : value;
+        const parent = visibleOptions.find((item) => item.children?.some((child) => child.code === value));
+        return parent ? parent.value : (visibleOptions.some(o => o.value === value) ? value : undefined);
     })();
+
+    // State to track expansion separate from the selection value
+    const [expandedItem, setExpandedItem] = useState<string | undefined>(defaultOpenValue);
+
+    const handleSelect = (val: string, isParent: boolean = false) => {
+        if (onChange) {
+            onChange(value === val ? '' : val);
+        }
+        // Only update expansion if it's a parent click or if we want to ensure the parent stays open
+        if (isParent) {
+            setExpandedItem(prev => prev === val ? undefined : val);
+        }
+    };
 
     const { t, currentLocale } = useTranslation();
 
     return (
         <div className="flex flex-col gap-2">
-            <Accordion type="single" defaultValue={defaultOpenValue} collapsible className="w-full rounded-lg">
+            <Accordion 
+                type="single" 
+                value={expandedItem} 
+                onValueChange={setExpandedItem} 
+                collapsible 
+                className="w-full rounded-lg"
+            >
                 {visibleOptions.map((item) => (
-                    <AccordionItem value={item.value} className="h-auto border-b-0">
+                    <AccordionItem key={item.value} value={item.value} className="h-auto border-b-0">
                         <div className="flex">
-                            <div key={item.value} className="flex flex-1 cursor-pointer items-center gap-3 rounded-md hover:bg-muted">
+                            <div className="flex flex-1 cursor-pointer items-center gap-3 rounded-md hover:bg-muted">
                                 <div className="flex flex-1 items-center">
                                     <button
-                                        onClick={() => handleSelect(item.value)}
+                                        type="button"
+                                        onClick={() => handleSelect(item.value, true)}
                                         className="flex flex-1 cursor-pointer items-center justify-start gap-2 rounded p-2 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:bg-muted"
                                     >
                                         <Checkbox
                                             id={value}
-                                            checked={value ? item.value == value : false}
+                                            checked={value ? item.value === value : false}
                                             className="size-4 rounded-full data-[state=checked]:border-primary data-[state=checked]:bg-true-primary dark:text-foreground"
                                         />
                                         <span className="flex flex-1 items-center justify-between gap-1 text-start leading-tight">
@@ -92,9 +105,9 @@ export default function LibrarySidebarList({
                                         <CheckboxOption
                                             key={subItem.id}
                                             value={subItem.code}
-                                            label={currentLocale == 'kh' ? subItem.name_kh || subItem.name : subItem.name}
+                                            label={currentLocale === 'kh' ? subItem.name_kh || subItem.name : subItem.name}
                                             checkedValue={value}
-                                            onChange={handleSelect}
+                                            onChange={(val) => handleSelect(val, false)}
                                         />
                                     </li>
                                 ))}
@@ -139,26 +152,23 @@ export default function LibrarySidebarList({
                     {/* List */}
                     <div className="show-scrollbar max-h-[300px] overflow-y-auto pr-2">
                         {filteredOptions.map((item) => (
-                            <>
-                                <div className="flex flex-1 items-center">
-                                    <button
-                                        onClick={() => handleSelect(item.value)}
-                                        className="flex flex-1 cursor-pointer items-center justify-start gap-2 rounded p-2 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:bg-muted"
-                                    >
-                                        <Checkbox
-                                            id={value}
-                                            checked={value ? item.value == value : false}
-                                            className="size-4 rounded-full data-[state=checked]:border-primary data-[state=checked]:bg-true-primary dark:text-foreground"
-                                        />
-                                        <span className="flex flex-1 items-center justify-between gap-1 text-start leading-tight">
-                                            <span className='line-clamp-3'>{item.label}</span>
-                                            {item.items_count && <span className="font-medium text-xs">({item.items_count})</span>}
-                                        </span>
-                                    </button>
-                                </div>
-                            </>
+                            <div key={item.value} className="flex flex-1 items-center">
+                                <button
+                                    onClick={() => handleSelect(item.value, true)}
+                                    className="flex flex-1 cursor-pointer items-center justify-start gap-2 rounded p-2 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:bg-muted"
+                                >
+                                    <Checkbox
+                                        checked={value ? item.value === value : false}
+                                        className="size-4 rounded-full data-[state=checked]:border-primary data-[state=checked]:bg-true-primary dark:text-foreground"
+                                    />
+                                    <span className="flex flex-1 items-center justify-between gap-1 text-start leading-tight">
+                                        <span className='line-clamp-3'>{item.label}</span>
+                                        {item.items_count && <span className="font-medium text-xs">({item.items_count})</span>}
+                                    </span>
+                                </button>
+                            </div>
                         ))}
-                        {filteredOptions.length == 0 && <p className="py-4 text-center text-sm text-muted-foreground">No results found</p>}
+                        {filteredOptions.length === 0 && <p className="py-4 text-center text-sm text-muted-foreground">No results found</p>}
                     </div>
                 </DialogContent>
             </Dialog>

@@ -21,21 +21,21 @@ const Index = () => {
                         <section>
                             <h2>1. Introduction</h2>
                             <p>
-                                The Royal University of Law and Economic Sciences, since its inception in 1949, has actively contributed to the
+                                The Royal University of Law and Economics, since its inception in 1949, has actively contributed to the
                                 training of human resources in the fields of law and economics.
                             </p>
                             <p>
                                 Knowledge is a major source of development. Library development is about improving the reading skills of the general
                                 public and contributing to the advancement of the education sector in Cambodia.
                             </p>
-                            <p> Currently, the Royal University of Law and Economic Sciences has three major libraries:</p>
+                            <p> Currently, the Royal University of Law and Economics has three major libraries:</p>
                             <ul>
                                 <li>Law Library</li>
                                 <li>Economics Library</li>
                                 <li>Electronic library</li>
                             </ul>
                             <p>
-                                Located in the new building (I) Second floor, third floor, and fourth floor. Second floor, third floor, and fourth
+                                Located in the new building (I) Second floor, third floor, and fourth floor.
                                 floor.
                             </p>
                         </section>
@@ -49,7 +49,7 @@ const Index = () => {
                         <section>
                             <h2>3. Library Materials</h2>
                             <p>
-                                The Law and Economics Library has a total of 15,232 books in Khmer, English, and French. There are 373 books for the
+                                The Law and Economics Library has a total of 15,232 books in Khmer, English, and French. There are 4000+ books for the
                                 electronic library. The electronic library has 68 computers for students to use. It is equipped with documents
                                 obtained online by the university, which has become an annual member or through partners (MOU) of the university, such
                                 as the LexisNexis database.
@@ -97,7 +97,7 @@ const Index = () => {
                                             </p>
 
                                             <p>
-                                                All students of the Royal University of Law and Economic Sciences have access to the library's
+                                                All students of the Royal University of Law and Economics have access to the library's
                                                 services at all times. Library patrons can contact staff to request a library card to borrow books.
                                                 The library card is valid for one academic year.
                                             </p>
@@ -152,7 +152,7 @@ const Index = () => {
                                     </a>{' '}
                                     or via the{' '}
                                     <a href="http://www.rule.edu.kh" target="_blank">
-                                        Royal University of Law and Economic Sciences website
+                                        Royal University of Law and Economics website
                                     </a>
                                     .
                                 </li>
@@ -163,7 +163,7 @@ const Index = () => {
                             <h2>7. Library Services</h2>
                             <ul>
                                 <li>
-                                    The library of the Royal University of Law and Economic Sciences is a space where students and professors can
+                                    The library of the Royal University of Law and Economics is a space where students and professors can
                                     freely conduct research and study as needed. However, to borrow books from the library, users must register for a
                                     library card, which is valid until the end of each academic year.
                                 </li>
@@ -174,7 +174,7 @@ const Index = () => {
                                 </li>
 
                                 <li>
-                                    In addition, the library provides a <strong>consultation room</strong> for students and professors to use for
+                                    In addition, the library provides a <strong>meeting room</strong> for students and professors to use for
                                     group discussions. This room is equipped with an <strong>LCD projector</strong> to support collaborative work and
                                     presentations.
                                 </li>
@@ -183,7 +183,7 @@ const Index = () => {
                         <section>
                             <h2>8. RULE Library Structure</h2>
                             <p>
-                                The library of the Royal University of Law and Economic Sciences is divided into three sections to align with the
+                                The library of the Royal University of Law and Economics is divided into three sections to align with the
                                 university's training specializations: the <strong>Law Library</strong>, the <strong>Economics Library</strong>, and
                                 the <strong>Electronic Library</strong>.
                             </p>
@@ -196,7 +196,7 @@ const Index = () => {
                                         <p>
                                             The Law Library is a specialized library in the field of law, located on the{' '}
                                             <strong>second floor of Building I</strong>. It contains more than{' '}
-                                            <strong>10,000 document resources</strong> in three languages — Khmer, English, and French — including
+                                            <strong>10,000+ document resources</strong> in three languages — Khmer, English, and French — including
                                             documents, research reports, theses, national and international legal documents, legal theory books, and
                                             various other publications.
                                         </p>
@@ -210,7 +210,7 @@ const Index = () => {
                                         <p>
                                             Located on the <strong>third floor of Building I</strong>, the Economics Library is a specialized library
                                             in the field of economics. Similar to the Law Library, it serves as a central hub that houses nearly all
-                                            economic document resources, with more than <strong>10,000 documents</strong> to support the research
+                                            economic document resources, with more than <strong>10,000+ documents</strong> to support the research
                                             needs of students and professors.
                                         </p>
                                     </AccordionContent>
@@ -222,7 +222,7 @@ const Index = () => {
                                     <AccordionContent className="text-base text-foreground">
                                         <p>
                                             As a member of the <strong>ASEAN University Network (AUN)</strong>, the Royal University of Law and
-                                            Economic Sciences established the Electronic Library in response to the continuous development of
+                                            Economics established the Electronic Library in response to the continuous development of
                                             technology. Located on the <strong>fourth floor of Building I</strong>, the Electronic Library plays an
                                             important role in providing online research services. It serves as a resource center for
                                             technology-related document research and is equipped with numerous computers for students and professors
@@ -238,15 +238,13 @@ const Index = () => {
                                 Under the careful leadership of the university's leadership and management, the library of the Royal University of Law
                                 and Economics has developed rapidly with the implementation of modern software to manage the library's operations. As
                                 a result, the library initially used a world-class library management system called Koha , which made library
-                                management easier with book search, book data storage, loan management, and many other important functions. At the
-                                same time, the library has also prepared an E-Library project , through which students and professors can easily use
-                                the library of the Royal University of Law and Economics via the Internet.
+                                management easier with book search, book data storage, loan management, and many other important functions.
                             </p>
                         </section>
                         <section>
                             <h2>10. Internal Regulations</h2>
                             <p>
-                                The library of the Royal University of Law and Economic Sciences is open to provide services to students and
+                                The library of the Royal University of Law and Economics is open to provide services to students and
                                 researchers during all working hours. To ensure good service, students are requested to follow the regulations below:
                             </p>
 

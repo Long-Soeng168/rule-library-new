@@ -11,7 +11,7 @@ const AlertLibraryArticles = () => {
             title: 'Article 1',
             content: (
                 <p>
-                    Civil servants, professors, and students of the Royal University of Law and Economic Sciences who wish to use or borrow books from
+                    Civil servants, professors, and students of the Royal University of Law and Economics who wish to use or borrow books from
                     the library must contact the librarian for information.
                 </p>
             ),

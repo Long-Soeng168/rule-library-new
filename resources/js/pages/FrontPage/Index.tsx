@@ -1,7 +1,5 @@
 import SpaceAnimateButton from '@/components/Button/SpaceAnimateButton';
 import { ContentHeader } from '@/components/Header/ContentHeader';
-import Accordion1 from '@/components/Section/Accordion1';
-import Feature1 from '@/components/Section/Feature1';
 import Feature2 from '@/components/Section/Feature2';
 import { Feature3 } from '@/components/Section/Feature3';
 import Feature6 from '@/components/Section/Feature6';
@@ -67,20 +65,20 @@ const Index = () => {
             {/* Libraries Statistics */}
             <div className="section-container mt-40">
                 <ContentHeader
-                    title={t("Library Overview")}
-                    description={t("A quick look at how our library is being used — from online reads to in-person visits.")}
+                    title={t('Library Overview')}
+                    description={t('A quick look at how our library is being used — from online reads to in-person visits.')}
                 />
 
                 <Feature6 />
             </div>
 
             {/* What We Offer */}
-            <Feature1 />
+            {/* <Feature1 /> */}
 
             {/* Accordion */}
-            <div className="section-container mt-20">
+            {/* <div className="section-container mt-20">
                 <Accordion1 />
-            </div>
+            </div> */}
 
             <div className="section-container my-20 flex justify-center">
                 <Link href={`/resources`}>
