@@ -33,7 +33,7 @@ export default function StaffPage() {
             <div className="section-container">
                 {/* Header */}
                 <header className="my-8 text-center">
-                    <h1 className="text-3xl font-bold text-foreground md:text-4xl">បុគ្គលិកបណ្ណាល័យ</h1>
+                    <h1 className="text-3xl font-bold text-foreground md:text-4xl">{t("Our Staffs")}</h1>
                 </header>
 
                 <Tabs defaultValue={url == '/our-staffs' ? 'our-staffs' : 'our-staffs-structure'}>
