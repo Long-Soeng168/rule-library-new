@@ -52,7 +52,7 @@ export default function PaginationTabs({
     };
 
     return (
-        <div className={cn('flex flex-wrap items-center p-6 pb-0', containerClassName)}>
+        <div className={cn('flex flex-wrap items-center p-6 pb-10', containerClassName)}>
             <div className="flex w-full flex-wrap items-center gap-2 pt-4">
                 <Select value={rowsPerPage} onValueChange={handleRowsPerPageChange}>
                     <SelectTrigger

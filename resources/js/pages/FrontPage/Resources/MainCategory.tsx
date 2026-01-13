@@ -22,7 +22,7 @@ const MainCategory = () => {
 
     return (
         <FrontPageLayout>
-            <section className="section-container mb-40">
+            <section className="section-container mb-10">
                 <div className="my-4">
                     <Breadcrumb>
                         <BreadcrumbList>
