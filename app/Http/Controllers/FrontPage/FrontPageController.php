@@ -40,7 +40,8 @@ class FrontPageController extends Controller
                     'created_at'
                 )
                     ->where('status', 'published')
-                    ->orderByDesc('id')
+                    // ->orderByDesc('id')
+                    ->inRandomOrder()
                     ->limit(6);
             },
         ])

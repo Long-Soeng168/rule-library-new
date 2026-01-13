@@ -8,7 +8,7 @@ import { useState } from 'react';
 import ByYearDialog from '../Dialog/ByYearDialog';
 
 export default function ResourceSidebar() {
-    const { categories, authors, publishers, advisors, languages } = usePage<any>().props;
+    const { categories, authors, publishers, advisors, languages, mainCategory } = usePage<any>().props;
 
     const { t, currentLocale } = useTranslation();
 
@@ -83,7 +83,9 @@ export default function ResourceSidebar() {
             >
                 {categories?.length > 0 && (
                     <AccordionItem value="categories" key="categories">
-                        <AccordionTrigger className="font-semibold">{t('Categories')}</AccordionTrigger>
+                        <AccordionTrigger className="font-semibold">
+                            {mainCategory?.code == 'theses' ? t('Bachelor') : t('Categories')}
+                        </AccordionTrigger>
                         <AccordionContent>
                             <LibrarySidebarList
                                 limit={20}

@@ -165,6 +165,7 @@
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
     --primary: #655eb3;
+    /* --primary: #155cac; */
     --dark-primary: #781216;
     --primary-two: #f3ab1c;
     --primary-three: #8ab35e;

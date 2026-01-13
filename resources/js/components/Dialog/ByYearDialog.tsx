@@ -77,7 +77,7 @@ export default function ByYearDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button
-                    className={`h-11 w-full cursor-pointer rounded-md border border-primary/50 bg-muted text-foreground hover:bg-primary hover:text-white focus-visible:outline-none ${(filters.from_year || filters.to_year) && ''}`}
+                    className={`h-11 w-full rounded-md border border-primary/50 bg-muted text-foreground hover:bg-primary hover:text-white focus-visible:outline-none ${(filters.from_year || filters.to_year) && ''}`}
                 >
                     {filters.from_year || filters.to_year ? (
                         <div className="flex items-center justify-center gap-1">

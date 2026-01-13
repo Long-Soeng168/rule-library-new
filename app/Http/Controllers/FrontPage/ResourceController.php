@@ -36,6 +36,7 @@ class ResourceController extends Controller
                     $sub->where(function ($w) use ($search) {
                         $w->where('name', 'like', "%{$search}%")
                             ->orWhere('name_kh', 'like', "%{$search}%")
+                            ->orWhere('published_year', 'like', "%{$search}%")
                             ->orWhere('keywords', 'like', "%{$search}%")
                             ->orWhere('author_name', 'like', "%{$search}%");
 
@@ -195,6 +196,7 @@ class ResourceController extends Controller
                 $sub->where(function ($w) use ($search) {
                     $w->where('name', 'like', "%{$search}%")
                         ->orWhere('name_kh', 'like', "%{$search}%")
+                        ->orWhere('published_year', 'like', "%{$search}%")
                         ->orWhere('keywords', 'like', "%{$search}%")
                         ->orWhere('author_name', 'like', "%{$search}%");
 
@@ -234,6 +236,7 @@ class ResourceController extends Controller
                     'author_items' => fn($q) =>
                     $q->where('main_category_code', $main_category_code),
                 ])
+                ->having('author_items_count', '>', 0)
                 ->get();
 
             $publishers = User::role('Publisher')
@@ -244,6 +247,7 @@ class ResourceController extends Controller
                     'publisher_items' => fn($q) =>
                     $q->where('main_category_code', $main_category_code),
                 ])
+                ->having('publisher_items_count', '>', 0)
                 ->get();
         }
 
@@ -260,6 +264,7 @@ class ResourceController extends Controller
                     'advisor_items' => fn($q) =>
                     $q->where('main_category_code', $main_category_code),
                 ])
+                ->having('advisor_items_count', '>', 0)
                 ->get();
         }
 
@@ -270,7 +275,7 @@ class ResourceController extends Controller
                 'items' => fn($q) =>
                 $q->where('main_category_code', $main_category_code),
             ])
-            // ->having('items_count', '>', 0)
+            ->having('items_count', '>', 0)
             ->get();
 
         // return [

@@ -33,10 +33,7 @@ const ResourceDetail = () => {
                     <Link href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`} className="flex-1">
                         <ReadButton />
                     </Link>
-                    <a
-                        href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&is_download=1`}
-                        className="flex-1"
-                    >
+                    <a href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&is_download=1`} className="flex-1">
                         <DownloadButton />
                     </a>
                 </div>
@@ -100,7 +97,7 @@ const ResourceDetail = () => {
 
                     {showData?.category && (
                         <div className="flex items-center justify-start gap-4 pb-1">
-                            <span className="w-[120px] shrink-0 border-r">{t('Category')}</span>
+                            <span className="w-[120px] shrink-0 border-r">{mainCategory?.code == 'theses' ? t('Bachelor') : t('Category')}</span>
                             <div className="flex flex-wrap items-center gap-2">
                                 {showData?.category?.parent && (
                                     <>
