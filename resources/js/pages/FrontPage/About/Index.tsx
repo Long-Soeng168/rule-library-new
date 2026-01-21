@@ -259,6 +259,7 @@ const Index = () => {
                                     members={[
                                         {
                                             name: 'Dr. Ngan Sundet',
+                                            name_kh: 'បណ្ឌិត ង៉ាន់ ស៊ុនដេត',
                                             image: '/assets/rule_library/profiles/sundet.jpeg',
                                             role: 'Managing Director',
                                             description: `The library is a storehouse of wisdom. A person who reads a lot will develop a clear vision. This is the path that everyone should travel.

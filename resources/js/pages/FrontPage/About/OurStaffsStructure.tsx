@@ -28,7 +28,8 @@ const OurStaffsStructure = () => {
                         label={
                             <StyledNode>
                                 <StaffCard
-                                    name="បណ្ឌិត ង៉ាន់ ស៊ុនដេត"
+                                    name="Dr. Ngann Sundet"
+                                    name_kh="បណ្ឌិត ង៉ាន់ ស៊ុនដេត"
                                     role="Managing Director"
                                     imageUrl="/assets/rule_library/profiles/sundet.jpeg"
                                 />
@@ -44,14 +45,14 @@ const OurStaffsStructure = () => {
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="គឹម ច័ន្ទត្រាបុត្រ" role="Technical Librarian" imageUrl="" />
+                                                <StaffCard name="" name_kh="គឹម ច័ន្ទត្រាបុត្រ" role="Technical Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="អ៊ុង សុបញ្ញាម៉ូនិក" role="Administrator" imageUrl="" />
+                                                <StaffCard name="" name_kh="អ៊ុង សុបញ្ញាម៉ូនិក" role="Administrator" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -63,14 +64,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            <StaffCard name="សេង វណ្ណា" role="Librarian" imageUrl="" />
+                                            <StaffCard name="" name_kh="សេង វណ្ណា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="លី រ៉ានី" role="Librarian" imageUrl="" />
+                                                <StaffCard name="" name_kh="លី រ៉ានី" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -78,14 +79,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            <StaffCard name="កញ្ញា រិន សុទ្ធាលីនណា" role="Librarian" imageUrl="" />
+                                            <StaffCard name="" name_kh="រិន សុទ្ធាលីនណា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="កញ្ញា ជ្រា មុនីនាថ" role="Librarian" imageUrl="" />
+                                                <StaffCard name="" name_kh="ជ្រា មុនីនាថ" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -97,14 +98,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            <StaffCard name="កែ សម្បត្តិនីតា" role="Librarian" imageUrl="" />
+                                            <StaffCard name="" name_kh="កែ សម្បត្តិនីតា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="ឈិន ដារិត" role="Librarian" imageUrl="" />
+                                                <StaffCard name="" name_kh="ឈិន ដារិត" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -112,14 +113,14 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            <StaffCard name="ហ៊ាង ចាន់តាលីឡា" role="Librarian" imageUrl="" />
+                                            <StaffCard name="" name_kh="ហ៊ាង ចាន់តាលីឡា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="វ៉ាង រ៉ាវុធ" role="Librarian" imageUrl="" />
+                                                <StaffCard name="" name_kh="វ៉ាង រ៉ាវុធ" role="Librarian" imageUrl="" />
                                             </StyledNode>
                                         }
                                     />
@@ -131,14 +132,19 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            <StaffCard name="ម៉ៅ បូរ៉ា" role="Librarian" imageUrl="" />
+                                            <StaffCard name="" name_kh="ម៉ៅ បូរ៉ា" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="គឹម សូរិយា" role="Librarian" imageUrl="" />
+                                                <StaffCard
+                                                    name="Kim Soreya"
+                                                    name_kh="គឹម សូរិយា"
+                                                    role="Librarian"
+                                                    imageUrl="/assets/rule_library/profiles/kim_soreya.jpg"
+                                                />
                                             </StyledNode>
                                         }
                                     />
@@ -146,14 +152,19 @@ const OurStaffsStructure = () => {
                                 <TreeNode
                                     label={
                                         <StyledNode>
-                                            <StaffCard name="ហេង ណារ័ត្ន" role="Librarian" imageUrl="" />
+                                            <StaffCard name="" name_kh="ហេង ណារ័ត្ន" role="Librarian" imageUrl="" />
                                         </StyledNode>
                                     }
                                 >
                                     <TreeNode
                                         label={
                                             <StyledNode>
-                                                <StaffCard name="ឡុង សឹង" role="Librarian" imageUrl="/assets/rule_library/profiles/long_soeng.jpg" />
+                                                <StaffCard
+                                                    name="Long Soeng"
+                                                    name_kh="ឡុង សឹង"
+                                                    role="Librarian"
+                                                    imageUrl="/assets/rule_library/profiles/long_soeng.jpg"
+                                                />
                                             </StyledNode>
                                         }
                                     />

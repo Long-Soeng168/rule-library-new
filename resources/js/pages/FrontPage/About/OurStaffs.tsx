@@ -33,7 +33,7 @@ export default function StaffPage() {
             <div className="section-container">
                 {/* Header */}
                 <header className="my-8 text-center">
-                    <h1 className="text-3xl font-bold text-foreground md:text-4xl">{t("Our Staffs")}</h1>
+                    <h1 className="text-3xl font-bold text-foreground md:text-4xl">{t('Our Staffs')}</h1>
                 </header>
 
                 <Tabs defaultValue={url == '/our-staffs' ? 'our-staffs' : 'our-staffs-structure'}>
@@ -84,10 +84,10 @@ export default function StaffPage() {
                                                                         className="flex h-full flex-col rounded-lg border border-border bg-background p-5 shadow transition hover:shadow-md dark:bg-white/8"
                                                                     >
                                                                         <div className="mb-4 flex items-start">
-                                                                            <div className="mr-4 flex size-23 items-center justify-center rounded-lg border border-border bg-muted text-muted-foreground">
+                                                                            <div className="mr-4 flex aspect-[3/3.5] w-23 items-center justify-center rounded-lg border border-border bg-muted text-muted-foreground">
                                                                                 <AvatarLogoFallback
                                                                                     className="size-full rounded"
-                                                                                    imageClassName="size-full object-cover"
+                                                                                    imageClassName="size-full object-cover object-top"
                                                                                     image={staff.image || ''}
                                                                                     alt={staff.name}
                                                                                     fallbackNode={
@@ -99,8 +99,11 @@ export default function StaffPage() {
                                                                                 />
                                                                             </div>
                                                                             <div className="flex-grow">
-                                                                                <h3 className="text-lg font-bold text-foreground">{staff.name}</h3>
-                                                                                <p className="text-sm text-muted-foreground">{staff.library}</p>
+                                                                                <h3 className="text-lg font-bold text-foreground">{staff.name_kh}</h3>
+                                                                                <h3 className="text-lg font-medium text-muted-foreground">
+                                                                                    {staff.name}
+                                                                                </h3>
+                                                                                <p className="mt-1 text-sm text-muted-foreground">{staff.library}</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="flex-grow space-y-2">

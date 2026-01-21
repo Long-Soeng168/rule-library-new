@@ -1,6 +1,7 @@
 export const staffSampleData = [
     {
-        name: 'បណ្ឌិត ង៉ាន់ ស៊ុនដេត',
+        name: 'Dr. Ngann Sundet',
+        name_kh: 'បណ្ឌិត ង៉ាន់ ស៊ុនដេត',
         task: 'ប្រធានគ្រប់គ្រង បញ្ជូនទិសដៅ និងសម្រេចកិច្ចការងារទូទៅរបស់បណ្ណាល័យ',
         library: 'គ្រប់គ្រងទូទៅ',
         shift: 'ពេញម៉ោង',
@@ -10,7 +11,7 @@ export const staffSampleData = [
         image: '/assets/rule_library/profiles/sundet.jpeg',
     },
     {
-        name: 'លោក គឹម ច័ន្ទត្រាបុត្រ',
+        name_kh: 'លោក គឹម ច័ន្ទត្រាបុត្រ',
         task: 'សម្របសម្រួលការងារបច្ចេកទេស និងប្រតិបត្តិការបណ្ណាល័យ',
         library: 'គ្រប់គ្រងទូទៅ',
         shift: 'ពេញម៉ោង',
@@ -20,7 +21,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'អ៊ុង សុបញ្ញាម៉ូនិក',
+        name_kh: 'អ៊ុង សុបញ្ញាម៉ូនិក',
         task: 'រៀបចំឯកសាររដ្ឋបាល និងគ្រប់គ្រងសម្ភារៈ',
         library: 'គ្រប់គ្រងទូទៅ',
         shift: 'ពេញម៉ោង',
@@ -32,7 +33,7 @@ export const staffSampleData = [
 
     // Law Library
     {
-        name: 'លោកស្រី សេង វណ្ណា',
+        name_kh: 'លោកស្រី សេង វណ្ណា',
         task: 'គ្រប់គ្រងប័ណ្ណបណ្ណាល័យ និងការខ្ចីសង',
         library: 'បណ្ណាល័យនីតិសាស្ត្រ',
         shift: 'វេនរសៀល',
@@ -42,7 +43,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'លោកស្រី លី រ៉ានី',
+        name_kh: 'លោកស្រី លី រ៉ានី',
         task: 'ធ្វើកាតាឡុកសៀវភៅ',
         library: 'បណ្ណាល័យនីតិសាស្ត្រ',
         shift: 'វេនព្រឹក',
@@ -52,7 +53,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'កញ្ញា រិន សុទ្ធាលីនណា',
+        name_kh: 'កញ្ញា រិន សុទ្ធាលីនណា',
         task: 'ការខ្ចីសង និងផ្តល់ព័ត៌មានសៀវភៅ',
         library: 'បណ្ណាល័យនីតិសាស្ត្រ',
         shift: 'វេនរសៀល',
@@ -62,7 +63,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'កញ្ញា ជ្រា មុនីនាថ',
+        name_kh: 'កញ្ញា ជ្រា មុនីនាថ',
         task: 'ការខ្ចីសង និងជួយសិស្សនិស្សិត',
         library: 'បណ្ណាល័យនីតិសាស្ត្រ',
         shift: 'វេនព្រឹក',
@@ -72,7 +73,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'កញ្ញា និត ស្រីណុច',
+        name_kh: 'កញ្ញា និត ស្រីណុច',
         task: 'ធ្វើកាតាឡុក និងជួយសិស្សនិស្សិត',
         library: 'បណ្ណាល័យនីតិសាស្ត្រ',
         shift: 'វេនរសៀល',
@@ -84,7 +85,7 @@ export const staffSampleData = [
 
     // Economics Library
     {
-        name: 'លោកស្រី កែ សម្បត្តិនីតា',
+        name_kh: 'លោកស្រី កែ សម្បត្តិនីតា',
         task: 'ការខ្ចីសង និងផ្តល់ព័ត៌មានដល់និស្សិត',
         library: 'បណ្ណាល័យសេដ្ឋកិច្ច',
         shift: 'វេនរសៀល',
@@ -94,7 +95,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'លោក ឈិន ដារិត',
+        name_kh: 'លោក ឈិន ដារិត',
         task: 'ការខ្ចីសង និងផ្តល់ព័ត៌មានសៀវភៅ',
         library: 'បណ្ណាល័យសេដ្ឋកិច្ច',
         shift: 'វេនព្រឹក',
@@ -104,7 +105,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'លោកស្រី ហ៊ាង ចាន់តាលីឡា',
+        name_kh: 'លោកស្រី ហ៊ាង ចាន់តាលីឡា',
         task: 'ការខ្ចីសង និងជួយនិស្សិត',
         library: 'បណ្ណាល័យសេដ្ឋកិច្ច',
         shift: 'វេនរសៀល',
@@ -114,7 +115,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'លោក វ៉ាង រ៉ាវុធ',
+        name_kh: 'លោក វ៉ាង រ៉ាវុធ',
         task: 'ធ្វើកាតាឡុកសៀវភៅ និងផ្តល់ព័ត៌មាន',
         library: 'បណ្ណាល័យសេដ្ឋកិច្ច',
         shift: 'វេនព្រឹក',
@@ -126,7 +127,7 @@ export const staffSampleData = [
 
     // Electronic Library
     {
-        name: 'លោក ម៉ៅ បូរ៉ា',
+        name_kh: 'លោក ម៉ៅ បូរ៉ា',
         task: 'រៀបចំកម្មវិធីបណ្ណាល័យ និងថែរក្សាប្រព័ន្ធគ្រប់គ្រង',
         library: 'បណ្ណាល័យអេឡិចត្រូនិក',
         shift: 'វេនព្រឹក',
@@ -136,7 +137,7 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'លោក ហេង ណារ័ត្ន',
+        name_kh: 'លោក ហេង ណារ័ត្ន',
         task: 'គ្រប់គ្រងបណ្តាញ និងប្រព័ន្ធអ៊ីនធឺណិត',
         library: 'បណ្ណាល័យអេឡិចត្រូនិក',
         shift: 'វេនរសៀល',
@@ -146,7 +147,8 @@ export const staffSampleData = [
         image: '',
     },
     {
-        name: 'លោក ឡុង សឹង',
+        name: 'Mr. Long Soeng',
+        name_kh: 'លោក ឡុង សឹង',
         task: 'អភិវឌ្ឍប្រព័ន្ធ និងកម្មវិធីបណ្ណាល័យ (Full-stack)',
         library: 'បណ្ណាល័យអេឡិចត្រូនិក',
         shift: 'វេនរសៀល',
@@ -156,13 +158,14 @@ export const staffSampleData = [
         image: '/assets/rule_library/profiles/long_soeng.jpg',
     },
     {
-        name: 'លោកស្រី គឹម សុរិយា',
+        name: 'Ms. Kim Sorya',
+        name_kh: 'កញ្ញា គឹម សុរិយា',
         task: 'អភិវឌ្ឍ និងថែរក្សាកម្មវិធីបណ្ណាល័យ',
         library: 'បណ្ណាល័យអេឡិចត្រូនិក',
         shift: 'វេនព្រឹក',
         hours: '8:00 - 19:00',
         phone: '',
         email: '',
-        image: '',
+        image: '/assets/rule_library/profiles/kim_soreya.jpg',
     },
 ];
