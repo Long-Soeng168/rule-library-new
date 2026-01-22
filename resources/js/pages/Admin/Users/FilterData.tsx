@@ -5,21 +5,33 @@ import { ComboboxSelect } from '@/components/Section/ComboboxSelect';
 import useTranslation from '@/hooks/use-translation';
 import { router, usePage } from '@inertiajs/react';
 import { CircleCheckBigIcon, ReplaceAllIcon, Trash2Icon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Role {
     name: string;
 }
 
 const FilterData = () => {
+    const { t } = useTranslation();
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
     const { roles } = usePage<{ roles: Role[] }>().props;
 
-    const initialQueryParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+    // Source of Truth: The URL
+    const getParams = () => new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+
     const [filters, setFilters] = useState({
-        role: initialQueryParams.get('role') || '',
-        trashed: initialQueryParams.get('trashed') || '',
+        role: getParams().get('role') || '',
+        trashed: getParams().get('trashed') || '',
     });
+
+    // Sync local state when URL changes (e.g., when RoleFilter row is clicked)
+    useEffect(() => {
+        const params = getParams();
+        setFilters({
+            role: params.get('role') || '',
+            trashed: params.get('trashed') || '',
+        });
+    }, [window.location.search]); // Listens for URL changes
 
     const updateFilters = (updates: Partial<typeof filters>) => {
         const newFilters = { ...filters, ...updates };
@@ -36,22 +48,26 @@ const FilterData = () => {
         f.trashed ? queryParams.set('trashed', f.trashed) : queryParams.delete('trashed');
         queryParams.set('page', '1');
 
-        router.get(`${currentPath}?${queryParams.toString()}`, {}, { preserveState: true, preserveScroll: true });
+        router.get(
+            `${currentPath}?${queryParams.toString()}`,
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     const resetFilter = () => updateFilters({ role: '', trashed: '' });
 
-    const { t } = useTranslation();
-
     const trashedOptions = [
-        { value: '', label: t('Without Trashed'), icon: CircleCheckBigIcon }, // items that are not deleted
-        { value: 'with', label: t('With Trashed'), icon: ReplaceAllIcon }, // include deleted items, restore icon fits
-        { value: 'only', label: t('Only Trashed'), icon: Trash2Icon }, // only deleted items, eye-off indicates hidden
+        { value: '', label: t('Without Trashed'), icon: CircleCheckBigIcon },
+        { value: 'with', label: t('With Trashed'), icon: ReplaceAllIcon },
+        { value: 'only', label: t('Only Trashed'), icon: Trash2Icon },
     ];
 
     return (
         <FilterSheet handleFilter={applyFilter} resetFilter={resetFilter} isFiltered={!!filters.role || !!filters.trashed}>
-            {/* Role Filter */}
             <div className="mb-4">
                 <FormLabel label="Role" />
                 <ComboboxSelect
@@ -64,7 +80,6 @@ const FilterData = () => {
                 />
             </div>
 
-            {/* Trashed Filter */}
             <div className="mb-4">
                 <FormLabel label="Trashed" />
                 <div className="mt-1 grid w-full max-w-sm grid-cols-3 gap-3">
@@ -78,10 +93,6 @@ const FilterData = () => {
                     ))}
                 </div>
             </div>
-
-            {/* <button className="flex cursor-pointer items-center gap-2 py-2 hover:text-primary hover:underline" onClick={resetFilter}>
-                <RefreshCcwIcon size={16} /> Reset Filter
-            </button> */}
         </FilterSheet>
     );
 };

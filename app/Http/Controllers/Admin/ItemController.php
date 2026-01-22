@@ -10,6 +10,7 @@ use App\Models\Language;
 use App\Models\ItemCategory;
 use App\Models\ItemFile;
 use App\Models\ItemImage;
+use App\Models\ItemMainCategory;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,10 +40,12 @@ class ItemController extends Controller implements HasMiddleware
         $sortBy = $request->input('sortBy', 'id');
         $sortDirection = $request->input('sortDirection', 'desc');
         $file_type_code = $request->input('file_type_code');
+        $main_category_code = $request->input('main_category_code');
         $category_code = $request->input('category_code');
         $language_code = $request->input('language_code');
         $status = $request->input('status');
         $publisher_id = $request->input('publisher_id');
+        $advisor_id = $request->input('advisor_id');
         $author_id = $request->input('author_id');
         $trashed = $request->input('trashed'); // '', 'with', 'only'
 
@@ -58,8 +61,14 @@ class ItemController extends Controller implements HasMiddleware
             });
         }
 
+        if ($advisor_id) {
+            $query->where('advisor_id', $advisor_id);
+        }
         if ($publisher_id) {
             $query->where('publisher_id', $publisher_id);
+        }
+        if ($main_category_code) {
+            $query->where('main_category_code', $main_category_code);
         }
         if ($category_code) {
             $query->where('category_code', $category_code);
@@ -104,6 +113,10 @@ class ItemController extends Controller implements HasMiddleware
             'fileTypes' => Type::where('group_code', 'item-file-type-group')->withCount('file_type_items')->orderBy('order_index')->orderBy('name')->get(),
             'languages' => Language::orderBy('order_index')->withCount('items')->orderBy('name')->get(),
             'categories' => ItemCategory::orderBy('order_index')
+                ->withCount('items')
+                ->orderBy('name')
+                ->get(),
+            'mainCategories' => ItemMainCategory::orderBy('order_index')
                 ->withCount('items')
                 ->orderBy('name')
                 ->get(),

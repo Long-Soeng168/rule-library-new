@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,7 @@ class UserController extends Controller implements HasMiddleware
 
         $query = User::query();
 
-        $query->with('created_user', 'updated_user', 'roles');
+        $query->with('created_user', 'updated_user', 'roles', 'title');
 
         // if ($status) {
         //     $query->where('status', $status);
@@ -66,6 +67,7 @@ class UserController extends Controller implements HasMiddleware
         if ($search) {
             $query->where(function ($sub_query) use ($search) {
                 return $sub_query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('name_kh', 'LIKE', "%{$search}%")
                     ->orWhere('id', 'LIKE', "%{$search}%")
                     ->orWhere('phone', 'LIKE', "%{$search}%")
                     ->orWhere('email', 'LIKE', "%{$search}%");
@@ -73,6 +75,7 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $query->orderBy('id', 'desc');
+        $query->withCount('author_items', 'publisher_items', 'advisor_items', 'posts');
 
         $tableData = $query->paginate($perPage)->onEachSide(1);
 
@@ -88,6 +91,7 @@ class UserController extends Controller implements HasMiddleware
     public function create()
     {
         return Inertia::render('Admin/Users/Create', [
+            'types' => Type::where('group_code', 'user-title-type-group')->orderBy('order_index')->orderBy('name')->get(),
             'roles' => Role::orderBy('id')->get(),
         ]);
     }
@@ -100,6 +104,8 @@ class UserController extends Controller implements HasMiddleware
         // dd($request->all());
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_kh' => 'nullable|string|max:255',
+            'title_type_code' => 'nullable|string|max:255|exists:types,code',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|max:255|confirmed', // Laravel auto-validates against confirm_password
             'phone' => 'nullable|numeric|digits_between:8,15|unique:users,phone',
@@ -128,7 +134,7 @@ class UserController extends Controller implements HasMiddleware
                 $imageName = ImageHelper::uploadAndResizeImageWebp($imageFile, 'assets/images/users', 600);
                 $validated['image'] = $imageName;
             }
-            
+
             // Create the user
             $user = User::create($validated);
 
@@ -141,7 +147,7 @@ class UserController extends Controller implements HasMiddleware
 
             return redirect()->back()->with('success', 'User create successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors( 'Failed to create user: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Failed to create user: ' . $e->getMessage());
         }
     }
 
@@ -165,6 +171,7 @@ class UserController extends Controller implements HasMiddleware
     {
         return Inertia::render('Admin/Users/Create', [
             'editData' => $user->load('roles'),
+            'types' => Type::where('group_code', 'user-title-type-group')->orderBy('order_index')->orderBy('name')->get(),
             'roles' => Role::orderBy('id')->get(),
         ]);
     }
@@ -176,6 +183,8 @@ class UserController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_kh' => 'nullable|string|max:255',
+            'title_type_code' => 'nullable|string|max:255|exists:types,code',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6|max:255|confirmed', // Laravel auto-validates against confirm_password
             'phone' => 'nullable|numeric|digits_between:8,15|unique:users,phone,' . $user->id,
@@ -191,7 +200,7 @@ class UserController extends Controller implements HasMiddleware
             // Hash the password
             if (!empty($validated['password'])) {
                 $validated['password'] = Hash::make($validated['password']);
-            }else {
+            } else {
                 unset($validated['password']);
             }
 
@@ -221,7 +230,7 @@ class UserController extends Controller implements HasMiddleware
 
             return redirect()->back()->with('success', 'User created successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors( 'Failed to create user: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Failed to create user: ' . $e->getMessage());
         }
     }
     /**

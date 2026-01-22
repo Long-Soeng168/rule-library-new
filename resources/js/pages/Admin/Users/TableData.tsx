@@ -9,11 +9,15 @@ import TableCellActions from '@/components/Table/TableCellActions';
 import TableCellDate from '@/components/Table/TableCellDate';
 import TableCellText from '@/components/Table/TableCellText';
 import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
+import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
-import { usePage } from '@inertiajs/react';
+import useTranslation from '@/hooks/use-translation';
+import { Link, usePage } from '@inertiajs/react';
 
 const TableData = () => {
     const { tableData } = usePage<any>().props;
+    const { t, currentLocale } = useTranslation();
+
     return (
         <>
             <div className="table-data-container">
@@ -23,10 +27,13 @@ const TableData = () => {
                             <TableHeadWithSort field="id" label="ID" />
                             <TableHeadWithSort label="Action" />
                             <TableHeadWithSort label="Image" />
+                            <TableHeadWithSort field="title_type_code" label="Honorific" />
                             <TableHeadWithSort field="name" label="Name" />
+                            <TableHeadWithSort field="name_kh" label="Name Khmer" />
                             <TableHeadWithSort label="Roles" />
                             <TableHeadWithSort field="email" label="Email" />
                             <TableHeadWithSort field="phone" label="Phone" />
+                            <TableHeadWithSort label="Total Resources" />
                             <TableHeadWithSort field="created_at" label="Created at" />
                             <TableHeadWithSort field="created_by" label="Created by" />
                             <TableHeadWithSort field="updated_at" label="Updated at" />
@@ -62,7 +69,9 @@ const TableData = () => {
                                 <TableCell>
                                     <TableCellAvatar alt={item.name} image={`/assets/images/users/thumb/${item.image}`} />
                                 </TableCell>
+                                <TableCellText value={item.title?.name} />
                                 <TableCellText value={item.name} />
+                                <TableCellText value={item.name_kh} />
                                 <TableCell>
                                     <div className="flex flex-wrap gap-1">
                                         {item.roles?.length > 0 && item.roles?.map((item: any) => <RoleBadge key={item.id} title={item.name} />)}
@@ -70,6 +79,38 @@ const TableData = () => {
                                 </TableCell>
                                 <TableCellText value={item.email} />
                                 <TableCellText value={item.phone} />
+                                <TableCell>
+                                    <div className="flex flex-wrap gap-1">
+                                        {item.author_items_count > 0 && (
+                                            <Link href={`/admin/items?author_id=${item.id}`}>
+                                                <Badge variant="outline" className="rounded hover:underline">
+                                                    {t('Author Items')}: {item.author_items_count}
+                                                </Badge>
+                                            </Link>
+                                        )}
+                                        {item.publisher_items_count > 0 && (
+                                            <Link href={`/admin/items?publisher_id=${item.id}`}>
+                                                <Badge variant="outline" className="rounded hover:underline">
+                                                    {t('Publisher Items')}: {item.publisher_items_count}
+                                                </Badge>
+                                            </Link>
+                                        )}
+                                        {item.advisor_items_count > 0 && (
+                                            <Link href={`/admin/items?advisor_id=${item.id}`}>
+                                                <Badge variant="outline" className="rounded hover:underline">
+                                                    {t('Advisor Items')}: {item.advisor_items_count}
+                                                </Badge>
+                                            </Link>
+                                        )}
+                                        {item.posts_count > 0 && (
+                                            <Link href={`/admin/posts?created_by=${item.id}`}>
+                                                <Badge variant="outline" className="rounded hover:underline">
+                                                    {t('User Posts')}: {item.posts_count}
+                                                </Badge>
+                                            </Link>
+                                        )}
+                                    </div>
+                                </TableCell>
                                 <TableCellDate value={item.created_at} />
                                 <TableCellText value={item.created_user?.name} />
                                 <TableCellDate value={item.updated_at} />

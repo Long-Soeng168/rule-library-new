@@ -66,6 +66,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+    public function title()
+    {
+        return $this->belongsTo(Type::class, 'title_type_code', 'code');
+    }
     public function updated_user()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
@@ -77,6 +81,10 @@ class User extends Authenticatable
     public function advisor_items()
     {
         return $this->hasMany(Item::class, 'advisor_id', 'id');
+    }
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'created_by', 'id');
     }
 
     public function author_items()
