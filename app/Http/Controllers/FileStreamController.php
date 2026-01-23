@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\ItemDownloadCount;
 use App\Models\ItemReadCount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
@@ -47,7 +48,7 @@ class FileStreamController extends Controller
                 'mobile'
             ) ? 'mobile' : 'desktop';
 
-            if ($is_download === 1) {
+            if ($is_download == 1) {
                 $itemDownload = ItemDownloadCount::firstOrCreate(
                     [
                         'item_id' => $item->id,
@@ -55,7 +56,7 @@ class FileStreamController extends Controller
                         'device_type' => $device,
                     ],
                     [
-                        'downloads' => 0,
+                        'downloads' => DB::raw('downloads + 1')
                     ]
                 );
                 $itemDownload->increment('downloads');
@@ -76,7 +77,7 @@ class FileStreamController extends Controller
             }
         }
 
-        if ($is_download === 1) {
+        if ($is_download == 1) {
             if (!$canDownload) {
                 abort(403, 'This file is not downloadable.');
             }
