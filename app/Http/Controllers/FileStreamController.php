@@ -65,7 +65,7 @@ class FileStreamController extends Controller
                     $itemDownload->increment('downloads');
                     $item->increment('total_download_count');
 
-                    Cache::put($cacheKey, true, now()->addMinute());
+                    Cache::put($cacheKey, true, now()->addSeconds(10));
                 }
             } else {
                 $itemRead = ItemReadCount::firstOrCreate(
