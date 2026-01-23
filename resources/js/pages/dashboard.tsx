@@ -1,5 +1,4 @@
 import ChartAreaDoubleLayer from '@/components/Chart/chart-area-double-layer';
-import ChartAreaDoubleLayer2 from '@/components/Chart/chart-area-double-layer2';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import usePermission from '@/hooks/use-permission';
@@ -91,7 +90,7 @@ const mainNavItems: {
 ];
 
 export default function Dashboard() {
-    const { auth } = usePage<any>().props;
+    const { auth, chartDataViews, chartDataReads, chartDataDownloads } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
     const hasPermission = usePermission();
 
@@ -101,16 +100,20 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="p-4">
-                <Tabs defaultValue="account" className="w-full">
+                <Tabs defaultValue="views" className="w-full">
                     <TabsList>
-                        <TabsTrigger value="account">E-Library</TabsTrigger>
-                        <TabsTrigger value="password">Physical Library</TabsTrigger>
+                        <TabsTrigger value="views">Views</TabsTrigger>
+                        <TabsTrigger value="reads">Reads</TabsTrigger>
+                        <TabsTrigger value="downloads">Downloads</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="account">
-                        <ChartAreaDoubleLayer />
+                    <TabsContent value="views">
+                        <ChartAreaDoubleLayer chartData={chartDataViews} />
                     </TabsContent>
-                    <TabsContent value="password">
-                        <ChartAreaDoubleLayer2 />
+                    <TabsContent value="reads">
+                        <ChartAreaDoubleLayer chartData={chartDataReads} />
+                    </TabsContent>
+                    <TabsContent value="downloads">
+                        <ChartAreaDoubleLayer chartData={chartDataDownloads} />
                     </TabsContent>
                 </Tabs>
             </div>

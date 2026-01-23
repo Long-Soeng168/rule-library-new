@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\ItemMainCategory;
+use App\Models\ItemView;
 use App\Models\Language;
 use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ResourceController extends Controller
@@ -67,8 +69,11 @@ class ResourceController extends Controller
         );
     }
 
+
+
     public function item_show(string $main_category_code, string $id, Request $request)
     {
+
         $showData = Item::findOrFail($id)->load('images', 'publisher', 'authors', 'advisor', 'language', 'category.parent');
         $mainCategory = ItemMainCategory::select('id', 'code', 'name', 'name_kh', 'image')->where('code', $showData->main_category_code)->first();
 
@@ -93,6 +98,28 @@ class ResourceController extends Controller
         //     'showData' => $showData,
         //     'relatedData' => $relatedData,
         // ];
+
+        // UPDATE VIEW COUNT
+        $today = now()->toDateString();
+        $device = str_contains(
+            strtolower(request()->header('User-Agent', '')),
+            'mobile'
+        ) ? 'mobile' : 'desktop';
+
+        $itemView = ItemView::firstOrCreate(
+            [
+                'item_id' => $showData->id,
+                'view_date' => $today,
+                'device_type' => $device,
+            ],
+            [
+                'views' => 0,
+            ]
+        );
+        $itemView->increment('views');
+        $showData->increment('total_view_count');
+
+
         return Inertia::render(
             'FrontPage/Resources/Show',
             [

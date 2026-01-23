@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\ItemDownloadCount;
+use App\Models\ItemReadCount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Storage;
 
 class FileStreamController extends Controller
 {
@@ -31,13 +32,48 @@ class FileStreamController extends Controller
         $previousRoute = '/';
 
         if ($resource == 'items') {
-            $item = Item::find($id);
+            $item = Item::findOrFail($id);
 
             $previousRoute = "/resources/theses/{$item->id}";
 
             // if ($item) {
             //     $canDownload = $item->file_status === 'downloadable';
             // }
+
+            // UPDATE Read and Download COUNT
+            $today = now()->toDateString();
+            $device = str_contains(
+                strtolower(request()->header('User-Agent', '')),
+                'mobile'
+            ) ? 'mobile' : 'desktop';
+
+            if ($is_download === 1) {
+                $itemDownload = ItemDownloadCount::firstOrCreate(
+                    [
+                        'item_id' => $item->id,
+                        'download_date' => $today,
+                        'device_type' => $device,
+                    ],
+                    [
+                        'downloads' => 0,
+                    ]
+                );
+                $itemDownload->increment('downloads');
+                $item->increment('total_download_count');
+            } else {
+                $itemRead = ItemReadCount::firstOrCreate(
+                    [
+                        'item_id' => $item->id,
+                        'read_date' => $today,
+                        'device_type' => $device,
+                    ],
+                    [
+                        'reads' => 0,
+                    ]
+                );
+                $itemRead->increment('reads');
+                $item->increment('total_read_count');
+            }
         }
 
         if ($is_download === 1) {
@@ -63,6 +99,8 @@ class FileStreamController extends Controller
                 $downloadName
             );
         }
+
+
 
         return Inertia::render('ViewPDF/Index', [
             'fileUrl' => $fileUrl,
