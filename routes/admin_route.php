@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ItemCategoryController;
 use App\Http\Controllers\Admin\ItemController;
+use App\Http\Controllers\Admin\ItemMainCategoryController;
 use App\Http\Controllers\Admin\KeyValueController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LinkController;
@@ -97,6 +98,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('admin/item-categories', ItemCategoryController::class);
     Route::post('admin/item-categories/{item_category}/update', [ItemCategoryController::class, 'update']);
     Route::post('admin/item-categories/{id}/recover', [ItemCategoryController::class, 'recover']);
+
+    Route::resource('admin/item-main-categories', ItemMainCategoryController::class);
+    Route::post('admin/item-main-categories/{item_main_category}/update', [ItemMainCategoryController::class, 'update']);
+    Route::post('admin/item-main-categories/{id}/recover', [ItemMainCategoryController::class, 'recover']);
 
     // Item
     Route::resource('admin/items', ItemController::class);

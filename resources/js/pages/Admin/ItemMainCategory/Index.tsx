@@ -1,14 +1,10 @@
-import CategoryBreadcrumb from '@/components/Breadcrumb/CategoryBreadcrumb';
 import NewItemButton from '@/components/Button/NewItemButton';
 import RefreshButton from '@/components/Button/RefreshButton';
 import PaginationTabs from '@/components/Pagination/PaginationTabs';
 import TableDataSearch from '@/components/Search/TableDataSearch';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { usePage } from '@inertiajs/react';
-import FilterMainCategory from '../Item/FilterMainCategory';
 import FilterData from './FilterData';
-import HelpDialog from './HelpDialog';
 import TableData from './TableData';
 
 const Index = () => {
@@ -19,11 +15,10 @@ const Index = () => {
             href: '/admin/items',
         },
         {
-            title: 'Categories',
-            href: '/admin/item-categories',
+            title: 'Main Categories',
+            href: '/admin/item-main-categories',
         },
     ];
-    const { filteredCategory } = usePage<any>().props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <>
@@ -32,18 +27,12 @@ const Index = () => {
                         <FilterData />
                         <TableDataSearch />
                         <RefreshButton />
-                        <HelpDialog />
                     </div>
                     <div className="flex w-full justify-end md:w-auto">
                         {/* Add New Dialog */}
-                        <NewItemButton
-                            url={`/admin/item-categories/create?${filteredCategory?.id ? 'filtered_category_id=' + filteredCategory?.id : ''}`}
-                            permission="item_category create"
-                        />
+                        <NewItemButton url={`/admin/item-main-categories/create`} permission="item_category create" />
                     </div>
                 </div>
-                <FilterMainCategory />
-                <CategoryBreadcrumb path="/admin/item-categories" />
                 <TableData />
                 <PaginationTabs />
             </>

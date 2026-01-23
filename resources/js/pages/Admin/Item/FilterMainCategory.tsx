@@ -1,3 +1,4 @@
+import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { router, usePage } from '@inertiajs/react';
 import { CircleCheckBigIcon, LayoutGridIcon } from 'lucide-react';
@@ -42,7 +43,7 @@ const FilterMainCategory = () => {
 
     const getButtonClass = (isActive: boolean) => {
         // Added rounded-[10px] and whitespace-nowrap for the scrollable row
-        const base = 'flex items-center gap-2 px-4 py-2 transition-all border text-sm font-medium rounded whitespace-nowrap';
+        const base = 'flex items-center gap-2 p-2 transition-all border text-sm font-medium rounded whitespace-nowrap';
 
         // Shadcn UI Dark Mode variables
         const activeStyles = 'border-primary bg-primary/10 text-primary ring-1 ring-primary';
@@ -51,13 +52,15 @@ const FilterMainCategory = () => {
         return `${base} ${isActive ? activeStyles : inactiveStyles}`;
     };
 
+    const { t, currentLocale } = useTranslation();
+
     return (
         /* Added scrollbar-hide or custom scroll styling classes if you have them */
         <div className="no-scrollbar flex flex-row items-center gap-3 overflow-x-auto p-2 pt-1">
             {/* "All" Option */}
             <button onClick={() => handleCategoryChange('')} className={cn(getButtonClass(activeCategory === ''), 'h-12')}>
                 <CircleCheckBigIcon size={18} />
-                <span>All</span>
+                <span>{t('All Main Categories')}</span>
             </button>
 
             {/* Dynamic Categories */}
@@ -70,13 +73,13 @@ const FilterMainCategory = () => {
                     {category.image ? (
                         <img
                             src={`/assets/images/item_categories/thumb/${category.image}`}
-                            alt={category.name}
-                            className="size-[28px] rounded-sm object-cover"
+                            alt={currentLocale == 'kh' ? (category?.name_kh ?? category?.name) : category?.name}
+                            className="size-7 rounded object-cover"
                         />
                     ) : (
                         <LayoutGridIcon size={18} />
                     )}
-                    <span>{category.name}</span>
+                    <span> {currentLocale == 'kh' ? (category?.name_kh ?? category?.name) : category?.name}</span>
                 </button>
             ))}
         </div>

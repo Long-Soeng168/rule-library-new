@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
-use App\Models\ItemCategory;
 use App\Models\ItemMainCategory;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -13,7 +12,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 
-class ItemCategoryController extends Controller implements HasMiddleware
+class ItemMainCategoryController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -34,27 +33,8 @@ class ItemCategoryController extends Controller implements HasMiddleware
         $sortBy = $request->input('sortBy', 'id');
         $sortDirection = $request->input('sortDirection', 'desc');
         $trashed = $request->input('trashed'); // '', 'with', 'only'
-        $category_code = $request->input('category_code');
-        $main_category_code = $request->input('main_category_code');
 
-        $query = ItemCategory::query();
-
-        if ($main_category_code) {
-            $query->where('item_main_category_code', $main_category_code);
-        }
-
-        $filteredCategory = ItemCategory::where('code', $category_code)->first();
-        $filteredParents = collect();
-        if ($filteredCategory) {
-            $filteredParents = $filteredCategory->allParents()->reverse()->values() ?: collect();
-
-            // $allChildren = $filteredCategory->allChildren() ?: collect();
-            // $childrenIds = $allChildren->pluck('id')->toArray();
-
-            $query->where('parent_id', $filteredCategory->id);
-        }
-
-
+        $query = ItemMainCategory::query();
 
         // Filter by trashed (soft deletes)
         if ($trashed === 'with') {
@@ -78,22 +58,14 @@ class ItemCategoryController extends Controller implements HasMiddleware
 
         $query->orderBy('id', 'desc');
 
-        $query->with('created_user', 'updated_user', 'parent');
+        $query->with('created_user', 'updated_user');
 
         $tableData = $query->paginate($perPage)->onEachSide(1);
 
         // return $tableData;
         // return $filteredCategory;
-        return Inertia::render('Admin/ItemCategory/Index', [
+        return Inertia::render('Admin/ItemMainCategory/Index', [
             'tableData' => $tableData,
-            'parents' => ItemCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
-            'filteredCategory' => $filteredCategory,
-            'allParents' => $filteredParents,
-            'main_category_code' => $main_category_code,
-            'mainCategories' => ItemMainCategory::orderBy('order_index')
-                ->withCount('items')
-                ->orderBy('name')
-                ->get(),
         ]);
     }
 
@@ -102,10 +74,7 @@ class ItemCategoryController extends Controller implements HasMiddleware
      */
     public function create(Request $request)
     {
-        return Inertia::render('Admin/ItemCategory/Create', [
-            'parents' => ItemCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
-            'filtered_category_id' => $request->filtered_category_id,
-        ]);
+        return Inertia::render('Admin/ItemMainCategory/Create');
     }
 
     /**
@@ -115,7 +84,6 @@ class ItemCategoryController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'code' => 'required|string|max:255',
-            'parent_id' => 'nullable|string|max:255|exists:item_categories,id',
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
             'order_index' => 'required|numeric',
@@ -124,7 +92,6 @@ class ItemCategoryController extends Controller implements HasMiddleware
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,webp,svg|max:4096',
         ]);
         // dd($request->all());
-
 
         try {
             // Add creator and updater
@@ -141,47 +108,43 @@ class ItemCategoryController extends Controller implements HasMiddleware
                 $validated['image'] = $imageName;
             }
 
-            // Create the Item Category
-            ItemCategory::create($validated);
+            // Create the Item Main Category
+            ItemMainCategory::create($validated);
 
-            return redirect()->back()->with('success', 'Item Category created successfully!');
+            return redirect()->back()->with('success', 'Item Main Category created successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Failed to create Item Category: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Failed to create Item Main Category: ' . $e->getMessage());
         }
     }
-
 
     /**
      * Display the specified resource.
      */
-    public function show(ItemCategory $item_category)
+    public function show(ItemMainCategory $item_main_category)
     {
-        return Inertia::render('Admin/ItemCategory/Create', [
-            'editData' => $item_category,
+        return Inertia::render('Admin/ItemMainCategory/Create', [
+            'editData' => $item_main_category,
             'readOnly' => true,
-            'parents' => ItemCategory::where('id', '!=', $item_category->id)->orderBy('order_index')->orderBy('id', 'desc')->get(),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ItemCategory $item_category)
+    public function edit(ItemMainCategory $item_main_category)
     {
-        return Inertia::render('Admin/ItemCategory/Create', [
-            'editData' => $item_category,
-            'parents' => ItemCategory::where('id', '!=', $item_category->id)->orderBy('order_index')->orderBy('id', 'desc')->get(),
+        return Inertia::render('Admin/ItemMainCategory/Create', [
+            'editData' => $item_main_category,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ItemCategory $item_category)
+    public function update(Request $request, ItemMainCategory $item_main_category)
     {
         $validated = $request->validate([
             'code' => 'required|string|max:255',
-            'parent_id' => 'nullable|string|max:255|exists:item_categories,id',
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
             'order_index' => 'required|numeric',
@@ -208,38 +171,38 @@ class ItemCategoryController extends Controller implements HasMiddleware
                 $validated['image'] = $imageName;
 
                 // delete old if replaced
-                if ($imageName && $item_category->image) {
-                    ImageHelper::deleteImage($item_category->image, 'assets/images/item_categories');
+                if ($imageName && $item_main_category->image) {
+                    ImageHelper::deleteImage($item_main_category->image, 'assets/images/item_categories');
                 }
             }
 
             // Update
-            $item_category->update($validated);
+            $item_main_category->update($validated);
 
-            return redirect()->back()->with('success', 'Item Category updated successfully!');
+            return redirect()->back()->with('success', 'Item Main Category updated successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Failed to update Item Category: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Failed to update Item Main Category: ' . $e->getMessage());
         }
     }
 
 
     public function recover($id)
     {
-        $item_category = ItemCategory::withTrashed()->findOrFail($id); // 👈 include soft-deleted Item Category
-        $item_category->restore(); // restores deleted_at to null
-        return redirect()->back()->with('success', 'Item Category recovered successfully.');
+        $item_main_category = ItemMainCategory::withTrashed()->findOrFail($id); // 👈 include soft-deleted Item Main Category
+        $item_main_category->restore(); // restores deleted_at to null
+        return redirect()->back()->with('success', 'Item Main Category recovered successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ItemCategory $item_category)
+    public function destroy(ItemMainCategory $item_main_category)
     {
         // if ($user->image) {
         //     ImageHelper::deleteImage($user->image, 'assets/images/users');
         // }
 
-        $item_category->delete(); // this will now just set deleted_at timestamp
-        return redirect()->back()->with('success', 'Item Category deleted successfully.');
+        $item_main_category->delete(); // this will now just set deleted_at timestamp
+        return redirect()->back()->with('success', 'Item Main Category deleted successfully.');
     }
 }

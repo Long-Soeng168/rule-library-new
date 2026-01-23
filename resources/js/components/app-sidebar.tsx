@@ -84,6 +84,11 @@ const mainNavItems: {
                 url: '/admin/item-categories',
                 permission: 'item_category view',
             },
+            {
+                title: 'Main Categories',
+                url: '/admin/item-main-categories',
+                permission: 'item_category view',
+            },
         ],
     },
     {

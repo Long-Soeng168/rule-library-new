@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import useTranslation from '@/hooks/use-translation';
 import { Link, usePage } from '@inertiajs/react';
 import { ChevronsRight } from 'lucide-react';
@@ -12,7 +12,7 @@ const CategoryBreadcrumb = ({ path = '/admin/post-categories' }) => {
     }
 
     return (
-        <div className="mb-4 px-2">
+        <div className="mt-2 mb-4 px-2">
             <Breadcrumb>
                 <BreadcrumbList>
                     <Link href={`${path}`}>
