@@ -6,7 +6,7 @@ use App\Models\Item;
 use App\Models\ItemDownloadCount;
 use App\Models\ItemReadCount;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
@@ -48,19 +48,25 @@ class FileStreamController extends Controller
                 'mobile'
             ) ? 'mobile' : 'desktop';
 
+            $cacheKey = "item_{$item->id}_download_{$today}_{$device}";
+
             if ($is_download == 1) {
-                $itemDownload =  ItemDownloadCount::updateOrCreate(
-                    [
-                        'item_id' => $item->id,
-                        'download_date' => $today,
-                        'device_type' => $device,
-                    ],
-                    [
-                        'downloads' => DB::raw('downloads + 1')
-                    ]
-                );
-                // $itemDownload->increment('downloads');
-                $item->increment('total_download_count');
+                if (!Cache::has($cacheKey)) {
+                    $itemDownload = ItemDownloadCount::firstOrCreate(
+                        [
+                            'item_id' => $item->id,
+                            'download_date' => $today,
+                            'device_type' => $device,
+                        ],
+                        [
+                            'downloads' => 0,
+                        ]
+                    );
+                    $itemDownload->increment('downloads');
+                    $item->increment('total_download_count');
+
+                    Cache::put($cacheKey, true, now()->addMinute());
+                }
             } else {
                 $itemRead = ItemReadCount::firstOrCreate(
                     [
