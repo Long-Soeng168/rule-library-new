@@ -59,7 +59,7 @@ class FileStreamController extends Controller
                         'downloads' => DB::raw('downloads + 1')
                     ]
                 );
-                $itemDownload->increment('downloads');
+                // $itemDownload->increment('downloads');
                 $item->increment('total_download_count');
             } else {
                 $itemRead = ItemReadCount::firstOrCreate(
