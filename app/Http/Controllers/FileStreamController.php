@@ -49,7 +49,7 @@ class FileStreamController extends Controller
             ) ? 'mobile' : 'desktop';
 
             if ($is_download == 1) {
-                $itemDownload = ItemDownloadCount::firstOrCreate(
+                $itemDownload =  ItemDownloadCount::updateOrCreate(
                     [
                         'item_id' => $item->id,
                         'download_date' => $today,
