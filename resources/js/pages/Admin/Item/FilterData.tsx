@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 const FilterData = () => {
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
-    const { fileTypes, categories, languages, authors, publishers } = usePage<any>().props;
+    const { fileTypes, categories, languages, authors, publishers, advisors } = usePage<any>().props;
 
     const initialQueryParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
     const [filters, setFilters] = useState({
@@ -19,6 +19,7 @@ const FilterData = () => {
         language_code: initialQueryParams.get('language_code') || '',
         author_id: initialQueryParams.get('author_id') || '',
         publisher_id: initialQueryParams.get('publisher_id') || '',
+        advisor_id: initialQueryParams.get('advisor_id') || '',
         status: initialQueryParams.get('status') || '',
         trashed: initialQueryParams.get('trashed') || '',
     });
@@ -39,6 +40,7 @@ const FilterData = () => {
         f.language_code ? queryParams.set('language_code', f.language_code) : queryParams.delete('language_code');
         f.author_id ? queryParams.set('author_id', f.author_id) : queryParams.delete('author_id');
         f.publisher_id ? queryParams.set('publisher_id', f.publisher_id) : queryParams.delete('publisher_id');
+        f.advisor_id ? queryParams.set('advisor_id', f.advisor_id) : queryParams.delete('advisor_id');
         f.status ? queryParams.set('status', f.status) : queryParams.delete('status');
         f.trashed ? queryParams.set('trashed', f.trashed) : queryParams.delete('trashed');
         queryParams.set('page', '1');
@@ -108,6 +110,23 @@ const FilterData = () => {
                     onChange={(val) => updateFilters({ publisher_id: val })}
                     placeholder="Select Publisher..."
                     searchPlaceholder="Search Publisher..."
+                    className="mt-1"
+                />
+            </div>
+            <div className="mb-4">
+                <FormLabel label="Advisor" />
+                <ComboboxSelect
+                    options={[
+                        { value: '', label: t('All') },
+                        ...advisors.map((item: any) => ({
+                            value: item.id?.toString(),
+                            label: `${currentLocale === 'kh' ? item.name_kh || item.name : item.name} (${item.advisor_items_count})`,
+                        })),
+                    ]}
+                    value={filters.advisor_id?.toString()}
+                    onChange={(val) => updateFilters({ advisor_id: val })}
+                    placeholder="Select Advisor..."
+                    searchPlaceholder="Search Advisor..."
                     className="mt-1"
                 />
             </div>

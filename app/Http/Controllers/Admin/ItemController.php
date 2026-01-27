@@ -120,8 +120,9 @@ class ItemController extends Controller implements HasMiddleware
                 ->withCount('items')
                 ->orderBy('name')
                 ->get(),
-            'publishers' => User::orderBy('name')->withCount('publisher_items')->role('Publisher')->get(),
-            'authors' => User::orderBy('name')->withCount('author_items')->role('Author')->get(),
+            'publishers' => User::orderByDesc('publisher_items_count')->withCount('publisher_items')->role('Publisher')->get(),
+            'advisors' => User::orderByDesc('advisor_items_count')->withCount('advisor_items')->role('Advisor')->get(),
+            'authors' => User::orderByDesc('author_items_count')->withCount('author_items')->role('Author')->get(),
         ]);
     }
 
@@ -135,6 +136,7 @@ class ItemController extends Controller implements HasMiddleware
                 ->orderBy('order_index')
                 ->orderBy('name')
                 ->get(),
+            'mainCategories' => ItemMainCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
             'categories' => ItemCategory::orderBy('order_index')
                 ->orderBy('name')
                 ->get(),
@@ -297,6 +299,8 @@ class ItemController extends Controller implements HasMiddleware
                 ->orderBy('order_index')
                 ->orderBy('name')
                 ->get(),
+            'mainCategories' => ItemMainCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
+
             'categories' => ItemCategory::orderBy('order_index')
                 ->orderBy('name')
                 ->get(),

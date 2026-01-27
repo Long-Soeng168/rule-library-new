@@ -26,8 +26,8 @@ const TableData = () => {
                             <TableHeadWithSort field="code" label="Code" />
                             <TableHeadWithSort field="name" label="Name" />
                             <TableHeadWithSort field="name_kh" label="Name Khmer" />
-                            <TableHeadWithSort field="item_main_category_code" label="item_main_category_code" />
-                            <TableHeadWithSort field="parent_id" label="Parent" />
+                            <TableHeadWithSort field="item_main_category_code" label="Main Category" />
+                            <TableHeadWithSort field="parent_id" label="Parent Category" />
                             <TableHeadWithSort field="order_index" label="Order Index" />
                             <TableHeadWithSort field="short_description" label="Short Description" />
                             <TableHeadWithSort field="short_description_kh" label="Short Description Khmer" />
@@ -44,7 +44,7 @@ const TableData = () => {
                                 key={item.id}
                                 onDoubleClick={() =>
                                     router.visit(
-                                        `/admin/item-categories?category_code=${item.code}&${main_category_code ? 'main_category_code=' + main_category_code : ''}`,
+                                        `/admin/item-categories?category_code=${item.code}&${item?.item_main_category_code ? 'main_category_code=' + item?.item_main_category_code : ''}`,
                                     )
                                 }
                             >
@@ -79,7 +79,7 @@ const TableData = () => {
                                 <TableCellText value={item.code} />
                                 <TableCellText value={item.name} />
                                 <TableCellText value={item.name_kh} />
-                                <TableCellText value={item.item_main_category_code} />
+                                <TableCellBadge className="uppercase" variant="accent" value={item.item_main_category_code} />
                                 <TableCellBadge variant="accent" value={item.parent?.name} />
                                 <TableCellText value={item.order_index} />
                                 <TableCellText value={item.short_description} />

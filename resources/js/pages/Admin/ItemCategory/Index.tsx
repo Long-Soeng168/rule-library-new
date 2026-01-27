@@ -23,7 +23,7 @@ const Index = () => {
             href: '/admin/item-categories',
         },
     ];
-    const { filteredCategory } = usePage<any>().props;
+    const { filteredCategory, main_category_code } = usePage<any>().props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <>
@@ -37,7 +37,7 @@ const Index = () => {
                     <div className="flex w-full justify-end md:w-auto">
                         {/* Add New Dialog */}
                         <NewItemButton
-                            url={`/admin/item-categories/create?${filteredCategory?.id ? 'filtered_category_id=' + filteredCategory?.id : ''}`}
+                            url={`/admin/item-categories/create?${filteredCategory?.id ? 'filtered_category_id=' + filteredCategory?.id : ''}&${main_category_code ? 'main_category_code=' + main_category_code : ''}`}
                             permission="item_category create"
                         />
                     </div>

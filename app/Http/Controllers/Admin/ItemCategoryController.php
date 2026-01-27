@@ -104,7 +104,9 @@ class ItemCategoryController extends Controller implements HasMiddleware
     {
         return Inertia::render('Admin/ItemCategory/Create', [
             'parents' => ItemCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
+            'mainCategories' => ItemMainCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
             'filtered_category_id' => $request->filtered_category_id,
+            'filtered_main_category_code' => $request->main_category_code,
         ]);
     }
 
@@ -114,8 +116,9 @@ class ItemCategoryController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:item_categories,code',
             'parent_id' => 'nullable|string|max:255|exists:item_categories,id',
+            'item_main_category_code' => 'nullable|string|max:255|exists:item_main_categories,code',
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
             'order_index' => 'required|numeric',
@@ -170,6 +173,7 @@ class ItemCategoryController extends Controller implements HasMiddleware
     {
         return Inertia::render('Admin/ItemCategory/Create', [
             'editData' => $item_category,
+            'mainCategories' => ItemMainCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
             'parents' => ItemCategory::where('id', '!=', $item_category->id)->orderBy('order_index')->orderBy('id', 'desc')->get(),
         ]);
     }
@@ -180,8 +184,9 @@ class ItemCategoryController extends Controller implements HasMiddleware
     public function update(Request $request, ItemCategory $item_category)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:item_categories,code,' . $item_category->id,
             'parent_id' => 'nullable|string|max:255|exists:item_categories,id',
+            'item_main_category_code' => 'nullable|string|max:255|exists:item_main_categories,code',
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
             'order_index' => 'required|numeric',

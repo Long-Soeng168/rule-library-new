@@ -213,8 +213,6 @@ class ResourceController extends Controller
                 default =>
                 $query->orderBy('id', 'desc'),
             };
-        } else {
-            $query->orderBy('id', 'desc');
         }
 
 
@@ -236,7 +234,11 @@ class ResourceController extends Controller
 
         $query->where('status', 'published');
         $query->where('main_category_code', $main_category_code);
-        $query->orderBy('id', 'desc');
+        if ($from_year) {
+            $query->orderBy('published_year');
+        } else {
+            $query->orderBy('id', 'desc');
+        }
 
         $tableData = $query->paginate($perPage)->onEachSide(2);
 

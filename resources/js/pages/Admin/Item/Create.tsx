@@ -24,6 +24,7 @@ import { useState } from 'react';
 
 interface ItemForm {
     code?: string;
+    main_category_code?: string;
     category_code?: string | null;
 
     name: string;
@@ -66,9 +67,12 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         type: 'message',
     });
 
-    const { fileTypes, languages, categories, publishers, authors } = usePage<any>().props;
+    const { fileTypes, languages, categories, mainCategories, filtered_main_category_code, publishers, authors } = usePage<any>().props;
 
     const [inputLanguage, setInputLanguage] = useState<'default' | 'khmer'>('default');
+    const [selectedMainCategoryCode, setSelectedMainCategoryCode] = useState<string>('');
+    const [selectedCategoryCode, setSelectedCategoryCode] = useState<string>('');
+    const [selectedSubCategoryCode, setSelectedSubCategoryCode] = useState<string>('');
 
     const [files, setFiles] = useState<File[] | null>(null);
     const [imageFiles, setImageFiles] = useState<File[] | null>(null);
@@ -77,6 +81,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
     const { data, setData, post, processing, transform, progress, errors, reset } = useForm<ItemForm>({
         code: editData?.code || '',
         category_code: editData?.category_code || null,
+        main_category_code: editData?.main_category_code?.toString() || filtered_main_category_code?.toString() || '',
         file_type_code: editData?.file_type_code || '',
         language_code: editData?.language_code || languages[0]?.code || '',
         status: editData?.status || postStatusData[0]?.value || '',
@@ -144,6 +149,8 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
     ];
 
     const { t, currentLocale } = useTranslation();
+
+    const filteredCategories = categories?.filter((p: any) => p.item_main_category_code == data.main_category_code);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -218,10 +225,10 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         <div className="form-field-container">
                             <Tabs defaultValue="ddc" className="w-full rounded-lg bg-muted/80 p-4">
                                 <TabsList className="border bg-border/50 p-1 dark:border-white/20">
-                                    <TabsTrigger value="ddc" className="h-full dark:data-[state=active]:bg-white/20">
+                                    <TabsTrigger value="ddc" className="h-full text-xs font-medium dark:data-[state=active]:bg-white/20">
                                         {t('Dewey Decimal Classification')}
                                     </TabsTrigger>
-                                    <TabsTrigger value="lcc" className="h-full dark:data-[state=active]:bg-white/20">
+                                    <TabsTrigger value="lcc" className="h-full text-xs font-medium dark:data-[state=active]:bg-white/20">
                                         {t('Library of Congress Classification')}
                                     </TabsTrigger>
                                 </TabsList>
@@ -349,28 +356,89 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         </div>
                     </>
                 )}
+                <div>
+                    <p>Main Cate Code: {selectedMainCategoryCode}</p>
+                    <p>Cate Code: {selectedCategoryCode}</p>
+                    <p>Sub Cate Code: {selectedSubCategoryCode}</p>
+                </div>
                 {inputLanguage == 'default' && (
                     <div className="form-field-container">
-                        {categories?.length > 0 && (
-                            <FormCombobox
-                                name="category_code"
-                                label="Category"
-                                options={[
-                                    {
-                                        value: null,
-                                        label: t('NA'),
-                                    },
-                                    ...categories.map((item: any) => ({
-                                        value: item.code,
-                                        label: `(${item.order_index}) ` + (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
-                                    })),
-                                ]}
-                                value={data.category_code || ''}
-                                onChange={(val) => setData('category_code', val)}
-                                error={errors.category_code}
-                                description="Select the category where this item belongs to."
-                            />
-                        )}
+                        <FormCombobox
+                            name="main_category_code"
+                            label="Main Category"
+                            required
+                            options={[
+                                {
+                                    value: null,
+                                    label: t('NA'),
+                                },
+                                ...mainCategories.map((item: any) => ({
+                                    value: item.code.toString(),
+                                    label: `(${item.order_index}) ${currentLocale == 'kh' ? item.name_kh || item.name : item.name}`,
+                                })),
+                            ]}
+                            value={data.main_category_code || ''}
+                            onChange={(val) => {
+                                setData('category_code', '');
+                                setData('main_category_code', val);
+                                setSelectedMainCategoryCode(val);
+                            }}
+                            error={errors.main_category_code}
+                            description="Select the Main Category that this category belongs to."
+                        />
+                        <FormCombobox
+                            name="category_code"
+                            label="Category"
+                            options={[
+                                {
+                                    value: null,
+                                    label: !data.main_category_code ? t('Please Select Main Category') : t('NA'),
+                                },
+                                ...filteredCategories.map((item: any) => ({
+                                    value: item.code,
+                                    label:
+                                        `(${item.order_index}) ` +
+                                        `${item?.parent_id ? 'ㅤㅤ ' : '➤ '}` +
+                                        (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
+                                })),
+                            ]}
+                            disable={!data.main_category_code}
+                            placeholder={!data.main_category_code ? 'Please Select Main Category First.' : ''}
+                            value={data.category_code || ''}
+                            onChange={(val) => {
+                                setData('category_code', val);
+                                setSelectedCategoryCode(val);
+                            }}
+                            error={errors.category_code}
+                            description="Select the category where this item belongs to."
+                        />
+                        {/* TODO: Sub Cate */}
+                        <FormCombobox
+                            name="category_code"
+                            label="(TODO)Sub Category"
+                            options={[
+                                {
+                                    value: null,
+                                    label: !data.main_category_code ? t('Please Select Main Category') : t('NA'),
+                                },
+                                ...filteredCategories.map((item: any) => ({
+                                    value: item.code,
+                                    label:
+                                        `(${item.order_index}) ` +
+                                        `${item?.parent_id ? 'ㅤㅤ ' : '➤ '}` +
+                                        (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
+                                })),
+                            ]}
+                            disable={!data.main_category_code}
+                            placeholder={!data.main_category_code ? 'Please Select Main Category First.' : ''}
+                            value={data.category_code || ''}
+                            onChange={(val) => {
+                                // setData('category_code', val);
+                                setSelectedSubCategoryCode(val);
+                            }}
+                            error={errors.category_code}
+                            description="Select the category where this item belongs to."
+                        />
 
                         {languages?.length > 0 && (
                             <FormCombobox

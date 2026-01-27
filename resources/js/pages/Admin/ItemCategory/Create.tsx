@@ -18,6 +18,7 @@ import { useState } from 'react';
 interface TypeGroupForm {
     code?: string;
     parent_id?: string;
+    item_main_category_code?: string;
     name: string;
     name_kh?: string;
     order_index?: string;
@@ -34,13 +35,14 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
 
     const [inputLanguage, setInputLanguage] = useState<'default' | 'khmer'>('default');
 
-    const { parents, filtered_category_id } = usePage<any>().props;
+    const { parents, mainCategories, filtered_category_id, filtered_main_category_code } = usePage<any>().props;
 
     const [files, setFiles] = useState<File[] | null>(null);
 
     const { data, setData, post, processing, transform, progress, errors, reset } = useForm<TypeGroupForm>({
         code: editData?.code || '',
         parent_id: editData?.parent_id?.toString() || filtered_category_id?.toString() || '',
+        item_main_category_code: editData?.item_main_category_code?.toString() || filtered_main_category_code?.toString() || '',
         name: editData?.name || '',
         name_kh: editData?.name_kh || '',
         order_index: editData?.order_index || 10000,
@@ -80,6 +82,8 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
     ];
 
     const { t, currentLocale } = useTranslation();
+
+    const filteredParents = parents?.filter((p: any) => p.item_main_category_code == data.item_main_category_code);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -127,6 +131,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 ) : (
                     <div className="form-field-container">
                         <FormField
+                            required
                             id="code"
                             name="code"
                             label="Code"
@@ -161,26 +166,49 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 {inputLanguage == 'default' && (
                     <>
                         <div className="form-field-container">
-                            {parents?.length > 0 && (
-                                <FormCombobox
-                                    name="parent_id"
-                                    label="Parent"
-                                    options={[
-                                        {
-                                            value: null,
-                                            label: t('NA'),
-                                        },
-                                        ...parents.map((item: any) => ({
-                                            value: item.id.toString(),
-                                            label: `(${item.order_index}) ${currentLocale == 'kh' ? item.name_kh || item.name : item.name}`,
-                                        })),
-                                    ]}
-                                    value={data.parent_id || ''}
-                                    onChange={(val) => setData('parent_id', val)}
-                                    error={errors.parent_id}
-                                    description="Select the parent that this category belongs to."
-                                />
-                            )}
+                            <FormCombobox
+                                name="item_main_category_code"
+                                label="Main Category"
+                                required
+                                options={[
+                                    {
+                                        value: null,
+                                        label: t('NA'),
+                                    },
+                                    ...mainCategories.map((item: any) => ({
+                                        value: item.code.toString(),
+                                        label: `(${item.order_index}) ${currentLocale == 'kh' ? item.name_kh || item.name : item.name}`,
+                                    })),
+                                ]}
+                                value={data.item_main_category_code || ''}
+                                onChange={(val) => {
+                                    setData('parent_id', '');
+                                    setData('item_main_category_code', val);
+                                }}
+                                error={errors.item_main_category_code}
+                                description="Select the Main Category that this category belongs to."
+                            />
+                            <FormCombobox
+                                name="parent_id"
+                                label="Parent"
+                                options={[
+                                    {
+                                        value: null,
+                                        label: !data.item_main_category_code ? t('Please Select Main Category') : t('NA'),
+                                    },
+                                    ...filteredParents.map((item: any) => ({
+                                        value: item.id.toString(),
+                                        label: `(${item.order_index}) ${currentLocale == 'kh' ? item.name_kh || item.name : item.name}`,
+                                    })),
+                                ]}
+                                disable={!data.item_main_category_code}
+                                placeholder={!data.item_main_category_code ? 'Please Select Main Category First.' : ''}
+                                value={data.parent_id || ''}
+                                onChange={(val) => setData('parent_id', val)}
+                                error={errors.parent_id}
+                                description="Select the parent that this category belongs to."
+                            />
+
                             <FormField
                                 required
                                 type="number"

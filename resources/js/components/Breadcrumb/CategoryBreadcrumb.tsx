@@ -30,7 +30,7 @@ const CategoryBreadcrumb = ({ path = '/admin/post-categories' }) => {
                     </BreadcrumbSeparator>
                     {allParents?.map((item: any) => (
                         <>
-                            <Link href={`${path}?category_code=${item.code}`}>
+                            <Link href={`${path}?category_code=${item.code}&main_category_code=${filteredCategory?.item_main_category_code}`}>
                                 <BreadcrumbItem>
                                     <BreadcrumbPage>
                                         <Badge variant="secondary" className="rounded-full font-medium shadow-none ring-primary hover:ring">
@@ -46,7 +46,7 @@ const CategoryBreadcrumb = ({ path = '/admin/post-categories' }) => {
                         </>
                     ))}
 
-                    <Link href={`${path}?category_code=${filteredCategory.code}`}>
+                    <Link href={`${path}?category_code=${filteredCategory.code}&main_category_code=${filteredCategory?.item_main_category_code}`}>
                         <BreadcrumbItem>
                             <BreadcrumbPage>
                                 <Badge

@@ -21,7 +21,8 @@ const FilterMainCategory = () => {
 
     const handleCategoryChange = (categoryCode: string) => {
         const newCategory = categoryCode === activeCategory ? '' : categoryCode;
-        const newParams = new URLSearchParams(window.location.search);
+        // const newParams = new URLSearchParams(window.location.search);
+        const newParams = new URLSearchParams();
 
         if (newCategory) {
             newParams.set('main_category_code', newCategory);
