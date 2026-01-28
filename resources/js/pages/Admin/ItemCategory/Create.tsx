@@ -97,7 +97,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 {errors && <AllErrorsAlert title="Please fix the following errors" errors={errors} />}
                 <div className="sticky top-0">
                     <Tabs value={inputLanguage} onValueChange={(val: any) => setInputLanguage(val)}>
-                        <TabsList className="border bg-border/50 p-1 dark:border-white/20">
+                        <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
                             <TabsTrigger value="default" className="h-full dark:data-[state=active]:bg-white/20">
                                 {t('Default')}
                             </TabsTrigger>

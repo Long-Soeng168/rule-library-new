@@ -4,6 +4,7 @@ import PaginationTabs from '@/components/Pagination/PaginationTabs';
 import TableDataSearch from '@/components/Search/TableDataSearch';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
+import { usePage } from '@inertiajs/react';
 import FilterData from './FilterData';
 import FilterMainCategory from './FilterMainCategory';
 import TableData from './TableData';
@@ -16,6 +17,7 @@ const Index = () => {
             href: '/admin/items',
         },
     ];
+    const { filtered_main_category_code } = usePage<any>().props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <>
@@ -27,7 +29,7 @@ const Index = () => {
                     </div>
                     <div className="flex w-full justify-end md:w-auto">
                         {/* Add New Dialog */}
-                        <NewItemButton url="/admin/items/create" permission="item create" />
+                        <NewItemButton url={`/admin/items/create?main_category_code=${filtered_main_category_code}`} permission="item create" />
                     </div>
                 </div>
                 <FilterMainCategory />

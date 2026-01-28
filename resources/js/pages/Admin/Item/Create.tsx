@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils';
 import MyCkeditor5 from '@/pages/plugins/ckeditor5/my-ckeditor5';
 import { BreadcrumbItem } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ItemForm {
     code?: string;
@@ -46,6 +46,7 @@ interface ItemForm {
 
     author_ids?: { value: string; label: string }[];
 
+    author_name?: string;
     publisher_id?: string;
     published_year?: string;
     published_month?: string;
@@ -57,6 +58,7 @@ interface ItemForm {
 
     external_link?: string;
     thumbnail?: string;
+    default_file?: string;
 
     total_views_count?: number;
 }
@@ -67,16 +69,29 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         type: 'message',
     });
 
-    const { fileTypes, languages, categories, mainCategories, filtered_main_category_code, publishers, authors } = usePage<any>().props;
+    const { fileTypes, languages, selectedCategory, categories, subCategories, mainCategories, filtered_main_category_code, publishers, authors } =
+        usePage<any>().props;
 
     const [inputLanguage, setInputLanguage] = useState<'default' | 'khmer'>('default');
-    const [selectedMainCategoryCode, setSelectedMainCategoryCode] = useState<string>('');
+    const [selectedMainCategoryCode, setSelectedMainCategoryCode] = useState<string>(editData?.main_category_code || '');
     const [selectedCategoryCode, setSelectedCategoryCode] = useState<string>('');
     const [selectedSubCategoryCode, setSelectedSubCategoryCode] = useState<string>('');
+
+    useEffect(() => {
+        if (!selectedCategory) return;
+
+        if (selectedCategory.parent?.code) {
+            setSelectedCategoryCode(selectedCategory.parent.code);
+            setSelectedSubCategoryCode(selectedCategory.code);
+        } else {
+            setSelectedCategoryCode(selectedCategory.code);
+        }
+    }, [selectedCategory]);
 
     const [files, setFiles] = useState<File[] | null>(null);
     const [imageFiles, setImageFiles] = useState<File[] | null>(null);
     const [thumbnailFiles, setThumbnailFiles] = useState<File[] | null>(null);
+    const [defaultFiles, setDefaultFiles] = useState<File[] | null>(null);
 
     const { data, setData, post, processing, transform, progress, errors, reset } = useForm<ItemForm>({
         code: editData?.code || '',
@@ -105,6 +120,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 return { value: a.id.toString(), label: `(ID:${a.id}) ${a.name}` };
             }) || [],
 
+        author_name: editData?.author_name?.toString() || '',
         publisher_id: editData?.publisher_id?.toString() || '',
         published_year: editData?.published_year?.toString() || '',
         published_month: editData?.published_month?.toString() || '',
@@ -112,19 +128,28 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
 
         external_link: editData?.external_link || '',
         thumbnail: editData?.thumbnail || '',
+        default_file: editData?.file_name || '',
         total_views_count: editData?.total_views_count || 0,
     });
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        transform(() => ({ ...data, thumbnail: thumbnailFiles ? thumbnailFiles[0] : null, images: imageFiles || null, files: files || null }));
+        transform(() => ({
+            ...data,
+            category_code: selectedSubCategoryCode || selectedCategoryCode || null,
+            thumbnail: thumbnailFiles ? thumbnailFiles[0] : null,
+            default_file: defaultFiles ? defaultFiles[0] : null,
+            images: imageFiles || null,
+            files: files || null,
+        }));
 
         if (editData?.id) {
             post(`/admin/items/${editData.id}/update`, {
                 onSuccess: (page: any) => {
                     setFiles(null);
                     setThumbnailFiles(null);
+                    setDefaultFiles(null);
                     setImageFiles(null);
                     setFlashMessage({ message: page.props.flash?.success, type: 'success' });
                 },
@@ -135,11 +160,35 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                     reset();
                     setFiles(null);
                     setThumbnailFiles(null);
+                    setDefaultFiles(null);
                     setImageFiles(null);
                     setFlashMessage({ message: page.props.flash?.success, type: 'success' });
                 },
             });
         }
+    };
+
+    const ACCEPT_BY_TYPE: Record<string, any> = {
+        'image-file': {
+            'image/jpeg': ['.jpeg', '.jpg'],
+            'image/png': ['.png'],
+            'image/webp': ['.webp'],
+            // 'image/gif': ['.gif'],
+            // 'image/svg+xml': ['.svg'],
+        },
+        'pdf-file': {
+            'application/pdf': ['.pdf'],
+        },
+        'audio-file': {
+            'audio/mpeg': ['.mp3'],
+            // 'audio/wav': ['.wav'],
+            // 'audio/ogg': ['.ogg'],
+        },
+        'video-file': {
+            'video/mp4': ['.mp4'],
+            // 'video/webm': ['.webm'],
+            // 'video/ogg': ['.ogv'],
+        },
     };
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -151,6 +200,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
     const { t, currentLocale } = useTranslation();
 
     const filteredCategories = categories?.filter((p: any) => p.item_main_category_code == data.main_category_code);
+    const filteredSubCategories = subCategories?.filter((p: any) => p.parent?.code == selectedCategoryCode);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -164,7 +214,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 {errors && <AllErrorsAlert title="Please fix the following errors" errors={errors} />}
                 <div className="sticky top-0">
                     <Tabs value={inputLanguage} onValueChange={(val: any) => setInputLanguage(val)}>
-                        <TabsList className="border bg-border/50 p-1 dark:border-white/20">
+                        <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
                             <TabsTrigger value="default" className="h-full dark:data-[state=active]:bg-white/20">
                                 {t('Default')}
                             </TabsTrigger>
@@ -223,14 +273,22 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 {inputLanguage == 'default' && (
                     <>
                         <div className="form-field-container">
-                            <Tabs defaultValue="ddc" className="w-full rounded-lg bg-muted/80 p-4">
-                                <TabsList className="border bg-border/50 p-1 dark:border-white/20">
-                                    <TabsTrigger value="ddc" className="h-full text-xs font-medium dark:data-[state=active]:bg-white/20">
-                                        {t('Dewey Decimal Classification')}
-                                    </TabsTrigger>
-                                    <TabsTrigger value="lcc" className="h-full text-xs font-medium dark:data-[state=active]:bg-white/20">
-                                        {t('Library of Congress Classification')}
-                                    </TabsTrigger>
+                            <Tabs defaultValue="ddc" className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
+                                <TabsList className="h-auto border bg-border/50 p-1 dark:border-white/20">
+                                    <div className="flex w-auto flex-wrap justify-start gap-1">
+                                        <TabsTrigger
+                                            value="ddc"
+                                            className="h-full border text-xs font-medium whitespace-pre-wrap dark:data-[state=active]:bg-white/20"
+                                        >
+                                            {t('Dewey Decimal Classification')}
+                                        </TabsTrigger>
+                                        <TabsTrigger
+                                            value="lcc"
+                                            className="h-full border text-xs font-medium whitespace-pre-wrap dark:data-[state=active]:bg-white/20"
+                                        >
+                                            {t('Library of Congress Classification')}
+                                        </TabsTrigger>
+                                    </div>
                                 </TabsList>
                                 <TabsContent value="ddc">
                                     <FormField
@@ -256,8 +314,8 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 </TabsContent>
                             </Tabs>
 
-                            <Tabs defaultValue="isbn" className="w-full rounded-lg bg-muted/80 p-4">
-                                <TabsList className="border bg-border/50 p-1 dark:border-white/20">
+                            <Tabs defaultValue="isbn" className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
+                                <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
                                     <TabsTrigger value="isbn" className="h-full dark:data-[state=active]:bg-white/20">
                                         {t('ISBN')}
                                     </TabsTrigger>
@@ -304,23 +362,49 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                             </Tabs>
                         </div>
                         <div className="form-field-container md:grid-cols-1">
-                            <p>
-                                Author Name: <span className="font-bold">{editData?.author_name}</span>
-                            </p>
-                            {authors?.length > 0 && (
-                                <FormFieldMultiSelect
-                                    label="Authors"
-                                    options={[
-                                        ...authors.map((item: any) => ({
-                                            value: item.id?.toString(),
-                                            label: `(ID:${item.id}) ${item.name}`,
-                                        })),
-                                    ]}
-                                    value={data.author_ids || []}
-                                    onChange={(objectValue) => setData('author_ids', objectValue)}
-                                    error={errors.author_ids}
-                                />
-                            )}
+                            <Tabs
+                                defaultValue={editData?.author_name || editData?.main_category_code == 'theses' ? 'author_name' : 'authors_select'}
+                                className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50"
+                            >
+                                <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
+                                    <TabsTrigger value="authors_select" className="h-full dark:data-[state=active]:bg-white/20">
+                                        {t('Select Authors')}
+                                    </TabsTrigger>
+                                    <TabsTrigger value="author_name" className="h-full dark:data-[state=active]:bg-white/20">
+                                        {t('Author Name')}
+                                    </TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="authors_select">
+                                    {authors?.length > 0 && (
+                                        <FormFieldMultiSelect
+                                            label=""
+                                            options={[
+                                                ...authors.map((item: any) => ({
+                                                    value: item.id?.toString(),
+                                                    label: `(ID:${item.id}) ${item.name}`,
+                                                })),
+                                            ]}
+                                            value={data.author_ids || []}
+                                            onChange={(objectValue) => setData('author_ids', objectValue)}
+                                            error={errors.author_ids}
+                                            multiSelectClassName="bg-background"
+                                        />
+                                    )}
+                                </TabsContent>
+                                <TabsContent value="author_name">
+                                    <FormField
+                                        className="bg-background"
+                                        id="author_name"
+                                        name="author_name"
+                                        label=""
+                                        placeholder="Author Name"
+                                        value={data.author_name || ''}
+                                        onChange={(val) => setData('author_name', val)}
+                                        error={errors.author_name}
+                                        description="Use this to freely type an author name."
+                                    />
+                                </TabsContent>
+                            </Tabs>
                         </div>
 
                         <div className="form-field-container">
@@ -362,7 +446,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                     <p>Sub Cate Code: {selectedSubCategoryCode}</p>
                 </div>
                 {inputLanguage == 'default' && (
-                    <div className="form-field-container">
+                    <span className="space-y-6 space-x-6 md:grid md:grid-cols-2">
                         <FormCombobox
                             name="main_category_code"
                             label="Main Category"
@@ -380,6 +464,9 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                             value={data.main_category_code || ''}
                             onChange={(val) => {
                                 setData('category_code', '');
+                                setSelectedCategoryCode('');
+                                setSelectedSubCategoryCode('');
+
                                 setData('main_category_code', val);
                                 setSelectedMainCategoryCode(val);
                             }}
@@ -396,48 +483,40 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 },
                                 ...filteredCategories.map((item: any) => ({
                                     value: item.code,
-                                    label:
-                                        `(${item.order_index}) ` +
-                                        `${item?.parent_id ? 'ㅤㅤ ' : '➤ '}` +
-                                        (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
+                                    label: `(${item.order_index}) ` + (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
                                 })),
                             ]}
                             disable={!data.main_category_code}
                             placeholder={!data.main_category_code ? 'Please Select Main Category First.' : ''}
-                            value={data.category_code || ''}
+                            value={selectedCategoryCode || ''}
                             onChange={(val) => {
-                                setData('category_code', val);
+                                // setData('category_code', val);
+                                setSelectedSubCategoryCode('');
                                 setSelectedCategoryCode(val);
                             }}
                             error={errors.category_code}
-                            description="Select the category where this item belongs to."
                         />
-                        {/* TODO: Sub Cate */}
                         <FormCombobox
                             name="category_code"
-                            label="(TODO)Sub Category"
+                            label="Sub Category"
                             options={[
                                 {
                                     value: null,
-                                    label: !data.main_category_code ? t('Please Select Main Category') : t('NA'),
+                                    label: !selectedCategoryCode ? t('Please Select Category') : t('NA'),
                                 },
-                                ...filteredCategories.map((item: any) => ({
+                                ...filteredSubCategories.map((item: any) => ({
                                     value: item.code,
-                                    label:
-                                        `(${item.order_index}) ` +
-                                        `${item?.parent_id ? 'ㅤㅤ ' : '➤ '}` +
-                                        (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
+                                    label: `(${item.order_index}) ` + (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
                                 })),
                             ]}
-                            disable={!data.main_category_code}
-                            placeholder={!data.main_category_code ? 'Please Select Main Category First.' : ''}
-                            value={data.category_code || ''}
+                            disable={!selectedCategoryCode}
+                            placeholder={!selectedCategoryCode ? 'Please Select Category First.' : ''}
+                            value={selectedSubCategoryCode || ''}
                             onChange={(val) => {
                                 // setData('category_code', val);
                                 setSelectedSubCategoryCode(val);
                             }}
                             error={errors.category_code}
-                            description="Select the category where this item belongs to."
                         />
 
                         {languages?.length > 0 && (
@@ -464,22 +543,23 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                             error={errors.keywords}
                             description="Help users find your content more easily. Example: <b>election, candidates, political debate</b>"
                         />
-
-                        {postStatusData?.length > 0 && (
-                            <FormRadioStatus
-                                name="status"
-                                label="Status"
-                                options={postStatusData.map((item: any) => ({
-                                    value: item.value,
-                                    label: t(item.label),
-                                    description: t(item.description),
-                                }))}
-                                value={data.status || ''}
-                                onChange={(val) => setData('status', val)}
-                                error={errors.status}
-                            />
-                        )}
-                    </div>
+                        <div className="col-span-2">
+                            {postStatusData?.length > 0 && (
+                                <FormRadioStatus
+                                    name="status"
+                                    label="Status"
+                                    options={postStatusData.map((item: any) => ({
+                                        value: item.value,
+                                        label: t(item.label),
+                                        description: t(item.description),
+                                    }))}
+                                    value={data.status || ''}
+                                    onChange={(val) => setData('status', val)}
+                                    error={errors.status}
+                                />
+                            )}
+                        </div>
+                    </span>
                 )}
                 <div className="form-field-container md:grid-cols-1">
                     {inputLanguage == 'default' && (
@@ -499,21 +579,21 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 {inputLanguage == 'default' && (
                     <>
                         <div>
-                            <Tabs defaultValue="thumbnail" className="w-full rounded-lg bg-muted/80 p-4">
-                                <TabsList className="border bg-border/50 p-1 dark:border-white/20">
+                            <Tabs defaultValue="thumbnail" className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
+                                <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
                                     <TabsTrigger value="thumbnail" className="h-full dark:data-[state=active]:bg-white/20">
                                         {t('Thumbnail')}
                                     </TabsTrigger>
                                     <TabsTrigger value="images" className="h-full dark:data-[state=active]:bg-white/20">
-                                        {t('Images')}
+                                        {t('More Images')}
                                     </TabsTrigger>
                                 </TabsList>
-                                <TabsContent value="thumbnail">
+                                <TabsContent value="thumbnail" className="mt-0">
                                     <div className={cn('form-field-container', !editData?.thumbnail && 'md:grid-cols-1')}>
                                         <FormFileUpload
                                             key={editData?.thumbnail}
                                             id="thumbnail"
-                                            label="Thumbnail"
+                                            label="​ "
                                             files={thumbnailFiles}
                                             setFiles={setThumbnailFiles}
                                         />
@@ -544,7 +624,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                             }}
                                             key={editData?.images?.map((img: any) => img.image || img).join('-')}
                                             id="images"
-                                            label="Images"
+                                            label=""
                                             files={imageFiles}
                                             setFiles={setImageFiles}
                                         />
@@ -562,7 +642,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                             </Tabs>
                         </div>
 
-                        <div className="w-full rounded-lg bg-muted/80 p-4">
+                        <div className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
                             <div className="form-field-container mb-4">
                                 {fileTypes?.length > 0 && (
                                     <FormCombobox
@@ -580,10 +660,15 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                             })),
                                         ]}
                                         value={data.file_type_code || ''}
-                                        onChange={(val) => setData('file_type_code', val)}
+                                        onChange={(val) => {
+                                            setData('file_type_code', val);
+                                            setDefaultFiles(null);
+                                            setFiles(null);
+                                        }}
                                         error={errors.file_type_code}
                                     />
                                 )}
+                                {data.file_type_code}
                             </div>
                             {data?.file_type_code == 'video-youtube-url' ? (
                                 <FormField
@@ -593,37 +678,76 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                     name="external_link"
                                     label="External Link"
                                     value={data.external_link || ''}
-                                    onChange={(val) => setData('external_link', val)}
+                                    onChange={(val) => {
+                                        setData('external_link', val);
+                                    }}
                                     error={errors.external_link}
                                 />
                             ) : (
                                 <>
-                                    <p>
-                                        File Name: <span className="font-bold">{editData?.file_name}</span>
-                                    </p>
-                                    <FormFileUpload
-                                        dropzoneOptions={{
-                                            maxFiles: 100,
-                                            maxSize: 1024 * 1024 * 50,
-                                            multiple: true,
-                                            accept: {},
-                                        }}
-                                        key={editData?.files?.map((img: any) => img.image || img).join('-')}
-                                        id="files"
-                                        label="Files"
-                                        files={files}
-                                        setFiles={setFiles}
-                                    />
-                                    {editData?.files?.length > 0 && (
-                                        <UploadedFile
-                                            fileClassName="bg-background"
-                                            label="Uploaded Files"
-                                            permission="item update"
-                                            files={editData?.files}
-                                            deletePath="/admin/items/files/"
-                                            basePath="/assets/files/items/"
-                                        />
-                                    )}
+                                    <Tabs defaultValue="default_file" className="w-full rounded-lg bg-muted/80 dark:bg-muted/50">
+                                        <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
+                                            <TabsTrigger value="default_file" className="h-full dark:data-[state=active]:bg-white/20">
+                                                {t('Default File')}
+                                            </TabsTrigger>
+                                            <TabsTrigger value="more_files" className="h-full dark:data-[state=active]:bg-white/20">
+                                                {t('More Files')}
+                                            </TabsTrigger>
+                                        </TabsList>
+                                        <TabsContent value="default_file">
+                                            <div className="space-y-4">
+                                                <FormFileUpload
+                                                    dropzoneOptions={{
+                                                        maxFiles: 10,
+                                                        maxSize: 1024 * 1024 * 50,
+                                                        multiple: false,
+                                                        accept: data.file_type_code ? ACCEPT_BY_TYPE[data.file_type_code] : {},
+                                                    }}
+                                                    key={editData?.file_name}
+                                                    id="default_file"
+                                                    label=""
+                                                    files={defaultFiles}
+                                                    setFiles={setDefaultFiles}
+                                                />
+                                                {editData?.file_name && (
+                                                    <UploadedFile
+                                                        containerClassName="mt-0"
+                                                        label="Uploaded Default File"
+                                                        files={editData?.file_name}
+                                                        basePath="/assets/files/items/"
+                                                        fileClassName="bg-background"
+                                                    />
+                                                )}
+                                            </div>
+                                        </TabsContent>
+                                        <TabsContent value="more_files">
+                                            <div className="space-y-4">
+                                                <FormFileUpload
+                                                    dropzoneOptions={{
+                                                        maxFiles: 100,
+                                                        maxSize: 1024 * 1024 * 50,
+                                                        multiple: true,
+                                                        accept: data.file_type_code ? ACCEPT_BY_TYPE[data.file_type_code] : {},
+                                                    }}
+                                                    key={editData?.files?.map((img: any) => img.image || img).join('-')}
+                                                    id="files"
+                                                    label=""
+                                                    files={files}
+                                                    setFiles={setFiles}
+                                                />
+                                                {editData?.files?.length > 0 && (
+                                                    <UploadedFile
+                                                        fileClassName="bg-background"
+                                                        label="Uploaded Files"
+                                                        permission="item update"
+                                                        files={editData?.files}
+                                                        deletePath="/admin/items/files/"
+                                                        basePath="/assets/files/items/"
+                                                    />
+                                                )}
+                                            </div>
+                                        </TabsContent>
+                                    </Tabs>
                                 </>
                             )}
                         </div>

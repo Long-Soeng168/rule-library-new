@@ -120,6 +120,7 @@ class ItemController extends Controller implements HasMiddleware
                 ->withCount('items')
                 ->orderBy('name')
                 ->get(),
+            'filtered_main_category_code' => $main_category_code,
             'publishers' => User::orderByDesc('publisher_items_count')->withCount('publisher_items')->role('Publisher')->get(),
             'advisors' => User::orderByDesc('advisor_items_count')->withCount('advisor_items')->role('Advisor')->get(),
             'authors' => User::orderByDesc('author_items_count')->withCount('author_items')->role('Author')->get(),
@@ -129,8 +130,9 @@ class ItemController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        $filtered_main_category_code = $request->main_category_code;
         return Inertia::render('Admin/Item/Create', [
             'fileTypes' => Type::where('group_code', 'item-file-type-group')
                 ->orderBy('order_index')
@@ -138,8 +140,15 @@ class ItemController extends Controller implements HasMiddleware
                 ->get(),
             'mainCategories' => ItemMainCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
             'categories' => ItemCategory::orderBy('order_index')
-                ->orderBy('name')
+                ->orderByDesc('id')
+                ->where('parent_id', null)
                 ->get(),
+            'subCategories' => ItemCategory::orderBy('order_index')
+                ->orderByDesc('id')
+                ->whereNotNull('parent_id')
+                ->with(['parent:id,code'])
+                ->get(),
+            'filtered_main_category_code' => $filtered_main_category_code,
             'languages' => Language::orderBy('order_index')->orderBy('name')->get(),
             'publishers' => User::orderBy('name')->role('Publisher')->get(),
             'authors' => User::orderBy('name')->role('Author')->get(),
@@ -153,6 +162,7 @@ class ItemController extends Controller implements HasMiddleware
     {
         // dd($request->all());
         $validated = $request->validate([
+            'main_category_code' => 'nullable|string|max:255|exists:item_main_categories,code',
             'category_code' => 'nullable|string|max:255|exists:item_categories,code',
             'file_type_code' => 'nullable|string|max:255|exists:types,code',
             'language_code' => 'nullable|string|max:255|exists:languages,code',
@@ -169,6 +179,7 @@ class ItemController extends Controller implements HasMiddleware
 
             'author_ids' => 'nullable|array',
 
+            'author_name' => 'nullable|string|max:255',
             'publisher_id' => 'nullable|exists:users,id',
             'published_year' => 'nullable|numeric|min:1000',
             'published_month' => 'nullable|numeric|min:1|max:12',
@@ -203,6 +214,11 @@ class ItemController extends Controller implements HasMiddleware
                     600
                 );
                 $validated['thumbnail'] = $imageName;
+            }
+
+            if ($request->hasFile('default_file')) {
+                $fileName =  FileHelper::uploadFile($request->file('default_file'), 'assets/files/items', true);
+                $validated['file_name'] = $fileName;
             }
 
             $image_files = $request->file('images');
@@ -243,7 +259,7 @@ class ItemController extends Controller implements HasMiddleware
             if ($item_files) {
                 try {
                     foreach ($item_files as $item_file) {
-                        $created_file_name = FileHelper::uploadFile($item_file, 'assets/files/items', false);
+                        $created_file_name = FileHelper::uploadFile($item_file, 'assets/files/items', true);
 
                         if ($created_file_name) {
                             ItemFile::create([
@@ -279,8 +295,16 @@ class ItemController extends Controller implements HasMiddleware
                 ->orderBy('order_index')
                 ->orderBy('name')
                 ->get(),
+
+            'selectedCategory' => ItemCategory::where('code', $item->category_code)->with('parent')->first(),
             'categories' => ItemCategory::orderBy('order_index')
-                ->orderBy('name')
+                ->orderByDesc('id')
+                ->where('parent_id', null)
+                ->get(),
+            'subCategories' => ItemCategory::orderBy('order_index')
+                ->orderByDesc('id')
+                ->whereNotNull('parent_id')
+                ->with(['parent:id,code'])
                 ->get(),
             'languages' => Language::orderBy('order_index')->orderBy('name')->get(),
             'publishers' => User::orderBy('name')->role('Publisher')->get(),
@@ -301,8 +325,15 @@ class ItemController extends Controller implements HasMiddleware
                 ->get(),
             'mainCategories' => ItemMainCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
 
+            'selectedCategory' => ItemCategory::where('code', $item->category_code)->with('parent')->first(),
             'categories' => ItemCategory::orderBy('order_index')
-                ->orderBy('name')
+                ->orderByDesc('id')
+                ->where('parent_id', null)
+                ->get(),
+            'subCategories' => ItemCategory::orderBy('order_index')
+                ->orderByDesc('id')
+                ->whereNotNull('parent_id')
+                ->with(['parent:id,code'])
                 ->get(),
             'languages' => Language::orderBy('order_index')->orderBy('name')->get(),
             'publishers' => User::orderBy('name')->role('Publisher')->get(),
@@ -317,6 +348,7 @@ class ItemController extends Controller implements HasMiddleware
     {
         // dd($request->all());
         $validated = $request->validate([
+            'main_category_code' => 'nullable|string|max:255|exists:item_main_categories,code',
             'category_code' => 'nullable|string|max:255|exists:item_categories,code',
             'file_type_code' => 'nullable|string|max:255|exists:types,code',
             'language_code' => 'nullable|string|max:255|exists:languages,code',
@@ -333,6 +365,7 @@ class ItemController extends Controller implements HasMiddleware
 
             'author_ids' => 'nullable|array',
 
+            'author_name' => 'nullable|string|max:255',
             'publisher_id' => 'nullable|exists:users,id',
             'published_year' => 'nullable|numeric|min:1900',
             'published_month' => 'nullable|numeric|min:1|max:12',
@@ -374,9 +407,24 @@ class ItemController extends Controller implements HasMiddleware
                 $validated['thumbnail'] = $imageName;
 
                 // delete old if replaced
-                if ($imageName && $item->image) {
-                    ImageHelper::deleteImage($item->image, 'assets/images/items');
-                }
+                // if ($imageName && $item->image) {
+                //     ImageHelper::deleteImage($item->image, 'assets/images/items');
+                // }
+            }
+            if ($request->hasFile('default_file')) {
+                $fileName =  FileHelper::uploadFile($request->file('default_file'), 'assets/files/items', true);
+                $validated['file_name'] = $fileName;
+            }
+            // Handle image upload if present
+            if ($request->hasFile('default_file')) {
+                $fileName =  FileHelper::uploadFile($request->file('default_file'), 'assets/files/items', true);
+
+                $validated['file_name'] = $fileName;
+
+                // delete old if replaced
+                // if ($fileName && $item->file_name) {
+                //     FileHelper::deleteFile($item->file_name, 'assets/files/items');
+                // }
             }
 
             $image_files = $request->file('images');
@@ -419,7 +467,7 @@ class ItemController extends Controller implements HasMiddleware
             if ($item_files) {
                 try {
                     foreach ($item_files as $item_file) {
-                        $created_file_name = FileHelper::uploadFile($item_file, 'assets/files/items', false);
+                        $created_file_name = FileHelper::uploadFile($item_file, 'assets/files/items', true);
 
                         if ($created_file_name) {
                             ItemFile::create([

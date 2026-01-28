@@ -118,7 +118,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
 
                 <div className="sticky top-0">
                     <Tabs value={inputLanguage} onValueChange={(val: any) => setInputLanguage(val)}>
-                        <TabsList className="border bg-border/50 p-1 dark:border-white/20">
+                        <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
                             <TabsTrigger value="default" className="h-full dark:data-[state=active]:bg-white/20">
                                 {t('Default')}
                             </TabsTrigger>
@@ -269,8 +269,8 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         </div>
 
                         <div className="col-span-2">
-                            <Tabs defaultValue="icon" className="w-full rounded-lg bg-muted/80 p-4">
-                                <TabsList className="border bg-border/50 p-1 dark:border-white/20">
+                            <Tabs defaultValue="icon" className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
+                                <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
                                     <TabsTrigger value="icon" className="h-full dark:data-[state=active]:bg-white/20">
                                         {t('Icon')}
                                     </TabsTrigger>
