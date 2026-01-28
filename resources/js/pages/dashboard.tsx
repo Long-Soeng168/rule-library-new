@@ -12,9 +12,7 @@ import {
     LockKeyholeIcon,
     LucideIcon,
     MapPinHouseIcon,
-    PlusCircleIcon,
     SchoolIcon,
-    Settings2Icon,
     SettingsIcon,
     ShapesIcon,
     UserCog2Icon,
@@ -119,23 +117,6 @@ export default function Dashboard() {
             </div>
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <Link
-                        href={hasLibrary ? `/manage-library-data` : `/register-library`}
-                        className="group relative flex aspect-video flex-col items-center justify-center overflow-hidden rounded-xl border border-sidebar-border/70 p-6 text-center transition hover:bg-muted dark:border-sidebar-border"
-                    >
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/10 dark:stroke-neutral-100/10" />
-
-                        {hasLibrary ? (
-                            <Settings2Icon className="mb-3 h-12 w-12 text-primary transition group-hover:scale-110" />
-                        ) : (
-                            <PlusCircleIcon className="mb-3 h-12 w-12 text-primary transition group-hover:scale-110" />
-                        )}
-
-                        <h3 className="text-lg font-semibold">{hasLibrary ? t('Manage Your Library') : t('Register Your Library')}</h3>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            {hasLibrary ? t('Update your library information') : t('Add your library to the network')}
-                        </p>
-                    </Link>
                     <Link
                         href={`/settings/profile`}
                         className={`group relative flex aspect-video flex-col items-center justify-center overflow-hidden rounded-xl border border-sidebar-border/70 p-6 text-center transition hover:bg-muted dark:border-sidebar-border`}
