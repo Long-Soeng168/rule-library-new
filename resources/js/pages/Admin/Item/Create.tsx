@@ -47,6 +47,7 @@ interface ItemForm {
     author_ids?: { value: string; label: string }[];
 
     author_name?: string;
+    advisor_id?: string;
     publisher_id?: string;
     published_year?: string;
     published_month?: string;
@@ -69,8 +70,18 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         type: 'message',
     });
 
-    const { fileTypes, languages, selectedCategory, categories, subCategories, mainCategories, filtered_main_category_code, publishers, authors } =
-        usePage<any>().props;
+    const {
+        fileTypes,
+        languages,
+        selectedCategory,
+        categories,
+        subCategories,
+        mainCategories,
+        filtered_main_category_code,
+        publishers,
+        authors,
+        advisors,
+    } = usePage<any>().props;
 
     const [inputLanguage, setInputLanguage] = useState<'default' | 'khmer'>('default');
     const [selectedMainCategoryCode, setSelectedMainCategoryCode] = useState<string>(editData?.main_category_code || '');
@@ -121,6 +132,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
             }) || [],
 
         author_name: editData?.author_name?.toString() || '',
+        advisor_id: editData?.advisor_id?.toString() || '',
         publisher_id: editData?.publisher_id?.toString() || '',
         published_year: editData?.published_year?.toString() || '',
         published_month: editData?.published_month?.toString() || '',
@@ -271,6 +283,106 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                     )}
                 </div>
                 {inputLanguage == 'default' && (
+                    <span className="space-y-6 space-x-6 md:grid md:grid-cols-2">
+                        <FormCombobox
+                            name="main_category_code"
+                            label="Main Category"
+                            required
+                            options={[
+                                {
+                                    value: null,
+                                    label: t('NA'),
+                                },
+                                ...mainCategories.map((item: any) => ({
+                                    value: item.code.toString(),
+                                    label: `(${item.order_index}) ${currentLocale == 'kh' ? item.name_kh || item.name : item.name}`,
+                                })),
+                            ]}
+                            value={data.main_category_code || ''}
+                            onChange={(val) => {
+                                setData('category_code', '');
+                                setSelectedCategoryCode('');
+                                setSelectedSubCategoryCode('');
+
+                                setData('main_category_code', val);
+                                setSelectedMainCategoryCode(val);
+                            }}
+                            error={errors.main_category_code}
+                            description="Select the Main Category that this category belongs to."
+                        />
+                        <FormCombobox
+                            name="category_code"
+                            label="Category"
+                            options={[
+                                {
+                                    value: null,
+                                    label: !data.main_category_code ? t('Please Select Main Category') : t('NA'),
+                                },
+                                ...filteredCategories.map((item: any) => ({
+                                    value: item.code,
+                                    label: `(${item.order_index}) ` + (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
+                                })),
+                            ]}
+                            disable={!data.main_category_code}
+                            placeholder={!data.main_category_code ? 'Please Select Main Category First.' : ''}
+                            value={selectedCategoryCode || ''}
+                            onChange={(val) => {
+                                // setData('category_code', val);
+                                setSelectedSubCategoryCode('');
+                                setSelectedCategoryCode(val);
+                            }}
+                            error={errors.category_code}
+                        />
+                        <FormCombobox
+                            name="category_code"
+                            label="Sub Category"
+                            options={[
+                                {
+                                    value: null,
+                                    label: !selectedCategoryCode ? t('Please Select Category') : t('NA'),
+                                },
+                                ...filteredSubCategories.map((item: any) => ({
+                                    value: item.code,
+                                    label: `(${item.order_index}) ` + (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
+                                })),
+                            ]}
+                            disable={!selectedCategoryCode}
+                            placeholder={!selectedCategoryCode ? 'Please Select Category First.' : ''}
+                            value={selectedSubCategoryCode || ''}
+                            onChange={(val) => {
+                                // setData('category_code', val);
+                                setSelectedSubCategoryCode(val);
+                            }}
+                            error={errors.category_code}
+                        />
+
+                        {languages?.length > 0 && (
+                            <FormCombobox
+                                name="language_code"
+                                label="Language"
+                                options={languages.map((item: any) => ({
+                                    value: item.code,
+                                    label: currentLocale == 'kh' ? item.name_kh || item.name : item.name,
+                                }))}
+                                value={data.language_code || ''}
+                                onChange={(val) => setData('language_code', val)}
+                                error={errors.language_code}
+                            />
+                        )}
+
+                        <FormField
+                            containerClassName="col-span-2"
+                            id="keywords"
+                            name="keywords"
+                            label="Keywords"
+                            value={data.keywords || ''}
+                            onChange={(val) => setData('keywords', val)}
+                            error={errors.keywords}
+                            description="Help users find your content more easily. Example: <b>election, candidates, political debate</b>"
+                        />
+                    </span>
+                )}
+                {inputLanguage == 'default' && (
                     <>
                         <div className="form-field-container">
                             <Tabs defaultValue="ddc" className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
@@ -374,7 +486,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                         {t('Author Name')}
                                     </TabsTrigger>
                                 </TabsList>
-                                <TabsContent value="authors_select">
+                                <TabsContent value="authors_select" className="mt-1">
                                     {authors?.length > 0 && (
                                         <FormFieldMultiSelect
                                             label=""
@@ -391,7 +503,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                         />
                                     )}
                                 </TabsContent>
-                                <TabsContent value="author_name">
+                                <TabsContent value="author_name" className="mt-1">
                                     <FormField
                                         className="bg-background"
                                         id="author_name"
@@ -406,6 +518,30 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 </TabsContent>
                             </Tabs>
                         </div>
+
+                        {data?.main_category_code == 'theses' && (
+                            <div className="form-field-container md:grid-cols-1">
+                                {advisors?.length > 0 && (
+                                    <FormCombobox
+                                        name="advisor_id"
+                                        label="Advisors"
+                                        options={[
+                                            {
+                                                value: null,
+                                                label: t('NA'),
+                                            },
+                                            ...advisors.map((item: any) => ({
+                                                value: item.id?.toString(),
+                                                label: `(ID:${item.id}) ${item.name}`,
+                                            })),
+                                        ]}
+                                        value={data.advisor_id?.toString() || ''}
+                                        onChange={(val) => setData('advisor_id', val)}
+                                        error={errors.advisor_id}
+                                    />
+                                )}
+                            </div>
+                        )}
 
                         <div className="form-field-container">
                             {publishers?.length > 0 && (
@@ -440,127 +576,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         </div>
                     </>
                 )}
-                <div>
-                    <p>Main Cate Code: {selectedMainCategoryCode}</p>
-                    <p>Cate Code: {selectedCategoryCode}</p>
-                    <p>Sub Cate Code: {selectedSubCategoryCode}</p>
-                </div>
-                {inputLanguage == 'default' && (
-                    <span className="space-y-6 space-x-6 md:grid md:grid-cols-2">
-                        <FormCombobox
-                            name="main_category_code"
-                            label="Main Category"
-                            required
-                            options={[
-                                {
-                                    value: null,
-                                    label: t('NA'),
-                                },
-                                ...mainCategories.map((item: any) => ({
-                                    value: item.code.toString(),
-                                    label: `(${item.order_index}) ${currentLocale == 'kh' ? item.name_kh || item.name : item.name}`,
-                                })),
-                            ]}
-                            value={data.main_category_code || ''}
-                            onChange={(val) => {
-                                setData('category_code', '');
-                                setSelectedCategoryCode('');
-                                setSelectedSubCategoryCode('');
 
-                                setData('main_category_code', val);
-                                setSelectedMainCategoryCode(val);
-                            }}
-                            error={errors.main_category_code}
-                            description="Select the Main Category that this category belongs to."
-                        />
-                        <FormCombobox
-                            name="category_code"
-                            label="Category"
-                            options={[
-                                {
-                                    value: null,
-                                    label: !data.main_category_code ? t('Please Select Main Category') : t('NA'),
-                                },
-                                ...filteredCategories.map((item: any) => ({
-                                    value: item.code,
-                                    label: `(${item.order_index}) ` + (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
-                                })),
-                            ]}
-                            disable={!data.main_category_code}
-                            placeholder={!data.main_category_code ? 'Please Select Main Category First.' : ''}
-                            value={selectedCategoryCode || ''}
-                            onChange={(val) => {
-                                // setData('category_code', val);
-                                setSelectedSubCategoryCode('');
-                                setSelectedCategoryCode(val);
-                            }}
-                            error={errors.category_code}
-                        />
-                        <FormCombobox
-                            name="category_code"
-                            label="Sub Category"
-                            options={[
-                                {
-                                    value: null,
-                                    label: !selectedCategoryCode ? t('Please Select Category') : t('NA'),
-                                },
-                                ...filteredSubCategories.map((item: any) => ({
-                                    value: item.code,
-                                    label: `(${item.order_index}) ` + (currentLocale == 'kh' ? item.name_kh || item.name : item.name),
-                                })),
-                            ]}
-                            disable={!selectedCategoryCode}
-                            placeholder={!selectedCategoryCode ? 'Please Select Category First.' : ''}
-                            value={selectedSubCategoryCode || ''}
-                            onChange={(val) => {
-                                // setData('category_code', val);
-                                setSelectedSubCategoryCode(val);
-                            }}
-                            error={errors.category_code}
-                        />
-
-                        {languages?.length > 0 && (
-                            <FormCombobox
-                                name="language_code"
-                                label="Language"
-                                options={languages.map((item: any) => ({
-                                    value: item.code,
-                                    label: currentLocale == 'kh' ? item.name_kh || item.name : item.name,
-                                }))}
-                                value={data.language_code || ''}
-                                onChange={(val) => setData('language_code', val)}
-                                error={errors.language_code}
-                            />
-                        )}
-
-                        <FormField
-                            containerClassName="col-span-2"
-                            id="keywords"
-                            name="keywords"
-                            label="Keywords"
-                            value={data.keywords || ''}
-                            onChange={(val) => setData('keywords', val)}
-                            error={errors.keywords}
-                            description="Help users find your content more easily. Example: <b>election, candidates, political debate</b>"
-                        />
-                        <div className="col-span-2">
-                            {postStatusData?.length > 0 && (
-                                <FormRadioStatus
-                                    name="status"
-                                    label="Status"
-                                    options={postStatusData.map((item: any) => ({
-                                        value: item.value,
-                                        label: t(item.label),
-                                        description: t(item.description),
-                                    }))}
-                                    value={data.status || ''}
-                                    onChange={(val) => setData('status', val)}
-                                    error={errors.status}
-                                />
-                            )}
-                        </div>
-                    </span>
-                )}
                 <div className="form-field-container md:grid-cols-1">
                     {inputLanguage == 'default' && (
                         <div className="grid content-start gap-2">
@@ -580,7 +596,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                     <>
                         <div>
                             <Tabs defaultValue="thumbnail" className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
-                                <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
+                                <TabsList className="mb-0 border bg-border/50 p-1 dark:border-white/20">
                                     <TabsTrigger value="thumbnail" className="h-full dark:data-[state=active]:bg-white/20">
                                         {t('Thumbnail')}
                                     </TabsTrigger>
@@ -588,7 +604,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                         {t('More Images')}
                                     </TabsTrigger>
                                 </TabsList>
-                                <TabsContent value="thumbnail" className="mt-0">
+                                <TabsContent value="thumbnail" className="-mt-2.5">
                                     <div className={cn('form-field-container', !editData?.thumbnail && 'md:grid-cols-1')}>
                                         <FormFileUpload
                                             key={editData?.thumbnail}
@@ -608,7 +624,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                         )}
                                     </div>
                                 </TabsContent>
-                                <TabsContent value="images">
+                                <TabsContent value="images" className="mt-1">
                                     <div>
                                         <FormFileUpload
                                             dropzoneOptions={{
@@ -668,7 +684,6 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                         error={errors.file_type_code}
                                     />
                                 )}
-                                {data.file_type_code}
                             </div>
                             {data?.file_type_code == 'video-youtube-url' ? (
                                 <FormField
@@ -694,7 +709,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                                 {t('More Files')}
                                             </TabsTrigger>
                                         </TabsList>
-                                        <TabsContent value="default_file">
+                                        <TabsContent value="default_file" className="mt-1">
                                             <div className="space-y-4">
                                                 <FormFileUpload
                                                     dropzoneOptions={{
@@ -720,7 +735,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                                 )}
                                             </div>
                                         </TabsContent>
-                                        <TabsContent value="more_files">
+                                        <TabsContent value="more_files" className="mt-1">
                                             <div className="space-y-4">
                                                 <FormFileUpload
                                                     dropzoneOptions={{
@@ -749,6 +764,22 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                         </TabsContent>
                                     </Tabs>
                                 </>
+                            )}
+                        </div>
+                        <div className="col-span-2">
+                            {postStatusData?.length > 0 && (
+                                <FormRadioStatus
+                                    name="status"
+                                    label="Status"
+                                    options={postStatusData.map((item: any) => ({
+                                        value: item.value,
+                                        label: t(item.label),
+                                        description: t(item.description),
+                                    }))}
+                                    value={data.status || ''}
+                                    onChange={(val) => setData('status', val)}
+                                    error={errors.status}
+                                />
                             )}
                         </div>
                     </>

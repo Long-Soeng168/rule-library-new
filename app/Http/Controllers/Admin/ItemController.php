@@ -152,6 +152,7 @@ class ItemController extends Controller implements HasMiddleware
             'languages' => Language::orderBy('order_index')->orderBy('name')->get(),
             'publishers' => User::orderBy('name')->role('Publisher')->get(),
             'authors' => User::orderBy('name')->role('Author')->get(),
+            'advisors' => User::orderBy('name')->role('Advisor')->get(),
         ]);
     }
 
@@ -180,6 +181,7 @@ class ItemController extends Controller implements HasMiddleware
             'author_ids' => 'nullable|array',
 
             'author_name' => 'nullable|string|max:255',
+            'advisor_id' => 'nullable|exists:users,id',
             'publisher_id' => 'nullable|exists:users,id',
             'published_year' => 'nullable|numeric|min:1000',
             'published_month' => 'nullable|numeric|min:1|max:12',
@@ -338,6 +340,7 @@ class ItemController extends Controller implements HasMiddleware
             'languages' => Language::orderBy('order_index')->orderBy('name')->get(),
             'publishers' => User::orderBy('name')->role('Publisher')->get(),
             'authors' => User::orderBy('name')->role('Author')->get(),
+            'advisors' => User::orderBy('name')->role('Advisor')->get(),
         ]);
     }
 
@@ -366,6 +369,7 @@ class ItemController extends Controller implements HasMiddleware
             'author_ids' => 'nullable|array',
 
             'author_name' => 'nullable|string|max:255',
+            'advisor_id' => 'nullable|exists:users,id',
             'publisher_id' => 'nullable|exists:users,id',
             'published_year' => 'nullable|numeric|min:1900',
             'published_month' => 'nullable|numeric|min:1|max:12',
