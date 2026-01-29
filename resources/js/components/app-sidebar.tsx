@@ -13,7 +13,6 @@ import {
     LayoutList,
     LucideIcon,
     MapPinHouseIcon,
-    SchoolIcon,
     SettingsIcon,
     ShapesIcon,
     UsersIcon,
@@ -148,83 +147,6 @@ const mainNavItems: {
             },
         ],
     },
-    {
-        title: 'Library Data',
-        url: '/admin/library-data',
-        icon: SchoolIcon,
-        activeList: ['/admin/library-data'],
-        permission: 'library_data view',
-        items: [
-            {
-                title: 'All Library Data',
-                url: '/admin/library-data',
-                permission: 'library_data view',
-            },
-            // {
-            //     title: 'Library Data Submited',
-            //     url: '/admin/library-data/submits',
-            //     permission: 'library_data_submit view',
-            // },
-        ],
-    },
-    // {
-    //     title: 'Resources',
-    //     url: '/admin/resources',
-    //     icon: LayoutListIcon,
-    //     items: [
-    //         {
-    //             title: 'All Resources',
-    //             url: '/admin/resources',
-    //         },
-    //         {
-    //             title: 'Categories',
-    //             url: '/admin/resources/categories',
-    //         },
-    //         {
-    //             title: 'Types',
-    //             url: '/admin/resources/types',
-    //         },
-    //     ],
-    // },
-    // {
-    //     title: 'Items',
-    //     url: '/admin/items',
-    //     icon: LayoutListIcon,
-    //     items: [
-    //         {
-    //             title: 'All Items',
-    //             url: '/admin/items',
-    //         },
-    //         {
-    //             title: 'Categories',
-    //             url: '/admin/items/categories',
-    //         },
-    //         {
-    //             title: 'Types',
-    //             url: '/admin/items/types',
-    //         },
-    //     ],
-    // },
-
-    // {
-    //     title: 'Categories',
-    //     url: '/admin/categories',
-    //     icon: ComponentIcon,
-    //     items: [
-    //         {
-    //             title: 'Main Categories',
-    //             url: '/admin/categories',
-    //         },
-    //         {
-    //             title: 'Categories',
-    //             url: '/admin/sub-categories',
-    //         },
-    //         {
-    //             title: 'Types',
-    //             url: '/admin/categories/types',
-    //         },
-    //     ],
-    // },
     {
         title: 'Types',
         url: '/admin/types',

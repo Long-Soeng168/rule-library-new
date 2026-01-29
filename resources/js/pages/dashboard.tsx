@@ -7,17 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import {
-    LanguagesIcon,
-    LockKeyholeIcon,
-    LucideIcon,
-    MapPinHouseIcon,
-    SchoolIcon,
-    SettingsIcon,
-    ShapesIcon,
-    UserCog2Icon,
-    UsersIcon,
-} from 'lucide-react';
+import { LanguagesIcon, LockKeyholeIcon, LucideIcon, SettingsIcon, ShapesIcon, UserCog2Icon, UsersIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -56,27 +46,18 @@ const mainNavItems: {
         permission: 'website_info view',
     },
     {
-        title: 'Library Data',
-        description: 'View and manage all library records and related information.',
-        url: '/admin/library-data',
-        icon: SchoolIcon,
-        activeList: ['/admin/library-data'],
-        permission: 'library_data view',
-    },
-
-    {
-        title: 'Types',
-        description: 'Manage categories, types, and classification codes used in the system.',
-        url: '/admin/types',
+        title: 'Items',
+        description: 'Manage items published in the system.',
+        url: '/admin/items',
         icon: ShapesIcon,
-        permission: 'type view',
+        permission: 'item view',
     },
     {
-        title: 'Locations',
-        description: 'Manage provinces, cities, and other location-based information.',
-        url: '/admin/locations',
-        icon: MapPinHouseIcon,
-        permission: 'location view',
+        title: 'Posts',
+        description: 'Manage posts published in the system.',
+        url: '/admin/posts',
+        icon: ShapesIcon,
+        permission: 'post view',
     },
     {
         title: 'Languages',
@@ -85,6 +66,13 @@ const mainNavItems: {
         icon: LanguagesIcon,
         permission: 'language view',
     },
+    // {
+    //     title: 'Types',
+    //     description: 'Manage categories, types, and classification codes used in the system.',
+    //     url: '/admin/types',
+    //     icon: ShapesIcon,
+    //     permission: 'type view',
+    // },
 ];
 
 export default function Dashboard() {
@@ -128,7 +116,7 @@ export default function Dashboard() {
                         <h3 className="text-lg font-semibold">{t('Profile Settings')}</h3>
                         <p className="mt-1 text-sm text-muted-foreground">{t('Update your personal information and preferences')}</p>
                     </Link>
-                    <Link
+                    {/* <Link
                         href={`/settings/password`}
                         className={`group relative flex aspect-video flex-col items-center justify-center overflow-hidden rounded-xl border border-sidebar-border/70 p-6 text-center transition hover:bg-muted dark:border-sidebar-border`}
                     >
@@ -138,7 +126,7 @@ export default function Dashboard() {
 
                         <h3 className="text-lg font-semibold">{t('Change Password')}</h3>
                         <p className="mt-1 text-sm text-muted-foreground">{t('Update your account password securely')}</p>
-                    </Link>
+                    </Link> */}
 
                     {/* Admin Menu */}
                     {mainNavItems?.map((item) => {
