@@ -2,14 +2,14 @@ import { User } from 'lucide-react';
 
 export default function StaffCard({ name, name_kh, role, imageUrl }) {
     return (
-        <div className="w-36 transform overflow-hidden rounded border border-gray-100 bg-white transition-transform hover:scale-105 hover:shadow-xl">
+        <div className="w-36 transform overflow-hidden rounded border border-border bg-background transition-transform hover:scale-105 hover:shadow-xl">
             {/* Image Section 3:4 */}
-            <div className="relative aspect-[3/3.1] w-full bg-gray-100">
+            <div className="relative aspect-[3/3.1] w-full">
                 {imageUrl ? (
                     <img src={imageUrl} alt={name} className="h-full w-full object-cover object-top" />
                 ) : (
                     <div className="flex h-full w-full items-center justify-center bg-muted">
-                        <User className="h-12 w-12 text-muted-foreground" />
+                        <User className="size-16 text-primary" strokeWidth={1.5} />
                     </div>
                 )}
             </div>
