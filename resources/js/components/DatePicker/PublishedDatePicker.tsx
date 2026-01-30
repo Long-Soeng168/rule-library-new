@@ -1,4 +1,4 @@
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, RotateCwIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -30,8 +30,8 @@ const days = Array.from({ length: 31 }, (_, i) => ({
 }));
 
 // Generate years (last 100 years)
-const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 100 }, (_, i) => ({
+const currentYear = new Date().getFullYear() + 2;
+const years = Array.from({ length: 200 }, (_, i) => ({
     value: String(currentYear - i),
     label: String(currentYear - i),
 }));
@@ -41,15 +41,16 @@ interface SelectPickerProps {
     value: string | number | null;
     onChange: (val: string) => void;
     placeholder: string;
+    disabled?: boolean;
 }
 
-function SelectPicker({ options, value, onChange, placeholder }: SelectPickerProps) {
+function SelectPicker({ options, value, onChange, placeholder, disabled = false }: SelectPickerProps) {
     const [open, setOpen] = React.useState(false);
     const { t, currentLocale } = useTranslation();
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <Button variant="outline" role="combobox" aria-expanded={open} className="w-full flex-1 justify-between rounded">
+                <Button disabled={disabled} variant="outline" role="combobox" aria-expanded={open} className="w-full flex-1 justify-between rounded">
                     {value ? options.find((opt) => opt.value === String(value))?.label : placeholder}
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
@@ -111,8 +112,34 @@ export default function PublishedDatePicker({
             <FormLabel label="Published At" />
             <div className="flex gap-2">
                 <SelectPicker options={years} value={published_year || ''} onChange={setPublished_year} placeholder={t('Year')} />
-                <SelectPicker options={months} value={published_month || ''} onChange={setPublished_month} placeholder={t('Month')} />
-                <SelectPicker options={days} value={published_day || ''} onChange={setPublished_day} placeholder={t('Day')} />
+                <SelectPicker
+                    options={months}
+                    disabled={!published_year}
+                    value={published_month || ''}
+                    onChange={setPublished_month}
+                    placeholder={t('Month')}
+                />
+                <SelectPicker
+                    options={days}
+                    value={published_day || ''}
+                    disabled={!published_month}
+                    onChange={setPublished_day}
+                    placeholder={t('Day')}
+                />
+            </div>
+            <div className="flex justify-end">
+                <button
+                    type="button"
+                    className="mt-1 inline-flex cursor-pointer items-center gap-1 rounded border bg-muted px-2 py-1 text-xs font-medium text-muted-foreground transition hover:border-gray-400"
+                    onClick={() => {
+                        setPublished_year('');
+                        setPublished_month('');
+                        setPublished_day('');
+                    }}
+                >
+                    <RotateCwIcon className="size-4" />
+                    {t('Clear Date')}
+                </button>
             </div>
         </div>
     );

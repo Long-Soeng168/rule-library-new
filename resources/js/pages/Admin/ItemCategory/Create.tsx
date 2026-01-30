@@ -35,14 +35,14 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
 
     const [inputLanguage, setInputLanguage] = useState<'default' | 'khmer'>('default');
 
-    const { parents, mainCategories, filtered_category_id, filtered_main_category_code } = usePage<any>().props;
+    const { parents, mainCategories, filtered_category_id, main_category_code } = usePage<any>().props;
 
     const [files, setFiles] = useState<File[] | null>(null);
 
     const { data, setData, post, processing, transform, progress, errors, reset } = useForm<TypeGroupForm>({
         code: editData?.code || '',
         parent_id: editData?.parent_id?.toString() || filtered_category_id?.toString() || '',
-        item_main_category_code: editData?.item_main_category_code?.toString() || filtered_main_category_code?.toString() || '',
+        item_main_category_code: editData?.item_main_category_code?.toString() || main_category_code?.toString() || '',
         name: editData?.name || '',
         name_kh: editData?.name_kh || '',
         order_index: editData?.order_index || 10000,

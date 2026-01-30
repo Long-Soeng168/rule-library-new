@@ -70,18 +70,8 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         type: 'message',
     });
 
-    const {
-        fileTypes,
-        languages,
-        selectedCategory,
-        categories,
-        subCategories,
-        mainCategories,
-        filtered_main_category_code,
-        publishers,
-        authors,
-        advisors,
-    } = usePage<any>().props;
+    const { fileTypes, languages, selectedCategory, categories, subCategories, mainCategories, main_category_code, publishers, authors, advisors } =
+        usePage<any>().props;
 
     const [inputLanguage, setInputLanguage] = useState<'default' | 'khmer'>('default');
     const [selectedMainCategoryCode, setSelectedMainCategoryCode] = useState<string>(editData?.main_category_code || '');
@@ -107,7 +97,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
     const { data, setData, post, processing, transform, progress, errors, reset } = useForm<ItemForm>({
         code: editData?.code || '',
         category_code: editData?.category_code || null,
-        main_category_code: editData?.main_category_code?.toString() || filtered_main_category_code?.toString() || '',
+        main_category_code: editData?.main_category_code?.toString() || main_category_code?.toString() || '',
         file_type_code: editData?.file_type_code || '',
         language_code: editData?.language_code || languages[0]?.code || '',
         status: editData?.status || postStatusData[0]?.value || '',

@@ -30,6 +30,7 @@ const FilterData = () => {
 
         f.category_code ? queryParams.set('category_code', f.category_code) : queryParams.delete('category_code');
         f.trashed ? queryParams.set('trashed', f.trashed) : queryParams.delete('trashed');
+        queryParams.delete('main_category_code');
         queryParams.set('page', '1');
 
         router.get(`${currentPath}?${queryParams.toString()}`, {}, { preserveState: true, preserveScroll: true });

@@ -82,18 +82,26 @@ class ItemCategoryController extends Controller implements HasMiddleware
 
         $tableData = $query->paginate($perPage)->onEachSide(1);
 
+        $categories = ItemCategory::where('parent_id', null)
+            ->where('item_main_category_code', $main_category_code)
+            ->orderBy('order_index')
+            ->withCount('items')
+            ->get();
         // return $tableData;
         // return $filteredCategory;
         return Inertia::render('Admin/ItemCategory/Index', [
             'tableData' => $tableData,
-            'parents' => ItemCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
+            'parents' => ItemCategory::where('parent_id', null)->orderBy('order_index')->orderBy('id', 'desc')->get(),
             'filteredCategory' => $filteredCategory,
             'allParents' => $filteredParents,
             'main_category_code' => $main_category_code,
+            'categories' => $categories,
             'mainCategories' => ItemMainCategory::orderBy('order_index')
                 ->withCount('items')
                 ->orderBy('name')
                 ->get(),
+
+            'subCategories' => null,
         ]);
     }
 
@@ -106,7 +114,7 @@ class ItemCategoryController extends Controller implements HasMiddleware
             'parents' => ItemCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
             'mainCategories' => ItemMainCategory::orderBy('order_index')->orderBy('id', 'desc')->get(),
             'filtered_category_id' => $request->filtered_category_id,
-            'filtered_main_category_code' => $request->main_category_code,
+            'main_category_code' => $request->main_category_code,
         ]);
     }
 

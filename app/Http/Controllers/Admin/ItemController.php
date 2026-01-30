@@ -71,7 +71,16 @@ class ItemController extends Controller implements HasMiddleware
             $query->where('main_category_code', $main_category_code);
         }
         if ($category_code) {
-            $query->where('category_code', $category_code);
+            $category = ItemCategory::where('code', $category_code)->first();
+            $categoryChildren = [];
+            if (!empty($category)) {
+                $categoryChildren = $category->allChildren()->pluck('code')->toArray();
+                // return $categoryChildren;
+            }
+            $query->where(function ($sub_query) use ($category_code, $categoryChildren) {
+                return $sub_query->where('category_code', $category_code)
+                    ->orWhereIn('category_code', $categoryChildren);
+            });
         }
         if ($language_code) {
             $query->where('language_code', $language_code);
@@ -108,19 +117,28 @@ class ItemController extends Controller implements HasMiddleware
 
         $tableData = $query->paginate($perPage)->onEachSide(2);
 
+        $categories = ItemCategory::where('parent_id', null)
+            ->where('item_main_category_code', $main_category_code)
+            ->orderBy('order_index')
+            ->withCount('items')
+            ->get();
+
         return Inertia::render('Admin/Item/Index', [
             'tableData' => $tableData,
             'fileTypes' => Type::where('group_code', 'item-file-type-group')->withCount('file_type_items')->orderBy('order_index')->orderBy('name')->get(),
             'languages' => Language::orderBy('order_index')->withCount('items')->orderBy('name')->get(),
-            'categories' => ItemCategory::orderBy('order_index')
-                ->withCount('items')
-                ->orderBy('name')
-                ->get(),
+            'categories' => $categories,
             'mainCategories' => ItemMainCategory::orderBy('order_index')
                 ->withCount('items')
                 ->orderBy('name')
                 ->get(),
-            'filtered_main_category_code' => $main_category_code,
+
+            'subCategories' => ItemCategory::orderBy('order_index')
+                ->orderByDesc('id')
+                ->whereNotNull('parent_id')
+                ->with(['parent:id,code'])
+                ->get(),
+            'main_category_code' => $main_category_code,
             'publishers' => User::orderByDesc('publisher_items_count')->withCount('publisher_items')->role('Publisher')->get(),
             'advisors' => User::orderByDesc('advisor_items_count')->withCount('advisor_items')->role('Advisor')->get(),
             'authors' => User::orderByDesc('author_items_count')->withCount('author_items')->role('Author')->get(),
@@ -132,7 +150,7 @@ class ItemController extends Controller implements HasMiddleware
      */
     public function create(Request $request)
     {
-        $filtered_main_category_code = $request->main_category_code;
+        $main_category_code = $request->main_category_code;
         return Inertia::render('Admin/Item/Create', [
             'fileTypes' => Type::where('group_code', 'item-file-type-group')
                 ->orderBy('order_index')
@@ -148,7 +166,7 @@ class ItemController extends Controller implements HasMiddleware
                 ->whereNotNull('parent_id')
                 ->with(['parent:id,code'])
                 ->get(),
-            'filtered_main_category_code' => $filtered_main_category_code,
+            'main_category_code' => $main_category_code,
             'languages' => Language::orderBy('order_index')->orderBy('name')->get(),
             'publishers' => User::orderBy('name')->role('Publisher')->get(),
             'authors' => User::orderBy('name')->role('Author')->get(),

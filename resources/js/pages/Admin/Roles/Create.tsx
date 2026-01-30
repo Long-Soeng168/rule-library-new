@@ -108,6 +108,7 @@ export default function Create() {
                         name="name"
                         label="Name"
                         value={data.name}
+                        disable={data.name == 'Super Admin'}
                         onChange={(val: string) => setData('name', val)}
                         error={errors.name}
                     />

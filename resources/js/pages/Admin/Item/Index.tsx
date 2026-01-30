@@ -17,7 +17,7 @@ const Index = () => {
             href: '/admin/items',
         },
     ];
-    const { filtered_main_category_code } = usePage<any>().props;
+    const { main_category_code } = usePage<any>().props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <>
@@ -29,7 +29,7 @@ const Index = () => {
                     </div>
                     <div className="flex w-full justify-end md:w-auto">
                         {/* Add New Dialog */}
-                        <NewItemButton url={`/admin/items/create?main_category_code=${filtered_main_category_code}`} permission="item create" />
+                        <NewItemButton url={`/admin/items/create?main_category_code=${main_category_code || ''}`} permission="item create" />
                     </div>
                 </div>
                 <FilterMainCategory />
