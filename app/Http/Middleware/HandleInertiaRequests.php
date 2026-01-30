@@ -69,10 +69,6 @@ class HandleInertiaRequests extends Middleware
             'website_info' => WebsiteInfo::first(),
             'media_links' => Link::whereIn('type_code', ['social-media', 'contact'])->get(),
 
-            // Buddhist Global Info
-            'post_categories' => PostCategory::orderBy('order_index')->orderBy('name')->get(),
-            'active_category_code' => $active_category_code,
-            'selected_category' => PostCategory::where('code', $active_category_code)->first(),
         ];
     }
 }

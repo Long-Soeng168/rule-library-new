@@ -325,6 +325,21 @@
     "Profile Settings": "ការកំណត់ប្រវត្តិរូប",
     "Change Password": "ប្ដូរពាក្យសម្ងាត់",
 
+    "Library E-Resource View Chart": "ក្រាហ្វការមើលធនធានអេឡិចត្រូនិកក្នុងបណ្ណាល័យ",
+    "Showing total views for the last 3 months": "បង្ហាញចំនួនការមើលសរុបក្នុងរយៈពេល ៣ ខែចុងក្រោយ",
+
+    "Library E-Resource read Chart": "ក្រាហ្វការអានធនធានអេឡិចត្រូនិកក្នុងបណ្ណាល័យ",
+    "Showing total reads for the last 3 months": "បង្ហាញចំនួនការអានសរុបក្នុងរយៈពេល ៣ ខែចុងក្រោយ",
+
+    "Library E-Resource download Chart": "ក្រាហ្វការទាញយកធនធានអេឡិចត្រូនិកក្នុងបណ្ណាល័យ",
+    "Showing total downloads for the last 3 months": "បង្ហាញចំនួនការទាញយកសរុបក្នុងរយៈពេល ៣ ខែចុងក្រោយ",
+    "Last 3 months": "៣ ខែចុងក្រោយ",
+    "Last 30 days": "៣០ ថ្ងៃចុងក្រោយ",
+    "Last 7 days": "៧ ថ្ងៃចុងក្រោយ",
+
+    "Views": "ការមើល",
+    "Reads": "ការអាន",
+    "Downloads": "ការទាញយក",
     "en": "kh",
 
     "Changelog from our journey": "កំណត់ហេតុពីដំណើររបស់យើង",

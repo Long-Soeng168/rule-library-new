@@ -1,13 +1,12 @@
-import ChartAreaDoubleLayer from '@/components/Chart/chart-area-double-layer';
+import DashboardChart from '@/components/Chart/DashboardChart';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import usePermission from '@/hooks/use-permission';
 import useTranslation from '@/hooks/use-translation';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { LanguagesIcon, LockKeyholeIcon, LucideIcon, SettingsIcon, ShapesIcon, UserCog2Icon, UsersIcon } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import { ExternalLinkIcon, LockKeyholeIcon, LucideIcon, SettingsIcon, ShapesIcon, UserCog2Icon, UsersIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -47,24 +46,24 @@ const mainNavItems: {
     },
     {
         title: 'Items',
-        description: 'Manage items published in the system.',
+        description: 'Manage items published in the Web.',
         url: '/admin/items',
         icon: ShapesIcon,
         permission: 'item view',
     },
     {
         title: 'Posts',
-        description: 'Manage posts published in the system.',
+        description: 'Manage posts published in the Web.',
         url: '/admin/posts',
         icon: ShapesIcon,
         permission: 'post view',
     },
     {
-        title: 'Languages',
-        description: 'Manage supported languages and translation options.',
-        url: '/admin/languages',
-        icon: LanguagesIcon,
-        permission: 'language view',
+        title: 'Links',
+        description: 'Manage Social Media Links in the Web.',
+        url: '/admin/links',
+        icon: ExternalLinkIcon,
+        permission: 'link view',
     },
     // {
     //     title: 'Types',
@@ -76,33 +75,13 @@ const mainNavItems: {
 ];
 
 export default function Dashboard() {
-    const { auth, chartDataViews, chartDataReads, chartDataDownloads } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
     const hasPermission = usePermission();
-
-    const hasLibrary = !!auth?.user?.library_data_id;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="p-4">
-                <Tabs defaultValue="views" className="w-full">
-                    <TabsList>
-                        <TabsTrigger value="views">Views</TabsTrigger>
-                        <TabsTrigger value="reads">Reads</TabsTrigger>
-                        <TabsTrigger value="downloads">Downloads</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="views">
-                        <ChartAreaDoubleLayer chartData={chartDataViews} />
-                    </TabsContent>
-                    <TabsContent value="reads">
-                        <ChartAreaDoubleLayer chartData={chartDataReads} />
-                    </TabsContent>
-                    <TabsContent value="downloads">
-                        <ChartAreaDoubleLayer chartData={chartDataDownloads} />
-                    </TabsContent>
-                </Tabs>
-            </div>
+            {hasPermission('item view') && <DashboardChart />}
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     <Link

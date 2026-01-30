@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Item;
-use App\Models\ItemCategory;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 

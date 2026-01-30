@@ -4,7 +4,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { usePage } from '@inertiajs/react';
+import useTranslation from '@/hooks/use-translation';
 
 export const description = 'An interactive area chart';
 
@@ -28,7 +28,15 @@ const chartConfig = {
     },
 } satisfies ChartConfig;
 
-export default function ChartAreaDoubleLayer({ chartData }: { chartData: any }) {
+export default function ChartAreaDoubleLayer({
+    chartData,
+    title,
+    short_description,
+}: {
+    chartData: any;
+    title?: string;
+    short_description?: string;
+}) {
     // const { chartData } = usePage<any>().props;
     const [timeRange, setTimeRange] = React.useState('90d');
 
@@ -46,12 +54,14 @@ export default function ChartAreaDoubleLayer({ chartData }: { chartData: any }) 
         return date >= startDate;
     });
 
+    const { t, currentLocale } = useTranslation();
+
     return (
         <Card className="pt-0">
             <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
                 <div className="grid flex-1 gap-1">
-                    <CardTitle>E-Library Resource View Chart</CardTitle>
-                    <CardDescription>Showing total visitors for the last 3 months</CardDescription>
+                    <CardTitle>{title}</CardTitle>
+                    <CardDescription>{short_description}</CardDescription>
                 </div>
                 <Select value={timeRange} onValueChange={setTimeRange}>
                     <SelectTrigger className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex" aria-label="Select a value">
@@ -59,13 +69,13 @@ export default function ChartAreaDoubleLayer({ chartData }: { chartData: any }) 
                     </SelectTrigger>
                     <SelectContent className="rounded-xl">
                         <SelectItem value="90d" className="rounded-lg">
-                            Last 3 months
+                            {t('Last 3 months')}
                         </SelectItem>
                         <SelectItem value="30d" className="rounded-lg">
-                            Last 30 days
+                            {t('Last 30 days')}
                         </SelectItem>
                         <SelectItem value="7d" className="rounded-lg">
-                            Last 7 days
+                            {t('Last 7 days')}
                         </SelectItem>
                     </SelectContent>
                 </Select>
