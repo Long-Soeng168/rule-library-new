@@ -27,9 +27,9 @@ export const TeamAccordion = ({ members, defaultValue }: TeamAccordionProps) => 
                 >
                     <AccordionTrigger>{member.name}</AccordionTrigger>
                     <AccordionContent>
-                        <div className="flex items-start gap-6 rounded-lg sm:mx-0">
+                        <div className="flex items-start gap-3 sm:gap-4 rounded-lg sm:mx-0">
                             <AvatarLogoFallback
-                                className="mt-1.5 aspect-[3/3.5] h-auto w-26 shrink-0 rounded-sm bg-muted"
+                                className="mt-1.5 aspect-[3/3.5] h-auto w-20 shrink-0 rounded-sm bg-muted sm:w-26"
                                 imageClassName="size-full object-cover "
                                 image={member.image || ''}
                                 alt={member.name}
@@ -37,18 +37,19 @@ export const TeamAccordion = ({ members, defaultValue }: TeamAccordionProps) => 
                             />
                             <div className="flex flex-col gap-1">
                                 {member.name_kh ? (
-                                    <p>
-                                        <span className="mr-1 text-lg font-bold tracking-tight text-foreground">{member.name_kh}</span>
+                                    <p className='flex flex-col sm:flex-row flex-wrap'>
+                                        <span className="mr-1 font-bold tracking-tight text-foreground text-lg">{member.name_kh}</span>
                                         <span className="text-lg tracking-tight text-muted-foreground">({member.name})</span>
                                     </p>
                                 ) : (
-                                    <p className="mr-1 text-lg font-bold tracking-tight text-foreground">{member.name}</p>
+                                    <p className="mr-1 font-bold tracking-tight text-foreground text-lg">{member.name}</p>
                                 )}
 
-                                <p className="flex flex-wrap gap-2 font-medium text-muted-foreground">{member.role}</p>
-                                <p className="max-w-[72ch] text-base text-muted-foreground">{member.description}</p>
+                                <p className="flex flex-wrap gap-2 text-sm font-medium text-muted-foreground sm:text-base">{member.role}</p>
+                                <p className="hidden max-w-[72ch] text-sm text-muted-foreground sm:block sm:text-base">{member.description}</p>
                             </div>
                         </div>
+                        <p className="max-w-[72ch] text-sm text-muted-foreground sm:hidden mt-2 sm:text-base">{member.description}</p>
                     </AccordionContent>
                 </AccordionItem>
             ))}
