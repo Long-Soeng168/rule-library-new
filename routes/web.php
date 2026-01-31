@@ -34,4 +34,4 @@ Route::get('/lang/{locale}', function ($locale) {
 
 
 // ==== Functions Migrate Data ====
-require __DIR__ . '/migrate_route.php';
+// require __DIR__ . '/migrate_route.php';
