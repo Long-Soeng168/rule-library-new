@@ -43,9 +43,9 @@ export default function StaffPage() {
                             <TabsTrigger value="our-staffs" className="flex-1 cursor-pointer">
                                 <UsersIcon className="mr-2 size-5" /> {t('Our Staffs')}
                             </TabsTrigger>
-                            <TabsTrigger value="our-staffs-structure" className="flex-1 cursor-pointer">
+                            {/* <TabsTrigger value="our-staffs-structure" className="flex-1 cursor-pointer">
                                 <NetworkIcon className="mr-2 size-5" /> {t('Staffs Structure')}
-                            </TabsTrigger>
+                            </TabsTrigger> */}
                         </TabsList>
                     </div>
 
