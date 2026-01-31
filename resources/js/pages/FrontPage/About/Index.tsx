@@ -3,9 +3,12 @@ import AlertLibraryArticles from '@/components/Alert/AlertLibraryArticles';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/animate-ui/radix/accordion';
 import { MobileTableOfContents } from '@/components/TableContent/mobile-table-of-contents';
 import { TableOfContents } from '@/components/TableContent/table-of-contents';
+import { Button } from '@/components/ui/button';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
 import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
+import { Link } from '@inertiajs/react';
+import { ArrowRightCircle } from 'lucide-react';
 
 const Index = () => {
     const { t, currentLocale } = useTranslation();
@@ -21,8 +24,8 @@ const Index = () => {
                         <section>
                             <h2>1. Introduction</h2>
                             <p>
-                                The Royal University of Law and Economics, since its inception in 1949, has actively contributed to the
-                                training of human resources in the fields of law and economics.
+                                The Royal University of Law and Economics, since its inception in 1949, has actively contributed to the training of
+                                human resources in the fields of law and economics.
                             </p>
                             <p>
                                 Knowledge is a major source of development. Library development is about improving the reading skills of the general
@@ -34,10 +37,7 @@ const Index = () => {
                                 <li>Economics Library</li>
                                 <li>Electronic library</li>
                             </ul>
-                            <p>
-                                Located in the new building (I) Second floor, third floor, and fourth floor.
-                                floor.
-                            </p>
+                            <p>Located in the new building (I) Second floor, third floor, and fourth floor. floor.</p>
                         </section>
                         <section>
                             <h2>2. Working Hours</h2>
@@ -97,9 +97,9 @@ const Index = () => {
                                             </p>
 
                                             <p>
-                                                All students of the Royal University of Law and Economics have access to the library's
-                                                services at all times. Library patrons can contact staff to request a library card to borrow books.
-                                                The library card is valid for one academic year.
+                                                All students of the Royal University of Law and Economics have access to the library's services at all
+                                                times. Library patrons can contact staff to request a library card to borrow books. The library card
+                                                is valid for one academic year.
                                             </p>
                                         </AccordionContent>
                                     </AccordionItem>
@@ -163,9 +163,9 @@ const Index = () => {
                             <h2>7. Library Services</h2>
                             <ul>
                                 <li>
-                                    The library of the Royal University of Law and Economics is a space where students and professors can
-                                    freely conduct research and study as needed. However, to borrow books from the library, users must register for a
-                                    library card, which is valid until the end of each academic year.
+                                    The library of the Royal University of Law and Economics is a space where students and professors can freely
+                                    conduct research and study as needed. However, to borrow books from the library, users must register for a library
+                                    card, which is valid until the end of each academic year.
                                 </li>
 
                                 <li>
@@ -174,8 +174,8 @@ const Index = () => {
                                 </li>
 
                                 <li>
-                                    In addition, the library provides a <strong>meeting room</strong> for students and professors to use for
-                                    group discussions. This room is equipped with an <strong>LCD projector</strong> to support collaborative work and
+                                    In addition, the library provides a <strong>meeting room</strong> for students and professors to use for group
+                                    discussions. This room is equipped with an <strong>LCD projector</strong> to support collaborative work and
                                     presentations.
                                 </li>
                             </ul>
@@ -183,9 +183,9 @@ const Index = () => {
                         <section>
                             <h2>8. RULE Library Structure</h2>
                             <p>
-                                The library of the Royal University of Law and Economics is divided into three sections to align with the
-                                university's training specializations: the <strong>Law Library</strong>, the <strong>Economics Library</strong>, and
-                                the <strong>Electronic Library</strong>.
+                                The library of the Royal University of Law and Economics is divided into three sections to align with the university's
+                                training specializations: the <strong>Law Library</strong>, the <strong>Economics Library</strong>, and the{' '}
+                                <strong>Electronic Library</strong>.
                             </p>
                             <Accordion defaultValue={['item-0']} type="multiple" className="my-4 w-full space-y-2">
                                 <AccordionItem className="rounded-md border-none bg-secondary px-4" value="item-0">
@@ -222,11 +222,11 @@ const Index = () => {
                                     <AccordionContent className="text-base text-foreground">
                                         <p>
                                             As a member of the <strong>ASEAN University Network (AUN)</strong>, the Royal University of Law and
-                                            Economics established the Electronic Library in response to the continuous development of
-                                            technology. Located on the <strong>fourth floor of Building I</strong>, the Electronic Library plays an
-                                            important role in providing online research services. It serves as a resource center for
-                                            technology-related document research and is equipped with numerous computers for students and professors
-                                            to use for their research activities.
+                                            Economics established the Electronic Library in response to the continuous development of technology.
+                                            Located on the <strong>fourth floor of Building I</strong>, the Electronic Library plays an important role
+                                            in providing online research services. It serves as a resource center for technology-related document
+                                            research and is equipped with numerous computers for students and professors to use for their research
+                                            activities.
                                         </p>
                                     </AccordionContent>
                                 </AccordionItem>
@@ -244,8 +244,8 @@ const Index = () => {
                         <section>
                             <h2>10. Internal Regulations</h2>
                             <p>
-                                The library of the Royal University of Law and Economics is open to provide services to students and
-                                researchers during all working hours. To ensure good service, students are requested to follow the regulations below:
+                                The library of the Royal University of Law and Economics is open to provide services to students and researchers
+                                during all working hours. To ensure good service, students are requested to follow the regulations below:
                             </p>
 
                             <AlertLibraryArticles />
@@ -261,10 +261,9 @@ const Index = () => {
                                             name: 'Dr. Ngan Sundet',
                                             name_kh: 'បណ្ឌិត ង៉ាន់ ស៊ុនដេត',
                                             image: '/assets/rule_library/profiles/sundet.jpeg',
-                                            role: 'Managing Director',
-                                            description: `The library is a storehouse of wisdom. A person who reads a lot will develop a clear vision. This is the path that everyone should travel.
-If you have a road map and still can't find your destination, then you are truly lost.
-`,
+                                            role: 'ប្រធានបណ្ណាល័យ',
+                                            description: `“The library is a storehouse of wisdom. A person who reads a lot will develop a clear vision. This is the path that everyone should travel.
+If you have a road map and still can't find your destination, then you are truly lost.“`,
                                         },
                                     ]}
                                 />
@@ -273,26 +272,37 @@ If you have a road map and still can't find your destination, then you are truly
                                     members={[
                                         {
                                             name: 'Mr. Kim Chantraboth',
-                                            role: 'Technical Librarian',
+                                            name_kh: 'លោក គឹម ច័ន្ទត្រាបុត្រ',
+                                            role: 'បណ្ណារក្សបច្ចេកទេស',
+                                            image: '/assets/rule_library/profiles/kim_chantraboth.jpg',
                                             description:
-                                                'Coordinates all technical work and library operations, including library services and other technical matters.',
+                                                'គ្រប់គ្រង Metadata ការរៀបចំ Taxonomy ការគ្រប់គ្រងប្រព័ន្ធបណ្ណាល័យ (ILS) ការរក្សាទុកឯកសារឌីជីថល ការគ្រប់គ្រងអាជ្ញាប័ណ្ណ ការកសាងទំនាក់ទំនង ការវាយតម្លៃធនធាន Information Literacy បណ្តុះបណ្តាលបុគ្គលិក។',
                                         },
                                     ]}
                                 />
                                 <TeamAccordion
                                     members={[
                                         {
-                                            name: 'អ៊ុង សុបញ្ញាម៉ូនិក',
-                                            role: 'Administrator',
-                                            description: 'Prepare administrative documents and manage materials.',
+                                            name: 'Ms. Ung Sopanha Monik',
+                                            name_kh: 'លោកស្រី អ៊ុង សុបញ្ញាម៉ូនិក',
+                                            image: '/assets/rule_library/profiles/ung_sopanha_monik.jpg',
+                                            role: 'បណ្ណារក្សផ្នែករដ្ឋបាល',
+                                            description:
+                                                'គ្រប់គ្រងលើវត្តមានបុគ្គលិក ការងារគ្រប់គ្រងឯកសារ ចូលរួមក្នុងការធ្វើផែនការណ៍បណ្ណាល័យ ការវាយតម្លៃធនធាន។',
+                                        },
+                                    ]}
+                                />
+                                <TeamAccordion
+                                    members={[
+                                        {
+                                            name: 'លោក ជូង ច័ន្ទរិទ្ធីនាថ',
+                                            image: '',
+                                            role: 'បណ្ណារក្សផ្នែករដ្ឋបាល',
+                                            description: 'គ្រប់គ្រងធនធានឯកសារ ការថែរក្សាឯកសារ រៀបចំព្រឹត្តិការណ៍ ដោះស្រាយបញ្ហា។',
                                         },
                                     ]}
                                 />
                             </div>
-
-                            <p>
-                                The library currently has <strong>1 civil servant librarian</strong> and <strong>13 contract librarians</strong>.
-                            </p>
 
                             <section>
                                 <p className="pt-4 text-lg font-bold">Law Library</p>
@@ -300,30 +310,44 @@ If you have a road map and still can't find your destination, then you are truly
                                     <TeamAccordion
                                         members={[
                                             {
-                                                name: 'Mrs. Seng Vanna',
-                                                role: 'Librarian',
-                                                description: 'In charge of library card management; afternoon shift librarian.',
-                                            },
-                                            {
-                                                name: 'Ms. Lee Rany',
-                                                role: 'Librarian',
-                                                description: 'Responsible for cataloging books; morning shift librarian.',
-                                            },
-                                            {
-                                                name: 'Ms. Rin Sothealina',
-                                                role: 'Librarian',
-                                                description: 'Handles book lending and provides book information; afternoon shift librarian.',
-                                            },
-                                            {
-                                                name: 'Ms. Chre Monineath',
-                                                role: 'Librarian',
+                                                name: 'Ms. Li Rany',
+                                                name_kh: 'លោកស្រី លី រ៉ានី',
+                                                role: 'បណ្ណារក្ស',
                                                 description:
-                                                    'Manages book borrowing and repayment, and provides student support; morning shift librarian.',
+                                                    'ផ្នែកកាតាឡុកសៀវភៅ សេវាកម្មខ្ចី-សង (Circulation) សេវាព័ត៌មាន និងការណែនាំ (Reference Service) ការរៀបសៀវភៅឡើងវិញ (Shelving) រក្សាសណ្តាប់ធ្នាប់។',
                                             },
                                             {
-                                                name: 'Ms. Nit Sreynoch',
-                                                role: 'Librarian',
-                                                description: 'Responsible for cataloging and assisting students; afternoon shift librarian.',
+                                                name: 'Ms. Seng Vanna',
+                                                name_kh: 'លោកស្រី សេង វណ្ណា',
+                                                role: 'បណ្ណារក្ស',
+                                                description:
+                                                    'ផ្នែកកាតាឡុកសៀវភៅ រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)',
+                                                image: '/assets/rule_library/profiles/seng_vanna.jpg',
+                                            },
+                                            {
+                                                name: 'Miss Rin Sothealinna',
+                                                name_kh: 'កញ្ញា រិន សុទ្ធាលីនណា',
+                                                role: 'បណ្ណារក្ស',
+                                                description:
+                                                    'ផ្នែកខ្ចីសង ផ្តល់ព័ត៌មានសៀវភៅ រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)',
+                                                image: '/assets/rule_library/profiles/rin_sothealinna.jpg',
+                                            },
+                                            {
+                                                name: 'Miss Chrea Monineath',
+                                                name_kh: 'កញ្ញា ជ្រា មុនីនាថ',
+                                                role: 'បណ្ណារក្ស',
+                                                description:
+                                                    'ផ្នែកខ្ចីសង ផ្តល់ព័ត៌មាននិស្សិត សេវាកម្មខ្ចី-សង (Circulation) សេវាព័ត៌មាន និងការណែនាំ (Reference Service) ការរៀបសៀវភៅឡើងវិញ (Shelving) រក្សាសណ្តាប់ធ្នាប់។',
+                                                image: '/assets/rule_library/profiles/chrea_monineath.jpg',
+                                            },
+                                            {
+                                                name: 'Miss Nith Sreynoch',
+                                                name_kh: 'កញ្ញា និត ស្រីណុច',
+                                                role: 'បណ្ណារក្ស',
+                                                description:
+                                                    'ផ្នែកធ្វើកាតាឡុកសៀវភៅ ផ្តល់ព័ត៌មាននិស្សិត រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)。',
+
+                                                image: '/assets/rule_library/profiles/nith_sreynoch.png',
                                             },
                                         ]}
                                     />
@@ -336,28 +360,30 @@ If you have a road map and still can't find your destination, then you are truly
                                     <TeamAccordion
                                         members={[
                                             {
-                                                name: 'Mrs. Ke Sambath Nita',
-                                                role: 'Librarian',
+                                                name: 'លោក ឈិន ដារិត',
+                                                role: 'បណ្ណារក្ស',
                                                 description:
-                                                    'Responsible for borrowing and providing information to students; afternoon shift librarian.',
+                                                    'ផ្នែកខ្ចីសង ផ្តល់ព័ត៌មានសៀវភៅដល់និស្សិត រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation) ការរក្សាទុកឯកសារឌីជីថល (Digital Preservation)。',
+
+                                                image: '',
                                             },
                                             {
-                                                name: 'Mr. Chhin Darit',
-                                                role: 'Librarian',
+                                                name: 'Mr. Vang Ravuth',
+                                                name_kh: 'លោក វ៉ាង រ៉ាវុធ',
+                                                role: 'បណ្ណារក្ស',
                                                 description:
-                                                    'Handles book lending and provides book information to students; morning shift librarian.',
+                                                    'ផ្នែកកាតាឡុកសៀវភៅ ផ្តល់ព័ត៌មាននិស្សិត រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)',
+
+                                                image: '/assets/rule_library/profiles/vang_ravuth.jpg',
                                             },
                                             {
-                                                name: 'Ms. Heang Chantalila',
-                                                role: 'Librarian',
+                                                name: 'Mrs. Heang Chantalila',
+                                                name_kh: 'លោកស្រី ហ៊ាង ចាន់តាលីឡា',
+                                                role: 'បណ្ណារក្ស',
                                                 description:
-                                                    'Manages book borrowing and repayment, and assists students with information; afternoon shift librarian.',
-                                            },
-                                            {
-                                                name: 'Mr. Wang Ravut',
-                                                role: 'Librarian',
-                                                description:
-                                                    'Responsible for cataloging books and providing information to students; morning shift librarian.',
+                                                    'ផ្នែកខ្ចីសង ផ្តល់ព័ត៌មានសៀវភៅ រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)',
+
+                                                image: '/assets/rule_library/profiles/heang_chantalila.png',
                                             },
                                         ]}
                                     />
@@ -371,29 +397,43 @@ If you have a road map and still can't find your destination, then you are truly
                                         members={[
                                             {
                                                 name: 'Mr. Mao Bora',
-                                                role: 'Librarian',
+                                                name_kh: 'លោក ម៉ៅ បូរ៉ា',
+                                                role: 'Library IT Manager',
                                                 description:
-                                                    'Responsible for organizing and developing library programs and maintaining management systems.',
+                                                    'អភិវឌ្ឍន៍កម្មវិធីបណ្ណាល័យ ថែរក្សាប្រព័ន្ធគ្រប់គ្រង Installation & Configuration Updates & Patching Database Management OPAC Web Development ការភ្ជាប់ទិន្នន័យ Single Sign-On (SSO) Backup ទិន្នន័យ Troubleshooting',
+                                                image: '',
                                             },
                                             {
                                                 name: 'Mr. Heng Narath',
-                                                role: 'Librarian',
-                                                description: 'Manages the library’s network and internet systems.',
+                                                name_kh: 'លោក ហេង ណារ័ត្ន',
+                                                role: 'Library Network & IT Support',
+                                                description:
+                                                    'គ្រប់គ្រងប្រព័ន្ធបណ្តាញ និងអ៊ីនធឺណិត ថែទាំកុំព្យូទ័រ Server Networking Wi-Fi Peripherals Inventory Management Online Promotion',
+                                                image: '/assets/rule_library/profiles/heng_narath.jpg',
                                             },
                                             {
                                                 name: 'Mr. Long Soeng',
+                                                name_kh: 'លោក ឡុង សឹង',
+                                                role: 'Library Software & Web Dev',
+                                                description: 'Web Development Updates & Patching Database Management Troubleshooting Analytics',
                                                 image: '/assets/rule_library/profiles/long_soeng.jpg',
-                                                role: 'Librarian',
-                                                description: 'Responsible for full-stack development of library systems and web applications.',
                                             },
                                             {
-                                                image: 'ddfd/d',
-                                                name: 'Mrs. Kim Soreya',
-                                                role: 'Librarian',
-                                                description: 'Responsible for development and maintenance of the library web application.',
+                                                name: 'Ms. Kim Soreya',
+                                                name_kh: 'កញ្ញា គឹម សូរិយា',
+                                                role: 'Library Software & Web Dev',
+                                                description: 'Web Development Updates & Patching Database Management Troubleshooting Analytics',
+                                                image: '/assets/rule_library/profiles/kim_soreya.jpg',
                                             },
                                         ]}
                                     />
+                                </div>
+                                <div className="flex justify-center">
+                                    <Link href={`/our-staffs`} prefetch>
+                                        <Button>
+                                            More About Our Staff <ArrowRightCircle />
+                                        </Button>
+                                    </Link>
                                 </div>
                             </section>
                         </section>
