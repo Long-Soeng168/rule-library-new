@@ -368,15 +368,6 @@ If you have a road map and still can't find your destination, then you are truly
                                                 image: '',
                                             },
                                             {
-                                                name: 'Mr. Vang Ravuth',
-                                                name_kh: 'លោក វ៉ាង រ៉ាវុធ',
-                                                role: 'បណ្ណារក្ស',
-                                                description:
-                                                    'ផ្នែកកាតាឡុកសៀវភៅ ផ្តល់ព័ត៌មាននិស្សិត រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)',
-
-                                                image: '/assets/rule_library/profiles/vang_ravuth.jpg',
-                                            },
-                                            {
                                                 name: 'Mrs. Heang Chantalila',
                                                 name_kh: 'លោកស្រី ហ៊ាង ចាន់តាលីឡា',
                                                 role: 'បណ្ណារក្ស',
@@ -384,6 +375,15 @@ If you have a road map and still can't find your destination, then you are truly
                                                     'ផ្នែកខ្ចីសង ផ្តល់ព័ត៌មានសៀវភៅ រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)',
 
                                                 image: '/assets/rule_library/profiles/heang_chantalila.png',
+                                            },
+                                            {
+                                                name: 'Mr. Vang Ravuth',
+                                                name_kh: 'លោក វ៉ាង រ៉ាវុធ',
+                                                role: 'បណ្ណារក្ស',
+                                                description:
+                                                    'ផ្នែកកាតាឡុកសៀវភៅ ផ្តល់ព័ត៌មាននិស្សិត រៀបចំសណ្តាប់ធ្នាប់ចុងក្រោយ បូកសរុបស្ថិតិ ត្រួតពិនិត្យសុវត្ថិភាព ចុះបញ្ជីសៀវភៅថ្មី សេវាកម្មខ្ចី-សង (Circulation)',
+
+                                                image: '/assets/rule_library/profiles/vang_ravuth.jpg',
                                             },
                                         ]}
                                     />
