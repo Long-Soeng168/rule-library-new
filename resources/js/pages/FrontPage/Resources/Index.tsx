@@ -7,7 +7,6 @@ import FrontPageLayout from '@/layouts/FrontPageLayout';
 
 const Index = () => {
     const { t } = useTranslation();
-
     return (
         <FrontPageLayout>
             <section className="mb-20">

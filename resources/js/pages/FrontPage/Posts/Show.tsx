@@ -9,15 +9,38 @@ import { ScrollProgress } from '@/components/ui/scroll-progress';
 import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { formatToKhmerDateTime } from '@/lib/utils';
-import { usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { FilesIcon } from 'lucide-react';
 
 const Show = () => {
-    const { showData, relatedData } = usePage<any>().props;
+    const { showData, relatedData, app_url } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
+
+    const description = currentLocale === 'kh' ? showData?.short_description_kh || showData?.short_description : showData?.short_description;
+    const title = currentLocale === 'kh' ? showData?.title_kh || showData?.title : showData?.title;
+    const image = `${app_url}/assets/images/posts/thumb/${showData?.images[0]?.image}`;
 
     return (
         <FrontPageLayout>
+            <Head>
+                {/* Basic Meta */}
+                <title>{title}</title>
+                <meta name="description" content={description} />
+
+                {/* Open Graph */}
+                <meta property="og:title" content={title} />
+                <meta property="og:description" content={description} />
+                <meta property="og:image" content={image} />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={app_url} />
+
+                {/* Twitter Card */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={title} />
+                <meta name="twitter:description" content={description} />
+                <meta name="twitter:image" content={image} />
+            </Head>
+
             <ScrollProgress className="top-0 h-[4px]" />
             <div className="section-container">
                 <div className="relative z-10 mx-auto flex lg:border-0">
