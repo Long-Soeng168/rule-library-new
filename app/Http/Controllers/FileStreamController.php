@@ -25,7 +25,7 @@ class FileStreamController extends Controller
             abort(404, 'Missing required parameters.');
         }
 
-        $fileUrl = "/stream_pdf/{$resource}/{$id}/{$file_name}";
+        $fileUrl = "/stream_pdf_file/{$resource}/{$id}/{$file_name}";
 
         $item = null;
         $canDownload = true;
@@ -109,9 +109,9 @@ class FileStreamController extends Controller
         ]);
     }
 
-    public function stream_pdf(Request $request, $resource, $id, $file_name)
+    public function stream_pdf_file(Request $request, $resource, $id, $file_name)
     {
-        // e.g: /stream_pdf/items/29/1761882796_file-sample_150kB.pdf
+        // e.g: /stream_pdf_file/items/29/1761882796_file-sample_150kB.pdf
 
         // dd($request->user());
         $filePath = public_path("assets/files/{$resource}/{$file_name}");
