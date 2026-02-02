@@ -40,6 +40,17 @@ Route::get('/stream_pdf/publication/{id}/{file_name}', function ($id, $file_name
 
     return redirect()->to("/stream_pdf_file/publications/{$showItem->id}/{$file_name}", 301);
 });
+Route::get('/stream_pdf/journals/{id}/{file_name}', function ($id, $file_name) {
+    $showItem = Item::where('main_category_code', 'research-papers')
+        ->where('old_id', $id)
+        ->first(['id']);
+
+    if (!$showItem) {
+        abort(404);
+    }
+
+    return redirect()->to("/stream_pdf_file/research-papers/{$showItem->id}/{$file_name}", 301);
+});
 
 Route::get('/theses/{id}', function ($id) {
     $showItem = Item::where('main_category_code', 'theses')
