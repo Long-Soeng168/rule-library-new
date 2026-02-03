@@ -88,6 +88,16 @@ const mainNavItems: {
                 url: '/admin/item-main-categories',
                 permission: 'item_category view',
             },
+            {
+                title: 'Item Types',
+                url: '/admin/item-types',
+                permission: 'item_type view',
+            },
+            {
+                title: 'Libraries',
+                url: '/admin/libraries',
+                permission: 'library view',
+            },
         ],
     },
     {

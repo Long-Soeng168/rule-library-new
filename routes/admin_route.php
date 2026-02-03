@@ -6,8 +6,10 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ItemCategoryController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\ItemMainCategoryController;
+use App\Http\Controllers\Admin\ItemTypeController;
 use App\Http\Controllers\Admin\KeyValueController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\LibraryController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PageController;
@@ -32,10 +34,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/users/{id}/recover', [UserController::class, 'recover']);
     // Route::get('/assign-admin', [RoleController::class, 'assignAdmin']);
 
+    // Library
+    Route::resource('admin/libraries', LibraryController::class);
+    Route::post('admin/libraries/{library}/update', [LibraryController::class, 'update']);
+    Route::post('admin/libraries/{id}/recover', [LibraryController::class, 'recover']);
+
     // Type
     Route::resource('admin/types', TypeController::class);
     Route::post('admin/types/{type}/update', [TypeController::class, 'update']);
     Route::post('admin/types/{id}/recover', [TypeController::class, 'recover']);
+
+    // Item Type
+    Route::resource('admin/item-types', ItemTypeController::class);
+    Route::post('admin/item-types/{item_type}/update', [ItemTypeController::class, 'update']);
+    Route::post('admin/item-types/{id}/recover', [ItemTypeController::class, 'recover']);
 
     // Type Group
     Route::resource('admin/type-groups', TypeGroupController::class);
