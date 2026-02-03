@@ -142,17 +142,17 @@ class RolesAndPermissionsSeeder extends Seeder
         // // Source Hub View
         // Permission::firstOrCreate(['name' => 'source_hub view']);
 
-        // // item_type
-        // Permission::firstOrCreate(['name' => 'item_type view']);
-        // Permission::firstOrCreate(['name' => 'item_type create']);
-        // Permission::firstOrCreate(['name' => 'item_type update']);
-        // Permission::firstOrCreate(['name' => 'item_type delete']);
+        // item_type
+        Permission::firstOrCreate(['name' => 'item_type view']);
+        Permission::firstOrCreate(['name' => 'item_type create']);
+        Permission::firstOrCreate(['name' => 'item_type update']);
+        Permission::firstOrCreate(['name' => 'item_type delete']);
 
-        // Library
-        Permission::firstOrCreate(['name' => 'library view']);
-        Permission::firstOrCreate(['name' => 'library create']);
-        Permission::firstOrCreate(['name' => 'library update']);
-        Permission::firstOrCreate(['name' => 'library delete']);
+        // // Library
+        // Permission::firstOrCreate(['name' => 'library view']);
+        // Permission::firstOrCreate(['name' => 'library create']);
+        // Permission::firstOrCreate(['name' => 'library update']);
+        // Permission::firstOrCreate(['name' => 'library delete']);
 
         // Create roles
         $superAdminRole = Role::firstOrCreate(['name' => 'Super Admin']);
