@@ -154,6 +154,18 @@ class RolesAndPermissionsSeeder extends Seeder
         // Permission::firstOrCreate(['name' => 'library update']);
         // Permission::firstOrCreate(['name' => 'library delete']);
 
+        // User Category
+        Permission::firstOrCreate(['name' => 'user_category view']);
+        Permission::firstOrCreate(['name' => 'user_category create']);
+        Permission::firstOrCreate(['name' => 'user_category update']);
+        Permission::firstOrCreate(['name' => 'user_category delete']);
+
+        // Circulation
+        Permission::firstOrCreate(['name' => 'circulation view']);
+        Permission::firstOrCreate(['name' => 'circulation create']);
+        Permission::firstOrCreate(['name' => 'circulation update']);
+        Permission::firstOrCreate(['name' => 'circulation delete']);
+
         // Create roles
         $superAdminRole = Role::firstOrCreate(['name' => 'Super Admin']);
         // Give all existing permissions to the admin role

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\CirculationRuleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ItemCategoryController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admin\PostCategoryController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\TypeGroupController;
+use App\Http\Controllers\Admin\UserCategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebsiteInfoController;
 use App\Http\Controllers\RoleAndPermission\PermissionController;
@@ -33,6 +35,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/users/{user}/update', [UserController::class, 'update']);
     Route::post('admin/users/{id}/recover', [UserController::class, 'recover']);
     // Route::get('/assign-admin', [RoleController::class, 'assignAdmin']);
+
+    // Circulation Rule
+    Route::resource('admin/circulation-rules', CirculationRuleController::class);
+    Route::post('admin/circulation-rules/{circulation_rule}/update', [CirculationRuleController::class, 'update']);
+    Route::post('admin/circulation-rules/{id}/recover', [CirculationRuleController::class, 'recover']);
+
+    // User Category
+    Route::resource('admin/user-categories', UserCategoryController::class);
+    Route::post('admin/user-categories/{user_category}/update', [UserCategoryController::class, 'update']);
+    Route::post('admin/user-categories/{id}/recover', [UserCategoryController::class, 'recover']);
 
     // Library
     Route::resource('admin/libraries', LibraryController::class);

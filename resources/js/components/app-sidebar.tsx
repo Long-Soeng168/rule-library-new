@@ -64,6 +64,30 @@ const mainNavItems: {
                 url: '/admin/permissions',
                 permission: 'permission view',
             },
+            {
+                title: 'User Categories',
+                url: '/admin/user-categories',
+                permission: 'user_category view',
+            },
+        ],
+    },
+    {
+        title: 'Circulations',
+        url: '/admin/circulations',
+        icon: UsersIcon,
+        activeList: ['/admin/circulations', '/admin/circulation-rules'],
+        permission: 'circulation view',
+        items: [
+            {
+                title: 'All Circulations',
+                url: '/admin/circulations',
+                permission: 'circulation view',
+            },
+            {
+                title: 'Circulation Rule',
+                url: '/admin/circulation-rules',
+                permission: 'circulation view',
+            },
         ],
     },
     {
