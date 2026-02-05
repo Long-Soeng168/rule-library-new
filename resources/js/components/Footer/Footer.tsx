@@ -119,7 +119,7 @@ export default function Footer() {
                                 {media_links?.length > 0 &&
                                     media_links?.map((item: any) => (
                                         <li key={item.id}>
-                                            <a href={item.link} className="flex items-center gap-2 hover:underline">
+                                            <a target="_blank" href={item.link} className="flex items-center gap-2 hover:underline">
                                                 <img className="size-8" src={`/assets/images/links/thumb/${item.image}`} alt="" />
                                                 {currentLocale === 'kh' ? item?.name_kh || item?.name : item?.name}
                                             </a>
