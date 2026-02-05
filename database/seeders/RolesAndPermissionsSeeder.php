@@ -89,12 +89,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // Permission::firstOrCreate(['name' => 'faq update']);
         // Permission::firstOrCreate(['name' => 'faq delete']);
 
-        // // Location
-        // Permission::firstOrCreate(['name' => 'location view']);
-        // Permission::firstOrCreate(['name' => 'location create']);
-        // Permission::firstOrCreate(['name' => 'location update']);
-        // Permission::firstOrCreate(['name' => 'location delete']);
-
         // // Language
         // Permission::firstOrCreate(['name' => 'language view']);
         // Permission::firstOrCreate(['name' => 'language create']);
@@ -141,6 +135,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // // Source Hub View
         // Permission::firstOrCreate(['name' => 'source_hub view']);
+
+        // Location
+        Permission::firstOrCreate(['name' => 'location view']);
+        Permission::firstOrCreate(['name' => 'location create']);
+        Permission::firstOrCreate(['name' => 'location update']);
+        Permission::firstOrCreate(['name' => 'location delete']);
 
         // item_type
         Permission::firstOrCreate(['name' => 'item_type view']);
