@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileCheckController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -35,3 +36,7 @@ Route::get('/lang/{locale}', function ($locale) {
 
 // ==== Functions Migrate Data ====
 // require __DIR__ . '/migrate_route.php';
+
+
+// routes/web.php or api.php
+Route::get('/check_exist_files', [FileCheckController::class, 'check_items_files']);
