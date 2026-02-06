@@ -32,4 +32,38 @@ class FileCheckController extends Controller
             'missing_files' => $missingFiles,
         ]);
     }
+
+    public function check_items_images()
+    {
+        $missingFiles = [];
+
+        $items = Item::whereNotNull('thumbnail')
+            ->where('thumbnail', '!=', '')
+            ->get(['id', 'thumbnail']);
+
+        foreach ($items as $item) {
+            $mainPath  = public_path('assets/images/items/' . $item->thumbnail);
+            $thumbPath = public_path('assets/images/items/thumb/' . $item->thumbnail);
+
+            if (!File::exists($mainPath) || !File::exists($thumbPath)) {
+                $missingFiles[] = [
+                    'item_id' => $item->id,
+                    'thumbnail' => $item->thumbnail,
+                    'missing' => [
+                        'main'  => !File::exists($mainPath),
+                        'thumb' => !File::exists($thumbPath),
+                    ],
+                    'expected_paths' => [
+                        'main'  => $mainPath,
+                        'thumb' => $thumbPath,
+                    ],
+                ];
+            }
+        }
+
+        return response()->json([
+            'missing_count' => count($missingFiles),
+            'missing_files' => $missingFiles,
+        ]);
+    }
 }
