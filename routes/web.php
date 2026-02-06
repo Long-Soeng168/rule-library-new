@@ -40,3 +40,4 @@ Route::get('/lang/{locale}', function ($locale) {
 
 // routes/web.php or api.php
 Route::get('/check_exist_files', [FileCheckController::class, 'check_items_files']);
+Route::get('/check_items_images', [FileCheckController::class, 'check_items_images']);
