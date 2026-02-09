@@ -6,6 +6,7 @@ use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Type;
 use App\Models\User;
+use App\Models\UserCategory;
 use Illuminate\Http\Request;
 
 use Inertia\Inertia;
@@ -92,6 +93,7 @@ class UserController extends Controller implements HasMiddleware
     {
         return Inertia::render('Admin/Users/Create', [
             'types' => Type::where('group_code', 'user-title-type-group')->orderBy('order_index')->orderBy('name')->get(),
+            'userCategories' => UserCategory::orderBy('order_index')->orderBy('name')->get(),
             'roles' => Role::orderBy('id')->get(),
         ]);
     }
@@ -106,6 +108,7 @@ class UserController extends Controller implements HasMiddleware
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
             'title_type_code' => 'nullable|string|max:255|exists:types,code',
+            'category_code' => 'nullable|string|max:255|exists:user_categories,code',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|max:255|confirmed', // Laravel auto-validates against confirm_password
             'phone' => 'nullable|numeric|digits_between:8,15|unique:users,phone',
@@ -161,6 +164,7 @@ class UserController extends Controller implements HasMiddleware
             'editData' => $user->load('roles'),
             'roles' => Role::orderBy('id')->get(),
             'readOnly' => true,
+            'userCategories' => UserCategory::orderBy('order_index')->orderBy('name')->get(),
         ]);
     }
 
@@ -172,6 +176,7 @@ class UserController extends Controller implements HasMiddleware
         return Inertia::render('Admin/Users/Create', [
             'editData' => $user->load('roles'),
             'types' => Type::where('group_code', 'user-title-type-group')->orderBy('order_index')->orderBy('name')->get(),
+            'userCategories' => UserCategory::orderBy('order_index')->orderBy('name')->get(),
             'roles' => Role::orderBy('id')->get(),
         ]);
     }
@@ -185,6 +190,7 @@ class UserController extends Controller implements HasMiddleware
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
             'title_type_code' => 'nullable|string|max:255|exists:types,code',
+            'category_code' => 'nullable|string|max:255|exists:user_categories,code',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6|max:255|confirmed', // Laravel auto-validates against confirm_password
             'phone' => 'nullable|numeric|digits_between:8,15|unique:users,phone,' . $user->id,

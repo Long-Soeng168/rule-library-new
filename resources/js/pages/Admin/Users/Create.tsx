@@ -27,6 +27,7 @@ interface UserForm {
     gender: string;
     password: string;
     title_type_code?: string;
+    category_code?: string;
     password_confirmation: string;
     image: string | null;
     roles: string[];
@@ -39,7 +40,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
     });
 
     const [files, setFiles] = useState<File[] | null>(null);
-    const { roles, auth, types } = usePage<any>().props;
+    const { roles, auth, types, userCategories } = usePage<any>().props;
 
     const { data, setData, post, processing, transform, progress, errors, reset } = useForm<UserForm>({
         name: editData?.name || '',
@@ -48,6 +49,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         phone: editData?.phone || '',
         gender: editData?.gender || '',
         title_type_code: editData?.title_type_code || '',
+        category_code: editData?.category_code || '',
         password: '',
         password_confirmation: '',
         image: editData?.image || null,
@@ -141,6 +143,25 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                     value={data.title_type_code || ''}
                                     onChange={(val) => setData('title_type_code', val)}
                                     error={errors.title_type_code}
+                                />
+                            )}
+                            {userCategories?.length > 0 && (
+                                <FormCombobox
+                                    name="category_code"
+                                    label="User Category"
+                                    options={[
+                                        {
+                                             value: null,
+                                            label: t(`NA`),
+                                        },
+                                        ...userCategories.map((item: any) => ({
+                                            value: item.code,
+                                            label: `${currentLocale == 'kh' ? (item?.name_kh ?? item?.name) : item?.name}`,
+                                        })),
+                                    ]}
+                                    value={data.category_code || ''}
+                                    onChange={(val) => setData('category_code', val)}
+                                    error={errors.category_code}
                                 />
                             )}
                         </div>

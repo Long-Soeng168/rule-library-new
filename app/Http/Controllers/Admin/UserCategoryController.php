@@ -89,6 +89,11 @@ class UserCategoryController extends Controller implements HasMiddleware
             'user_category_type_code' => 'nullable|string|exists:types,code',
             'enrollment_period_months' => 'required|integer|min:0',
             'enrollment_fee' => 'required|numeric|min:0',
+
+            'fine_amount_per_day' => 'nullable|numeric|min:0|max:999999.99',
+            'max_fines_amount' => 'nullable|numeric|min:0|max:999999.99',
+            'borrowing_limit' => 'nullable|integer|min:0|max:1000',
+            'loan_period' => 'nullable|integer|min:1|max:365', // Limit to a year max for safety
         ]);
 
         try {
@@ -139,6 +144,11 @@ class UserCategoryController extends Controller implements HasMiddleware
             'user_category_type_code' => 'nullable|string|exists:types,code',
             'enrollment_period_months' => 'required|integer|min:0',
             'enrollment_fee' => 'required|numeric|min:0',
+
+            'fine_amount_per_day' => 'nullable|numeric|min:0|max:999999.99',
+            'max_fines_amount' => 'nullable|numeric|min:0|max:999999.99',
+            'borrowing_limit' => 'nullable|integer|min:0|max:1000',
+            'loan_period' => 'nullable|integer|min:1|max:365', // Limit to a year max for safety
         ]);
 
         try {

@@ -81,7 +81,7 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                             src={src}
                             alt={alternative}
                             className={cn(
-                                `max-h-[800px] w-full cursor-pointer rounded-none border border-primary object-cover sm:max-w-sm ${src === mainImage ? '' : 'hidden'} aspect-[${aspectRatio}]`,
+                                `h-full max-h-[800px] min-h-20 w-full cursor-pointer rounded-none border border-primary object-cover sm:max-w-sm ${src === mainImage ? '' : 'hidden'} aspect-[${aspectRatio}]`,
                                 mainImageClassName,
                                 `${images?.length == 1 && 'aspect-auto'}`,
                             )}

@@ -37,6 +37,7 @@ class User extends Authenticatable
 
         'name_kh',
         'title_type_code',
+        'category_code',
     ];
 
     /**
@@ -69,6 +70,10 @@ class User extends Authenticatable
     public function title()
     {
         return $this->belongsTo(Type::class, 'title_type_code', 'code');
+    }
+    public function category()
+    {
+        return $this->belongsTo(UserCategory::class, 'category_code', 'code');
     }
     public function updated_user()
     {

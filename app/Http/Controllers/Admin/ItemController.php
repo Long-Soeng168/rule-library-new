@@ -308,27 +308,8 @@ class ItemController extends Controller implements HasMiddleware
     public function show(Item $item)
     {
         // dd($item->loadCount('category'));
-        return Inertia::render('Admin/Item/Create', [
-            'editData' => $item->loadCount('category')->load('images', 'files', 'authors'),
-            'readOnly' => true,
-            'fileTypes' => Type::where('group_code', 'item-file-type-group')
-                ->orderBy('order_index')
-                ->orderBy('name')
-                ->get(),
-
-            'selectedCategory' => ItemCategory::where('code', $item->category_code)->with('parent')->first(),
-            'categories' => ItemCategory::orderBy('order_index')
-                ->orderByDesc('id')
-                ->where('parent_id', null)
-                ->get(),
-            'subCategories' => ItemCategory::orderBy('order_index')
-                ->orderByDesc('id')
-                ->whereNotNull('parent_id')
-                ->with(['parent:id,code'])
-                ->get(),
-            'languages' => Language::orderBy('order_index')->orderBy('name')->get(),
-            'publishers' => User::orderBy('name')->role('Publisher')->get(),
-            'authors' => User::orderBy('name')->role('Author')->get(),
+        return Inertia::render('Admin/Item/Show', [
+            'showData' => $item->loadCount('category')->load('images', 'files', 'authors', 'publisher', 'language'),
         ]);
     }
 
