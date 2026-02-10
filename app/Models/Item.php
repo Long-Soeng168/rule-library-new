@@ -46,6 +46,10 @@ class Item extends Model
     {
         return $this->hasMany(ItemImage::class, 'item_id', 'id');
     }
+    public function physical_copies()
+    {
+        return $this->hasMany(ItemPhysicalCopy::class, 'item_id', 'id');
+    }
 
 
 

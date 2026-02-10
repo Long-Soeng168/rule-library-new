@@ -305,11 +305,12 @@ class ItemController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(Item $item)
+    public function show(Item $item, Request $request)
     {
         // dd($item->loadCount('category'));
         return Inertia::render('Admin/Item/Show', [
-            'showData' => $item->loadCount('category')->load('images', 'files', 'authors', 'publisher', 'language'),
+            'view_physical_copies' => $request->view_physical_copies == 1 ? true : false,
+            'showData' => $item->loadCount('category')->load('physical_copies.item_type', 'physical_copies.home_library', 'physical_copies.current_library', 'images', 'files', 'authors', 'publisher', 'language'),
         ]);
     }
 

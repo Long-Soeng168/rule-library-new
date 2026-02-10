@@ -17,12 +17,16 @@ export function Breadcrumbs({ breadcrumbs }: { breadcrumbs: BreadcrumbItemType[]
                                 <Fragment key={index}>
                                     <BreadcrumbItem>
                                         {isLast ? (
-                                            <BreadcrumbLink asChild className='text-foreground font-medium hover:underline'>
-                                                <Link prefetch href={item.href}>{t(`${item.title}`)}</Link>
+                                            <BreadcrumbLink asChild className="font-medium text-foreground hover:underline">
+                                                <Link preserveState={false} href={item.href}>
+                                                    {t(`${item.title}`)}
+                                                </Link>
                                             </BreadcrumbLink>
                                         ) : (
-                                            <BreadcrumbLink asChild className='hover:underline'>
-                                                <Link prefetch href={item.href}>{t(`${item.title}`)}</Link>
+                                            <BreadcrumbLink asChild className="hover:underline">
+                                                <Link preserveState={false} href={item.href}>
+                                                    {t(`${item.title}`)}
+                                                </Link>
                                             </BreadcrumbLink>
                                         )}
                                     </BreadcrumbItem>

@@ -1,10 +1,17 @@
 import useTranslation from '@/hooks/use-translation';
+import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import DownloadButton from '../Button/DownloadButton';
 import ReadButton from '../Button/ReadButton';
 import BookImagesGallery from '../GalleryViewer/BookImagesGallery';
 
-const ResourceDetail = () => {
+const ResourceDetail = ({
+    imageContainerClassname,
+    showButtonBelowImages = true,
+}: {
+    imageContainerClassname?: string;
+    showButtonBelowImages?: boolean;
+}) => {
     const { mainCategory, showData } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
 
@@ -19,7 +26,7 @@ const ResourceDetail = () => {
     return (
         <div className="flex-wrap gap-6 sm:flex">
             {/* Left Column: Title and Actions */}
-            <div className="sm:max-w-sm sm:min-w-xs">
+            <div className={cn('sm:max-w-sm sm:min-w-xs', imageContainerClassname)}>
                 <div className="flex items-center justify-center">
                     <BookImagesGallery
                         readUrl={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`}
@@ -29,14 +36,16 @@ const ResourceDetail = () => {
                     {/* <img src="/assets/sample_images/books/thesis1.jpg" alt="University Logo" className="h-auto w-full border border-primary" /> */}
                 </div>
 
-                <div className="mt-2 flex gap-2">
-                    <Link href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`} className="flex-1">
-                        <ReadButton />
-                    </Link>
-                    <a href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&is_download=1`} className="flex-1">
-                        <DownloadButton />
-                    </a>
-                </div>
+                {showButtonBelowImages && (
+                    <div className="mt-2 flex gap-2">
+                        <Link href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`} className="flex-1">
+                            <ReadButton />
+                        </Link>
+                        <a href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&is_download=1`} className="flex-1">
+                            <DownloadButton />
+                        </a>
+                    </div>
+                )}
             </div>
 
             {/* Right Column: Details */}

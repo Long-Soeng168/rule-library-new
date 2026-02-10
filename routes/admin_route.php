@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ItemCategoryController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\ItemMainCategoryController;
+use App\Http\Controllers\Admin\ItemPhysicalCopyController;
 use App\Http\Controllers\Admin\ItemTypeController;
 use App\Http\Controllers\Admin\KeyValueController;
 use App\Http\Controllers\Admin\LanguageController;
@@ -135,9 +136,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/items/{item}/update', [ItemController::class, 'update']);
     Route::post('admin/items/{id}/recover', [ItemController::class, 'recover']);
 
+    // Item Physical Copy
+    Route::get('admin/items/{item_id}/physical-copies/create', [ItemPhysicalCopyController::class, 'create']);
+    Route::post('admin/items/{item_id}/physical-copies', [ItemPhysicalCopyController::class, 'store']);
+    Route::get('admin/items/{item_id}/physical-copies/{physical_copy_id}/edit', [ItemPhysicalCopyController::class, 'edit']);
+    Route::post('admin/items/{item_id}/physical-copies/{physical_copy_id}/update', [ItemPhysicalCopyController::class, 'update']);
+
+
     Route::get('admin/sample-content', [PageController::class, 'recover']);
-
-
     Route::get('admin/sample-content', function () {
         return Inertia::render('Admin/SampleContent/Index');
     });

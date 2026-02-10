@@ -8,7 +8,7 @@ import { useState } from 'react';
 import ItemPhysicalCopy from './ItemPhysicalCopy';
 
 const Show = () => {
-    const { showData, app_url } = usePage<any>().props;
+    const { showData, view_physical_copies, app_url } = usePage<any>().props;
     const { t, currentLocale } = useTranslation();
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -17,7 +17,7 @@ const Show = () => {
         { title: showData?.name, href: '#' },
     ];
 
-    const [inputLanguage, setInputLanguage] = useState<'itemDetail' | 'physicalCopies'>('itemDetail');
+    const [inputLanguage, setInputLanguage] = useState<'itemDetail' | 'physicalCopies'>(view_physical_copies ? 'physicalCopies' : 'itemDetail');
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -32,7 +32,7 @@ const Show = () => {
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="itemDetail">
-                        <ResourceDetail />
+                        <ResourceDetail imageContainerClassname="sm:max-w-[300px] sm:min-w-[300px]" showButtonBelowImages={false} />
                         <section className="mt-8">
                             <ItemPhysicalCopy />
                         </section>
