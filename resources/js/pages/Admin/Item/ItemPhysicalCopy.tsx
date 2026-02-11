@@ -1,11 +1,17 @@
+import DeleteItemButton from '@/components/Button/DeleteItemButton';
 import NewItemButton from '@/components/Button/NewItemButton';
+import TableCellActions from '@/components/Table/TableCellActions';
+import TableCellBadge from '@/components/Table/TableCellBadge';
+import TableCellText from '@/components/Table/TableCellText';
+import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
 import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableHeader, TableRow } from '@/components/ui/table';
 import useTranslation from '@/hooks/use-translation';
 import { Link, usePage } from '@inertiajs/react';
 import { EditIcon } from 'lucide-react';
 
 const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any }) => {
-    const { currentLocale } = useTranslation();
+    const { t, currentLocale } = useTranslation();
 
     /**
      * Resolves the current status based on Koha flags and circulation dates
@@ -22,7 +28,7 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
         }
         if (copy.not_for_loan != 0) return { label: 'Not for Loan', label_kh: 'មិនសម្រាប់ខ្ចី', color: 'purple' };
 
-        return { label: 'Available', label_kh: 'អាចប្រើប្រាស់បាន', color: 'green' };
+        return { label: 'Available', label_kh: 'មាននៅបណ្ណាល័យ', color: 'green' };
     };
 
     const getStatusStyles = (color: string) => {
@@ -46,98 +52,103 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
 
     return (
         <div className="w-full overflow-x-auto bg-background">
-            <table className="w-full border-collapse text-left text-sm whitespace-nowrap">
-                <thead className="bg-muted/50 font-medium text-muted-foreground">
-                    <tr>
-                        <th className="border px-4 py-3 font-bold">Actions</th>
-                        <th className="border px-4 py-3 font-bold">Barcode</th>
-                        <th className="border px-4 py-3 font-bold">Item Type</th>
-                        <th className="border px-4 py-3 font-bold">Library</th>
-                        <th className="border px-4 py-3 font-bold">Location</th>
-                        <th className="border px-4 py-3 font-bold">Call Number</th>
-                        <th className="border px-4 py-3 font-bold">Status</th>
-                        <th className="border px-4 py-3 font-bold">Unpublic Note</th>
-                        <th className="border px-4 py-3 font-bold">Public Note</th>
-                    </tr>
-                </thead>
-                <tbody className="text-foreground">
-                    {copies?.map((copy: any) => {
-                        const status = resolveStatus(copy);
+            <Table>
+                <TableHeader className="table-header">
+                    <TableRow>
+                        <TableHeadWithSort label="Actions" />
+                        <TableHeadWithSort label="Barcode" />
+                        <TableHeadWithSort label="Item Type" />
+                        <TableHeadWithSort label="Library" />
+                        <TableHeadWithSort label="Location" />
+                        <TableHeadWithSort label="Call Number" />
+                        <TableHeadWithSort label="Status" />
+                        <TableHeadWithSort label="Unpublic Note" />
+                        <TableHeadWithSort label="Public Note" />
+                    </TableRow>
+                </TableHeader>
+                <TableBody className="table-body rounded-md">
+                    {copies?.map((item: any) => {
+                        const status = resolveStatus(item);
+
                         return (
-                            <tr key={copy.id} className="transition-colors hover:bg-muted/30">
-                                {/* Actions */}
-                                <td className="border px-4 py-3">
-                                    <Link href={`/admin/items/${showData?.id}/physical-copies/${copy.id}/edit`}>
-                                        <Button variant="outline" size="sm" className="rounded">
-                                            <EditIcon className="mr-1 size-3.5" /> Edit
-                                        </Button>
-                                    </Link>
-                                </td>
+                            <TableRow className="table-row" key={item.id}>
+                                {/* 1. Actions (Front) */}
+                                <TableCellActions>
+                                    <div className="flex items-center gap-2">
+                                        <Link href={`/admin/items/${showData?.id}/physical-copies/${item.id}/edit`}>
+                                            <Button variant="outline" size="sm" className="h-8 rounded">
+                                                <EditIcon className="mr-1 size-3.5" /> {t('Edit')}
+                                            </Button>
+                                        </Link>
+                                        <DeleteItemButton
+                                            deletePath={`/admin/items/${showData?.id}/physical-copies/`}
+                                            id={item.barcode}
+                                            permission="item delete"
+                                        />
+                                    </div>
+                                </TableCellActions>
 
-                                {/* Barcode */}
-                                <td className="border px-4 py-3">
-                                    <div className="font-bold tracking-tight text-primary">{copy.barcode}</div>
-                                    {/* <div className="text-[10px] text-muted-foreground">Inv: {copy.inventory_number || 'N/A'}</div> */}
-                                </td>
+                                {/* 2. Barcode */}
+                                <TableCellText value={item.barcode} className="font-bold text-primary" />
 
-                                {/* Item Type */}
-                                <td className="border px-4 py-3">
-                                    <span className="rounded border border-border bg-secondary px-2 py-0.5 text-[10px] text-secondary-foreground uppercase">
-                                        {copy.item_type?.name ?? '---'}
-                                    </span>
-                                </td>
+                                {/* 3. Item Type */}
+                                <TableCellText value={item.item_type?.name ?? '---'} />
 
-                                {/* Library Logic */}
-                                <td className="border px-4 py-3">
-                                    <div>{copy.current_library?.name ?? '---'}</div>
-                                    {copy.home_library_code !== copy.current_library_code && (
-                                        <div className="text-[9px] text-orange-600 uppercase">Home: {copy.home_library?.name ?? '---'}</div>
+                                {/* 4. Library (Custom Layout) */}
+                                <TableCellActions>
+                                    <div className="text-sm font-medium">{item.current_library?.name ?? '---'}</div>
+                                    {item.home_library_code !== item.current_library_code && (
+                                        <div className="text-[9px] font-bold text-orange-600 uppercase dark:text-orange-400">
+                                            Home: {item.home_library?.name ?? '---'}
+                                        </div>
                                     )}
-                                </td>
+                                </TableCellActions>
 
-                                {/* Shelving Location */}
-                                <td className="border px-4 py-3 text-muted-foreground">{copy.shelf_location_code ?? '---'}</td>
+                                {/* 5. Location */}
+                                <TableCellText value={item.shelf_location_code ?? '---'} />
 
-                                {/* Call Number */}
-                                <td className="border px-4 py-3 font-mono">{copy.full_call_number ?? '---'}</td>
+                                {/* 6. Call Number */}
+                                <TableCellText value={item.full_call_number ?? '---'} className="font-mono text-xs" />
 
-                                {/* Computed Status Badge */}
-                                <td className="border px-4 py-3">
+                                {/* 7. Computed Status Badge */}
+                                <TableCellActions tableCellClassName="px-0">
                                     <div className="flex flex-col gap-1">
-                                        <span
-                                            className={`inline-flex items-center self-start rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-tight uppercase ${getStatusStyles(status.color)}`}
-                                        >
-                                            {currentLocale === 'kh' ? status.label_kh : status.label}
-                                        </span>
-                                        {copy.due_at && (
-                                            <span className="text-[9px] text-muted-foreground">
-                                                Due: {new Date(copy.due_at).toLocaleDateString()}
+                                        <TableCellBadge
+                                            value={currentLocale === 'kh' ? status.label_kh : status.label}
+                                            className={`uppercase ${getStatusStyles(status.color)}`}
+                                        />
+                                        {item.due_at && (
+                                            <span className="text-[9px] font-semibold text-muted-foreground">
+                                                {t('Due')}: {new Date(item.due_at).toLocaleDateString()}
                                             </span>
                                         )}
                                     </div>
-                                </td>
-                                <td className="border px-4 py-3">
-                                    <span className="line-clamp-3">{copy.unpublic_note ?? '---'}</span>
-                                </td>
-                                <td className="border px-4 py-3">
-                                    <span className="line-clamp-3">{copy.public_note ?? '---'}</span>
-                                </td>
-                            </tr>
+                                </TableCellActions>
+
+                                {/* 8. Notes (Staff) */}
+                                <TableCellText value={item.unpublic_note || '---'} className="line-clamp-2 max-w-[150px] text-xs" />
+
+                                {/* 9. Notes (Public) */}
+                                <TableCellText value={item.public_note || '---'} className="line-clamp-2 max-w-[150px] text-xs" />
+                            </TableRow>
                         );
                     })}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         </div>
     );
 };
 
 const ItemPhysicalCopy = () => {
     const { showData } = usePage<any>().props;
+    const { t, currentLocale } = useTranslation();
 
     return (
         <div className="mt-4">
             <div className="mb-4 flex items-center justify-between pb-2">
-                <h2 className="text-lg font-semibold tracking-tight text-foreground">Physical Copies ({showData?.physical_copies?.length || 0})</h2>
+                <h2 className="text-lg font-semibold tracking-tight text-foreground">
+                    {t('Physical Copies')} ({showData?.physical_copies?.length || 0})
+                </h2>
                 <NewItemButton url={`/admin/items/${showData?.id}/physical-copies/create`} permission="item create" />
             </div>
 

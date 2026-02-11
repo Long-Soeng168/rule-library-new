@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\CirculationController;
 use App\Http\Controllers\Admin\CirculationRuleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
@@ -37,6 +38,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/users/{id}/recover', [UserController::class, 'recover']);
     // Route::get('/assign-admin', [RoleController::class, 'assignAdmin']);
 
+    Route::resource('admin/circulations', CirculationController::class);
+    Route::post('admin/circulations', [CirculationController::class, 'checkout']);
+    Route::post('admin/circulations/checkin', [CirculationController::class, 'checkin']);
     // Circulation Rule
     Route::resource('admin/circulation-rules', CirculationRuleController::class);
     Route::post('admin/circulation-rules/{circulation_rule}/update', [CirculationRuleController::class, 'update']);
@@ -141,6 +145,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/items/{item_id}/physical-copies', [ItemPhysicalCopyController::class, 'store']);
     Route::get('admin/items/{item_id}/physical-copies/{physical_copy_id}/edit', [ItemPhysicalCopyController::class, 'edit']);
     Route::post('admin/items/{item_id}/physical-copies/{physical_copy_id}/update', [ItemPhysicalCopyController::class, 'update']);
+    Route::delete('admin/items/{item_id}/physical-copies/{physical_copy_barcode}', [ItemPhysicalCopyController::class, 'destroy']);
 
 
     Route::get('admin/sample-content', [PageController::class, 'recover']);

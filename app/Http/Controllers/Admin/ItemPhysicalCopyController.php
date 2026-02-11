@@ -175,9 +175,11 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Item $item)
+    public function destroy(string $item_id, string $physical_copy_barcode, Request $request)
     {
-        $item->delete(); // this will now just set deleted_at timestamp
-        return redirect()->back()->with('success', 'Item deleted successfully.');
+        $item = Item::findOrFail($item_id);
+        $item_physical_copy = ItemPhysicalCopy::where('barcode', $physical_copy_barcode)->firstOrFail();
+        $item_physical_copy->delete(); // this will now just set deleted_at timestamp
+        return redirect()->back()->with('success', 'Physical copy deleted successfully.');
     }
 }

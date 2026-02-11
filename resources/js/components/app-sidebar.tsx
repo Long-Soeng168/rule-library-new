@@ -79,7 +79,7 @@ const mainNavItems: {
         permission: 'circulation view',
         items: [
             {
-                title: 'All Circulations',
+                title: 'Circulations',
                 url: '/admin/circulations',
                 permission: 'circulation view',
             },

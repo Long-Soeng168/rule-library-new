@@ -103,7 +103,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Items', href: '/admin/items' },
         { title: itemRecord?.name, href: `/admin/items/${itemRecord?.id}?view_physical_copies=1` },
-        { title: editData?.id ? 'Edit Copy' : 'Add Physical Copy', href: '#' },
+        { title: editData?.id ? `Edit Physical Copy (Barcode: ${editData?.barcode})` : 'Add Physical Copy', href: '#' },
     ];
 
     return (
