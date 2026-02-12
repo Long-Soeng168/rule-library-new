@@ -41,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('admin/circulations', CirculationController::class);
     Route::post('admin/circulations', [CirculationController::class, 'checkout']);
     Route::post('admin/circulations/checkin', [CirculationController::class, 'checkin']);
+    Route::get('/get-recent-checkouts', [CirculationController::class, 'get_recent_checkouts']);
+    Route::get('/get-recent-checkins', [CirculationController::class, 'get_recent_checkins']);
+
     // Circulation Rule
     Route::resource('admin/circulation-rules', CirculationRuleController::class);
     Route::post('admin/circulation-rules/{circulation_rule}/update', [CirculationRuleController::class, 'update']);

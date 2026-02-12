@@ -18,6 +18,10 @@ class ItemPhysicalCopy extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
     public function item_type()
     {
         return $this->belongsTo(ItemType::class, 'item_type_code', 'code');

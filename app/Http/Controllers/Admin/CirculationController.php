@@ -261,6 +261,51 @@ class CirculationController extends Controller implements HasMiddleware
         }
     }
 
+    public function get_recent_checkouts()
+    {
+        $data = Circulation::with(['item_physical_copy.item', 'borrower'])
+            ->orderByDesc('id')
+            ->limit(10)
+            ->whereNull('returned_at')
+            ->get()
+            ->map(fn($c) => [
+                'id' => $c->id,
+                'barcode' => $c->item_physical_copy->barcode ?? 'N/A',
+                'title' => $c->item_physical_copy->item->name ?? 'Untitled',
+                'borrower_name' => $c->borrower->name ?? 'Unknown',
+                'due_at' => $c->due_at,
+                'returned_at' => $c->returned_at,
+                'borrowed_at' => $c->borrowed_at,
+                'withdrawn' => $c->item_physical_copy->withdrawn ?? false,
+                'item_lost' => $c->item_lost ?? false,
+                'damaged' => $c->item_physical_copy->damaged ?? false,
+            ]);
+
+        return response()->json($data);
+    }
+    public function get_recent_checkins()
+    {
+        $data = Circulation::with(['item_physical_copy.item', 'borrower'])
+            ->orderByDesc('id')
+            ->limit(10)
+            ->whereNotNull('returned_at')
+            ->get()
+            ->map(fn($c) => [
+                'id' => $c->id,
+                'barcode' => $c->item_physical_copy->barcode ?? 'N/A',
+                'title' => $c->item_physical_copy->item->name ?? 'Untitled',
+                'borrower_name' => $c->borrower->name ?? 'Unknown',
+                'borrower_card_number' => $c->borrower->card_number ?? 'Unknown',
+                'due_at' => $c->due_at,
+                'returned_at' => $c->returned_at,
+                'borrowed_at' => $c->borrowed_at,
+                'withdrawn' => $c->item_physical_copy->withdrawn ?? false,
+                'item_lost' => $c->item_lost ?? false,
+                'damaged' => $c->item_physical_copy->damaged ?? false,
+            ]);
+
+        return response()->json($data);
+    }
 
 
     public function recover($id)

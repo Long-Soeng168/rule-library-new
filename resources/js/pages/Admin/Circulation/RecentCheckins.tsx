@@ -5,22 +5,22 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
-import { ArrowUpCircle, ChevronRight, RefreshCcw } from 'lucide-react';
+import { ArrowDownCircle, ChevronRight, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const resolveStatus = (item: any) => {
-    if (item.returned_at) return { label: 'Returned', variant: 'outline' as const, className: 'text-gray-500' };
+    if (item.returned_at) return { label: 'Returned', variant: 'outline' as const, className: 'bg-gray-500/10 text-gray-500' };
 
     if (item.due_at) {
         const isOverdue = new Date(item.due_at) < new Date();
         return isOverdue
             ? { label: 'Overdue', variant: 'destructive' as const }
-            : { label: 'On Loan', variant: 'default' as const, className: 'bg-blue-600/10 text-blue-600' };
+            : { label: 'On Loan', variant: 'default' as const, className: 'bg-blue-600' };
     }
     return { label: 'Available', variant: 'outline' as const, className: 'text-green-600 border-green-200 bg-green-50' };
 };
 
-const RecentCheckouts = () => {
+const RecentCheckins = () => {
     const [items, setItems] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -28,10 +28,10 @@ const RecentCheckouts = () => {
         setLoading(true);
         try {
             // Adjust the URL to match your route definition
-            const response = await axios.get('/get-recent-checkouts');
+            const response = await axios.get('/get-recent-checkins');
             setItems(response.data);
         } catch (error) {
-            console.error('Failed to fetch checkouts:', error);
+            console.error('Failed to fetch checkins:', error);
         } finally {
             setLoading(false);
         }
@@ -47,8 +47,8 @@ const RecentCheckouts = () => {
                 <CardHeader className="border-b bg-muted/30 p-4">
                     <CardTitle className="flex items-center justify-between gap-2 text-lg font-semibold text-muted-foreground">
                         <span className="flex items-center gap-2 text-primary">
-                            <ArrowUpCircle />
-                            Recent Checkouts
+                            <ArrowDownCircle />
+                            Recent Checkins
                         </span>
                         <div className="flex items-center gap-2">
                             <Button variant="ghost" size="icon" onClick={fetchData} disabled={loading} className="h-8 w-8">
@@ -113,9 +113,9 @@ const RecentCheckouts = () => {
                                                     <Badge variant={status.variant} className={cn(status.className, 'rounded')}>
                                                         {status.label}
                                                     </Badge>
-                                                    {item.borrowed_at && (
+                                                    {item.returned_at && (
                                                         <span className="text-muted-foreground">
-                                                            {formatToKhmerDateTime(item.borrowed_at, false)}
+                                                            {formatToKhmerDateTime(item.returned_at, false)}
                                                         </span>
                                                     )}
                                                 </div>
@@ -138,4 +138,4 @@ const RecentCheckouts = () => {
     );
 };
 
-export default RecentCheckouts;
+export default RecentCheckins;

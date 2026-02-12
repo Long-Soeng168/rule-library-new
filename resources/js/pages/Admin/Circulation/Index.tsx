@@ -11,30 +11,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useForm, usePage } from '@inertiajs/react';
+import RecentCheckins from './RecentCheckins';
 import RecentCheckouts from './RecentCheckouts';
 import UserCheckoutSearch from './UserCheckoutSearch';
-
-/**
- * KOHA-STYLE STATUS RESOLVER
- */
-const resolveStatus = (item: any) => {
-    if (item.withdrawn) return { label: 'Withdrawn', variant: 'secondary' as const };
-    if (item.item_lost) return { label: 'Lost', variant: 'destructive' as const };
-    if (item.damaged) return { label: 'Damaged', variant: 'outline' as const, className: 'text-amber-500 border-amber-200 bg-amber-50' };
-    if (item.due_at) {
-        const isOverdue = new Date(item.due_at) < new Date();
-        return isOverdue
-            ? { label: 'Overdue', variant: 'destructive' as const }
-            : { label: 'On Loan', variant: 'default' as const, className: 'bg-blue-600' };
-    }
-    return { label: 'Available', variant: 'outline' as const, className: 'text-green-600 border-green-200 bg-green-50' };
-};
 
 export default function CirculationDesk() {
     const [flashMessage, setFlashMessage] = useState<{ message: string; type: string }>({
         message: '',
         type: 'message',
     });
+    const [refreshKeyRecentCheckout, setRefreshKeyRecentCheckout] = useState(0);
+    const [refreshKeyRecentCheckin, setRefreshKeyRecentCheckin] = useState(0);
 
     const { users_searched } = usePage<any>().props;
     const [selectedPatron, setSelectedPatron] = useState<any>(null);
@@ -56,6 +43,7 @@ export default function CirculationDesk() {
                     reset();
                     setSelectedBarcode('');
                     setFlashMessage({ message: page.props.flash?.success, type: 'success' });
+                    setRefreshKeyRecentCheckout((prev) => prev + 1);
                 },
             });
         } else {
@@ -65,24 +53,18 @@ export default function CirculationDesk() {
                     setSelectedBarcode('');
                     setSelectedPatron(null);
                     setFlashMessage({ message: page.props.flash?.success, type: 'success' });
+                    setRefreshKeyRecentCheckin((prev) => prev + 1);
                 },
             });
         }
     };
-
-    // --- MOCK DATABASE ---
-    const [items, setItems] = useState([
-        { id: 1, barcode: '1001', title: 'The Great Gatsby', due_at: null, borrower_id: null, damaged: 0, item_lost: 0, withdrawn: 0 },
-        { id: 2, barcode: '1002', title: 'Clean Code', due_at: '2026-02-01', borrower_id: 101, damaged: 0, item_lost: 0, withdrawn: 0 },
-        { id: 3, barcode: '1003', title: 'Laravel Design Patterns', due_at: null, borrower_id: null, damaged: 0, item_lost: 0, withdrawn: 0 },
-    ]);
 
     const [activeTab, setActiveTab] = useState('checkout');
     const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
     return (
         <div className="section-container my-10">
-            <div className="mb-6 flex flex-col justify-between gap-4 border-b pb-6 md:flex-row md:items-center">
+            <div className="mb-3 flex flex-col justify-between gap-4 border-b pb-6 md:flex-row md:items-center">
                 <div className="flex items-center gap-3">
                     <div className="rounded-md bg-primary/10 p-2">
                         <ArrowRightLeft className="size-6 text-primary" />
@@ -134,44 +116,6 @@ export default function CirculationDesk() {
                     >
                         Check In
                     </button>
-
-                    {/* Patrons Button */}
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setActiveTab('patrons');
-                            setSelectedPatron(null);
-                            setMessage(null);
-                            setSelectedBarcode('');
-                            clearErrors();
-                        }}
-                        className={cn(
-                            'inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-bold whitespace-nowrap transition-all',
-                            activeTab === 'patrons'
-                                ? 'bg-background text-primary shadow-sm'
-                                : 'text-muted-foreground hover:bg-background/50 hover:text-foreground',
-                        )}
-                    >
-                        Patrons
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setActiveTab('catalogs');
-                            setSelectedPatron(null);
-                            setMessage(null);
-                            setSelectedBarcode('');
-                            clearErrors();
-                        }}
-                        className={cn(
-                            'inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-bold whitespace-nowrap transition-all',
-                            activeTab === 'catalogs'
-                                ? 'bg-background text-primary shadow-sm'
-                                : 'text-muted-foreground hover:bg-background/50 hover:text-foreground',
-                        )}
-                    >
-                        Catalogs (Items)
-                    </button>
                 </div>
             </div>
 
@@ -183,7 +127,7 @@ export default function CirculationDesk() {
             />
             {/* {errors && <AllErrorsAlert title="Errors" errors={errors} />} */}
 
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 pt-3">
                 <div className="space-y-6 lg:col-span-4">
                     {/* PATRON SELECTION */}
                     {activeTab === 'checkout' &&
@@ -329,7 +273,7 @@ export default function CirculationDesk() {
                 </div>
 
                 {/* Recent Checkouts PREVIEW */}
-                <RecentCheckouts />
+                {activeTab == 'checkout' ? <RecentCheckouts key={refreshKeyRecentCheckout} /> : <RecentCheckins key={refreshKeyRecentCheckin} />}
             </div>
         </div>
     );

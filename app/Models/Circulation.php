@@ -9,7 +9,15 @@ class Circulation extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
-
+ 
+    public function item_physical_copy()
+    {
+        return $this->belongsTo(ItemPhysicalCopy::class, 'item_physical_copy_id', 'id');
+    }
+    public function borrower()
+    {
+        return $this->belongsTo(User::class, 'borrower_id', 'id');
+    }
     public function created_user()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
