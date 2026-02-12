@@ -17,12 +17,12 @@ return new class extends Migration
             $table->foreignId('item_physical_copy_id')
                 ->constrained('item_physical_copies')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->foreignId('borrower_id')
                 ->constrained('users')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->timestamp('borrowed_at')->useCurrent();
             $table->timestamp('due_at')->nullable();
@@ -43,7 +43,6 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-
 
 
             $table->softDeletes();
