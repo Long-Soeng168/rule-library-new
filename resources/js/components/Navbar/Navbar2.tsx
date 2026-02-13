@@ -12,7 +12,9 @@ const Navbar2 = () => {
             <div className="min-[1000px]:border-b">
                 <div className="section-container mx-auto w-full py-4">
                     <div className="flex h-full items-center justify-between">
-                        <NavbarLogo2 />
+                        <div className="max-w-full">
+                            <NavbarLogo2 />
+                        </div>
 
                         <div className="max-[1000px]:hidden">
                             <NavMenu2 />
