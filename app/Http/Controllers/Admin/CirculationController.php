@@ -108,7 +108,7 @@ class CirculationController extends Controller implements HasMiddleware
             return redirect()->back()->withErrors(["Barcode not found."]);
         }
 
-        if (!$physical_copy->is_checkable) {
+        if (!$physical_copy->item_type->is_checkable) {
             return redirect()->back()->withErrors(["This item type is not allowed checkout."]);
         }
 
