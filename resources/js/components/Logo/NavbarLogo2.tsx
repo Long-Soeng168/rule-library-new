@@ -18,7 +18,7 @@ export function NavbarLogo2() {
     return (
         <Link href={`/`}>
             <div className="flex items-center gap-4">
-                <Avatar className="h-20 w-auto">
+                <Avatar className="size-20">
                     <AvatarImage src={logo} alt={name || 'Logo'} className="rounded aspect-auto object-contain dark:hidden" />
                     <AvatarImage src={logoDark} alt={name || 'Logo'} className="hidden aspect-auto object-contain rounded dark:block" />
                     <AvatarFallback>{name?.charAt(0) || 'L'}</AvatarFallback>

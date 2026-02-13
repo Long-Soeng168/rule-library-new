@@ -7,14 +7,12 @@ import { NavSheet } from './NavSheet';
 
 const Navbar2 = () => {
     return (
-        <div>
+        <>
             {/* Start Top Navbar */}
             <div className="min-[1000px]:border-b">
                 <div className="section-container mx-auto w-full py-4">
                     <div className="flex h-full items-center justify-between">
-                        <div className="max-w-full">
-                            <NavbarLogo2 />
-                        </div>
+                        <NavbarLogo2 />
 
                         <div className="max-[1000px]:hidden">
                             <NavMenu2 />
@@ -58,7 +56,7 @@ const Navbar2 = () => {
                 </nav>
             </div>
             {/* End Bottom Navbar */}
-        </div>
+        </>
     );
 };
 

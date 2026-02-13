@@ -15,11 +15,11 @@ export function BookScrollAreaHorizontal({ items, mainCategoryCode }: { items: a
                             {items?.map((item) => (
                                 <Link key={item.id} href={`/resources/${item.main_category_code}/${item.id}`}>
                                     <div className="aspect-7/10 w-[265px] shrink-0">
-                                        <div className="overflow-hidden w-full h-full rounded-md border duration-300 hover:border-primary">
+                                        <div className="h-full w-full overflow-hidden rounded-md border duration-300 hover:border-primary">
                                             <img
                                                 src={`/assets/images/items/thumb/${item.thumbnail}`}
                                                 alt={item.name}
-                                                className="h-full w-full object-cover"
+                                                className="aspect-7/10 h-full object-cover"
                                             />
                                         </div>
 
