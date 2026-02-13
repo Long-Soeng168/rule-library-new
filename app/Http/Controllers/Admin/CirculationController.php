@@ -98,15 +98,22 @@ class CirculationController extends Controller implements HasMiddleware
             'borrower_id'                 => 'required|exists:users,id',
             'item_physical_copy_barcode' => [
                 'required',
-                'exists:item_physical_copies,barcode,deleted_at,NULL'
+                'exists:item_physical_copies,barcode'
             ],
         ]);
 
         $physical_copy = ItemPhysicalCopy::where('barcode', $request->item_physical_copy_barcode)->first();
 
-        // Koha Business Logic: Prevent checkout if item is not available
+        if (!$physical_copy) {
+            return redirect()->back()->withErrors(["Barcode not found."]);
+        }
+
+        if (!$physical_copy->is_checkable) {
+            return redirect()->back()->withErrors(["This item type is not allowed checkout."]);
+        }
+
         if ($physical_copy->not_for_loan || $physical_copy->item_lost || $physical_copy->withdrawn) {
-            return redirect()->back()->withErrors('Failed to Checkout: Item is restricted or lost.');
+            return redirect()->back()->withErrors('Failed to Checkout: Item is not for loan.');
         }
 
         // Check if already on loan
@@ -171,12 +178,15 @@ class CirculationController extends Controller implements HasMiddleware
         $request->validate([
             'item_physical_copy_barcode' => [
                 'required',
-                'exists:item_physical_copies,barcode,deleted_at,NULL'
+                'exists:item_physical_copies,barcode'
             ],
         ]);
 
         $physical_copy = ItemPhysicalCopy::where('barcode', $request->item_physical_copy_barcode)->first();
 
+        if (!$physical_copy) {
+            return redirect()->back()->withErrors(["Barcode not found."]);
+        }
         // Find the active circulation record
         $active_loan = Circulation::where('item_physical_copy_id', $physical_copy->id)
             ->whereNull('returned_at')
@@ -224,7 +234,9 @@ class CirculationController extends Controller implements HasMiddleware
                     'last_seen_at' => now(),
                     'updated_by'   => $request->user()->id,
                 ]);
-                $active_loan->borrower->decrement('total_active_loan');
+                if ($active_loan->borrower->total_active_loan > 0) {
+                    $active_loan->borrower->decrement('total_active_loan');
+                }
             });
 
             return redirect()->back()->with('success', 'Check-in successfully!');

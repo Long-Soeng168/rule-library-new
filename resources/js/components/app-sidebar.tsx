@@ -83,16 +83,16 @@ const mainNavItems: {
                 url: '/admin/all-circulations',
                 permission: 'circulation view',
             },
-            {
-                title: 'Checkout',
-                url: '/admin/circulations-checkout',
-                permission: 'circulation view',
-            },
-            {
-                title: 'Checkin',
-                url: '/admin/circulations-checkin',
-                permission: 'circulation view',
-            },
+            // {
+            //     title: 'Checkout',
+            //     url: '/admin/circulations-checkout',
+            //     permission: 'circulation view',
+            // },
+            // {
+            //     title: 'Checkin',
+            //     url: '/admin/circulations-checkin',
+            //     permission: 'circulation view',
+            // },
             {
                 title: 'Circulation Rule',
                 url: '/admin/circulation-rules',
