@@ -145,17 +145,25 @@ export default function CirculationDesk() {
                                                 >
                                                     <div className="flex items-center space-x-2">
                                                         <Avatar className="h-9 w-9 border-muted transition-transform group-hover:scale-105">
-                                                            <AvatarImage src={user.image} alt={user.name} />
+                                                            <AvatarImage
+                                                                src={`/assets/images/users/thumb/${user.image}`}
+                                                                className="overflow-hidden rounded"
+                                                                alt={user.name}
+                                                            />
                                                             <AvatarFallback className="rounded bg-primary/10 font-medium text-primary">
                                                                 {user.name?.substring(0, 2).toUpperCase()}
                                                             </AvatarFallback>
                                                         </Avatar>
-                                                        <div className="flex flex-col">
-                                                            <p className="line-clamp-3 text-sm">{user.name}</p>
-                                                            <div className="mt-1.5 flex items-center gap-2">
-                                                                <p className="font-mono text-[10px] font-bold text-muted-foreground uppercase">
-                                                                    Card Number: {user.card_number ?? '---'}
-                                                                </p>
+                                                        <div className="flex flex-col gap-0.5">
+                                                            {/* Patron Name */}
+                                                            <p className="line-clamp-1 text-sm font-medium text-foreground">{user.name}</p>
+
+                                                            {/* Patron ID / Card Number */}
+                                                            <div className="flex items-center gap-1.5">
+                                                                <span className="text-[13px] text-muted-foreground">Card:</span>
+                                                                <span className="rounded-sm bg-muted px-1.5 py-0.5 text-[14px] font-medium text-primary ring-1 ring-foreground/5 ring-inset">
+                                                                    {user.card_number ?? '---'}
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
