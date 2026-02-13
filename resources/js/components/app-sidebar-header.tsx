@@ -29,7 +29,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                                 <ArrowRightLeft /> {t('Check Out/In')}
                             </Button>
                         </Link>
-                        <Link href={'/circulations-checkout'} prefetch>
+                        <Link href={'/'} prefetch>
                             <Button variant="secondary" className="h-9 overflow-hidden rounded-md border hover:border-primary">
                                 <HomeIcon /> {t('Home')}
                             </Button>
