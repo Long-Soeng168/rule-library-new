@@ -38,7 +38,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/users/{id}/recover', [UserController::class, 'recover']);
     // Route::get('/assign-admin', [RoleController::class, 'assignAdmin']);
 
-    Route::resource('admin/circulations', CirculationController::class);
+    // Route::resource('admin/circulations', CirculationController::class);
+    Route::get('admin/all-circulations', [CirculationController::class, 'all_circulations']);
+    Route::delete('admin/circulations/{circulation}', [CirculationController::class, 'destroy']);
+    Route::post('admin/circulations/{circulation}/recover', [CirculationController::class, 'recover']);
+
+    Route::get('admin/circulations-checkin', [CirculationController::class, 'checkin_desk']);
+    Route::get('admin/circulations-checkout', [CirculationController::class, 'checkout_desk']);
     Route::post('admin/circulations', [CirculationController::class, 'checkout']);
     Route::post('admin/circulations/checkin', [CirculationController::class, 'checkin']);
     Route::get('/get-recent-checkouts', [CirculationController::class, 'get_recent_checkouts']);

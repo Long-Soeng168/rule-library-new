@@ -73,14 +73,24 @@ const mainNavItems: {
     },
     {
         title: 'Circulations',
-        url: '/admin/circulations',
+        url: '/admin/all-circulations',
         icon: UsersIcon,
-        activeList: ['/admin/circulations', '/admin/circulation-rules'],
+        activeList: ['/admin/all-circulations', '/admin/circulations-checkout', '/admin/circulations-checkin', '/admin/circulation-rules'],
         permission: 'circulation view',
         items: [
             {
-                title: 'Circulations',
-                url: '/admin/circulations',
+                title: 'All Circulations',
+                url: '/admin/all-circulations',
+                permission: 'circulation view',
+            },
+            {
+                title: 'Checkout',
+                url: '/admin/circulations-checkout',
+                permission: 'circulation view',
+            },
+            {
+                title: 'Checkin',
+                url: '/admin/circulations-checkin',
                 permission: 'circulation view',
             },
             {

@@ -3,7 +3,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import useTranslation from '@/hooks/use-translation';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { HomeIcon } from 'lucide-react';
+import { ArrowRightLeft, HomeIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 import NavLanguage from './Navbar/NavLanguage';
 import { SwitchDarkModeSmoothAnimated } from './Switch/SwitchDarkModeSmoothAnimated';
@@ -24,12 +24,17 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                         <AppLogo />
                     </div>
                     <div className="flex items-center gap-2">
-                        <Link href={'/'} prefetch>
+                        <Link href={'/admin/circulations-checkout'} prefetch>
+                            <Button variant="secondary" className="h-9 overflow-hidden rounded-md border hover:border-primary">
+                                <ArrowRightLeft /> {t('Check Out/In')}
+                            </Button>
+                        </Link>
+                        <Link href={'/circulations-checkout'} prefetch>
                             <Button variant="secondary" className="h-9 overflow-hidden rounded-md border hover:border-primary">
                                 <HomeIcon /> {t('Home')}
                             </Button>
                         </Link>
-                        <div className='mr-2'>
+                        <div className="mr-2">
                             <SwitchDarkModeSmoothAnimated />
                         </div>
                         {can_switch_language == true && <NavLanguage />}

@@ -14,13 +14,13 @@ interface TableCellBadgeProps {
 const TableCellBadge = ({ value, variant = 'default', fallback = '---', className, isLink = false, href }: TableCellBadgeProps) => {
     const displayValue = value?.toString() || fallback;
     const badge = (
-        <Badge variant={variant} className={clsx('inline-block', className)}>
+        <Badge variant={variant} className={clsx('inline-block rounded', className)}>
             {displayValue}
         </Badge>
     );
 
     return (
-        <TableCell className="align-middle">
+        <TableCell className="p-0 align-middle">
             {isLink && value ? (
                 <a href={href || value.toString()} className="transition hover:underline hover:opacity-80">
                     {badge}

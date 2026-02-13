@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Circulation;
+use App\Models\CirculationRule;
 use App\Models\ItemPhysicalCopy;
 use App\Models\User;
+use App\Models\UserCategory;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -30,7 +32,8 @@ class CirculationController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+
+    public function checkout_desk(Request $request)
     {
         $search = $request->input('search', '');
         $users_searched = [];
@@ -55,22 +58,40 @@ class CirculationController extends Controller implements HasMiddleware
 
         // return $users_searched;
 
-        return Inertia::render('Admin/Circulation/Index', [
+        return Inertia::render('Admin/Circulation/Checkout', [
+            'users_searched' => $users_searched,
+        ]);
+    }
+    public function checkin_desk(Request $request)
+    {
+        $search = $request->input('search', '');
+        $users_searched = [];
+
+        // Only hit the database if the user actually typed something
+        if (!empty($search)) {
+            $users_searched = User::query()
+                ->where(function ($sub_query) use ($search) {
+                    $sub_query->where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('name_kh', 'LIKE', "%{$search}%")
+                        ->orWhere('card_number', 'LIKE', "%{$search}%")
+                        ->orWhere('id', 'LIKE', "%{$search}%")
+                        ->orWhere('phone', 'LIKE', "%{$search}%")
+                        ->orWhere('email', 'LIKE', "%{$search}%");
+                })
+                // Move sorting inside the search block for better performance
+                ->orderBy('card_number')
+                ->orderBy('name')
+                ->limit(10)
+                ->get();
+        }
+
+        // return $users_searched;
+
+        return Inertia::render('Admin/Circulation/Checkin', [
             'users_searched' => $users_searched,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render('Admin/Circulation/Create',);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function checkout(Request $request)
     {
         $validated = $request->validate([
@@ -94,36 +115,55 @@ class CirculationController extends Controller implements HasMiddleware
             ->first();
 
         if ($active_loan) {
-            return redirect()->back()->withErrors('Failed to Checkout: Item is already on loan to another borrower.');
+            return redirect()->back()->withErrors('Failed to Checkout: Item is already on loan.');
+        }
+
+        // 1. Check the limit BEFORE starting the transaction to keep it clean
+        $borrower = User::findOrFail($request->borrower_id);
+        $category = UserCategory::where('code', $borrower->category_code)->first();
+        $defaultRule = CirculationRule::first();
+        $borrowingLimit = $category->borrowing_limit ?? $defaultRule->borrowing_limit ?? 2;
+
+        if ($borrower->total_active_loan >= $borrowingLimit) {
+            return redirect()->back()->withErrors([
+                'item_physical_copy_barcode' => "Limit reached: This user can only borrow {$borrowingLimit} items."
+            ]);
         }
 
         try {
-            DB::transaction(function () use ($request, $physical_copy) {
-                $due_date = now()->addDays(14); // Standard Koha 14-day loan
+            DB::transaction(function () use ($request, $physical_copy, $borrower, $category, $defaultRule) {
+                // 2. Determine Loan Period
+                $loanDays = $category->loan_period ?? $defaultRule->loan_period ?? 14;
 
-                // 1. Create Circulation Record
+                $now = now();
+                $dueAt = $now->copy()->addDays($loanDays);
+
+                // 3. Create Circulation Record
                 Circulation::create([
                     'item_physical_copy_id' => $physical_copy->id,
-                    'borrower_id'           => $request->borrower_id,
-                    'borrowed_at'           => now(),
-                    'due_at'                => $due_date,
+                    'borrower_id'           => $borrower->id,
+                    'borrowed_at'           => $now,
+                    'due_at'                => $dueAt,
                     'created_by'            => $request->user()->id,
                     'updated_by'            => $request->user()->id,
                 ]);
 
-                // 2. Update Physical Copy Status
+                // 4. Update Physical Copy Status
                 $physical_copy->update([
-                    'borrowed_at'      => now(),
-                    'due_at'           => $due_date,
-                    'last_borrowed_at' => now(),
+                    'borrowed_at'      => $now,
+                    'due_at'           => $dueAt,
+                    'last_borrowed_at' => $now,
                     'total_checkouts'  => $physical_copy->total_checkouts + 1,
                     'updated_by'       => $request->user()->id,
                 ]);
+
+                // 5. Increment User Counter
+                $borrower->increment('total_active_loan');
             });
 
-            return redirect()->back()->with('success', 'Checkout successfully!');
+            return redirect()->back()->with('success', 'Item checked out successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Failed to Checkout: ' . $e->getMessage());
+            return redirect()->back()->withErrors("Transaction failed: " . $e->getMessage());
         }
     }
     public function checkin(Request $request)
@@ -148,18 +188,32 @@ class CirculationController extends Controller implements HasMiddleware
 
         try {
             DB::transaction(function () use ($request, $physical_copy, $active_loan) {
+                // 1. Get Borrower Category and Default Rules
+                $category = UserCategory::where('code', $active_loan->borrower->category_code)->first();
+                $defaultRule = CirculationRule::first();
+
+                // 2. Determine Rates (Category first, then Default)
+                $finePerDay = $category->fine_amount_per_day ?? $defaultRule->fine_amount_per_day ?? 0;
+                $maxFine = $category->max_fines_amount ?? $defaultRule->max_fines_amount ?? 0;
+
                 $fine = 0;
-                // Simple Fine Logic: $1 per day late
-                if ($active_loan->due_at && now()->gt($active_loan->due_at)) {
-                    $days_late = now()->diffInDays($active_loan->due_at);
-                    $fine = $days_late * 1.00;
+                $now = now();
+
+                // 3. Calculate Fine
+                if ($active_loan->due_at && $now->gt($active_loan->due_at)) {
+                    $days_late = (int) $now->diffInDays($active_loan->due_at, true);
+
+                    $calculatedFine = $days_late * $finePerDay;
+
+                    // Ensure fine doesn't exceed the maximum allowed
+                    $fine = min($calculatedFine, $maxFine);
                 }
 
                 // 1. Close the Circulation Record
                 $active_loan->update([
                     'returned_at' => now(),
                     'fine_amount' => $fine,
-                    'fine_paid'   => $fine > 0 ? false : true,
+                    'fine_paid'   => false,
                     'updated_by'  => $request->user()->id,
                 ]);
 
@@ -170,6 +224,7 @@ class CirculationController extends Controller implements HasMiddleware
                     'last_seen_at' => now(),
                     'updated_by'   => $request->user()->id,
                 ]);
+                $active_loan->borrower->decrement('total_active_loan');
             });
 
             return redirect()->back()->with('success', 'Check-in successfully!');
@@ -178,107 +233,24 @@ class CirculationController extends Controller implements HasMiddleware
         }
     }
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Circulation $circulation_rule)
-    {
-        return Inertia::render('Admin/Circulation/Create', [
-            'editData' => $circulation_rule,
-            'readOnly' => true,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Circulation $circulation_rule)
-    {
-        return Inertia::render('Admin/Circulation/Create', [
-            'editData' => $circulation_rule,
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Circulation $circulation_rule)
-    {
-        $validated = $request->validate([
-            'fine_amount_per_day' => 'required|numeric|min:0|max:999999.99',
-            'max_fines_amount' => 'required|numeric|min:0|max:999999.99',
-            'borrowing_limit' => 'required|integer|min:0|max:1000',
-            'loan_period' => 'required|integer|min:1|max:365', // Limit to a year max for safety
-        ]);
-
-        try {
-            // separate file handling for logos
-            $logoFile = $request->file('logo');
-            $darkLogoFile = $request->file('logo_darkmode');
-
-            unset($validated['logo'], $validated['logo_darkmode']);
-
-            // Handle normal logo
-            if ($logoFile) {
-                $logoName = ImageHelper::uploadAndResizeImageWebp(
-                    $logoFile,
-                    'assets/images/circulation_rules',
-                    600
-                );
-
-                // delete old logo if exists
-                if ($circulation_rule->logo) {
-                    ImageHelper::deleteImage($circulation_rule->logo, 'assets/images/circulation_rules');
-                }
-
-                $validated['logo'] = $logoName;
-            }
-
-            // Handle dark mode logo
-            if ($darkLogoFile) {
-                $darkLogoName = ImageHelper::uploadAndResizeImageWebp(
-                    $darkLogoFile,
-                    'assets/images/circulation_rules',
-                    600
-                );
-
-                // delete old dark logo if exists
-                if ($circulation_rule->logo_darkmode) {
-                    ImageHelper::deleteImage($circulation_rule->logo_darkmode, 'assets/images/circulation_rules');
-                }
-
-                $validated['logo_darkmode'] = $darkLogoName;
-            }
-
-            // Update the Circulation Rule
-            $circulation_rule->update($validated);
-
-            return redirect()->back()->with('success', 'Circulation Rule updated successfully!');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Failed to update Circulation Rule: ' . $e->getMessage());
-        }
-    }
-
     public function get_recent_checkouts()
     {
         $data = Circulation::with(['item_physical_copy.item', 'borrower'])
             ->orderByDesc('id')
-            ->limit(10)
+            ->limit(20)
             ->whereNull('returned_at')
             ->get()
             ->map(fn($c) => [
                 'id' => $c->id,
                 'barcode' => $c->item_physical_copy->barcode ?? 'N/A',
+                'item_id' => $c->item_physical_copy->item->id ?? '',
                 'title' => $c->item_physical_copy->item->name ?? 'Untitled',
+                'borrower_id' => $c->borrower->id ?? 'Unknown',
                 'borrower_name' => $c->borrower->name ?? 'Unknown',
+                'borrower_card_number' => $c->borrower->card_number ?? 'Unknown',
                 'due_at' => $c->due_at,
                 'returned_at' => $c->returned_at,
                 'borrowed_at' => $c->borrowed_at,
-                'withdrawn' => $c->item_physical_copy->withdrawn ?? false,
-                'item_lost' => $c->item_lost ?? false,
-                'damaged' => $c->item_physical_copy->damaged ?? false,
             ]);
 
         return response()->json($data);
@@ -286,25 +258,97 @@ class CirculationController extends Controller implements HasMiddleware
     public function get_recent_checkins()
     {
         $data = Circulation::with(['item_physical_copy.item', 'borrower'])
-            ->orderByDesc('id')
-            ->limit(10)
+            ->orderByDesc('returned_at')
+            ->limit(20)
             ->whereNotNull('returned_at')
             ->get()
             ->map(fn($c) => [
                 'id' => $c->id,
                 'barcode' => $c->item_physical_copy->barcode ?? 'N/A',
                 'title' => $c->item_physical_copy->item->name ?? 'Untitled',
+                'item_id' => $c->item_physical_copy->item->id ?? '',
+                'borrower_id' => $c->borrower->id ?? 'Unknown',
                 'borrower_name' => $c->borrower->name ?? 'Unknown',
                 'borrower_card_number' => $c->borrower->card_number ?? 'Unknown',
                 'due_at' => $c->due_at,
                 'returned_at' => $c->returned_at,
                 'borrowed_at' => $c->borrowed_at,
-                'withdrawn' => $c->item_physical_copy->withdrawn ?? false,
-                'item_lost' => $c->item_lost ?? false,
-                'damaged' => $c->item_physical_copy->damaged ?? false,
+                'fine_amount' => $c->fine_amount ?? 0,
+                'fine_paid' => $c->fine_paid ?? 0,
             ]);
 
         return response()->json($data);
+    }
+
+
+    public function all_circulations(Request $request)
+    {
+        $perPage = $request->input('perPage', 10);
+        $search = $request->input('search', '');
+        $sortBy = $request->input('sortBy', 'id');
+        $sortDirection = $request->input('sortDirection', 'desc');
+
+        $trashed = $request->input('trashed');
+        $filter_by = $request->input('filter_by');
+
+        $query = Circulation::query()
+            ->with([
+                'borrower:id,name,card_number,image',
+                'item_physical_copy.item:id,name,name_kh', // Assuming item_physical_copy belongsTo item
+                'created_user:id,name',
+                'updated_user:id,name'
+            ]);
+
+        // Filter by filter_by (Custom Logic)
+        if ($filter_by === 'on_loan') {
+            $query->whereNull('returned_at');
+        } elseif ($filter_by === 'returned') {
+            $query->whereNotNull('returned_at');
+        } elseif ($filter_by === 'overdue') {
+            // Not returned AND past the due date
+            $query->whereNull('returned_at')
+                ->where('due_at', '<', now());
+        } elseif ($filter_by === 'fine_unpaid') {
+            // Has a fine amount AND fine_paid is false
+            $query->where('fine_amount', '>', 0)
+                ->where('fine_paid', false);
+        } elseif ($filter_by === 'fine_paid') {
+            // Only records where a fine was successfully collected
+            $query->where('fine_amount', '>', 0)
+                ->where('fine_paid', true);
+        }
+
+        // Search Logic (Searching Borrower Name, Card Number, or Barcode)
+        if ($search) {
+            $query->where(function ($sub_query) use ($search) {
+                $sub_query->where('id', 'LIKE', "%{$search}%")
+                    ->orWhereHas('borrower', function ($q) use ($search) {
+                        $q->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('card_number', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('item_physical_copy', function ($q) use ($search) {
+                        $q->where('barcode', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        // Soft Deletes
+        if ($trashed === 'with') {
+            $query->withTrashed();
+        } elseif ($trashed === 'only') {
+            $query->onlyTrashed();
+        }
+
+        // Ordering
+        $query->orderBy($sortBy, $sortDirection);
+
+        $tableData = $query->paginate($perPage)->appends($request->all());
+
+        // return $tableData;
+        return Inertia::render('Admin/Circulation/Index', [
+            'tableData' => $tableData,
+            'filters' => $request->only(['search', 'status', 'sortBy', 'sortDirection']),
+        ]);
     }
 
 
@@ -312,19 +356,15 @@ class CirculationController extends Controller implements HasMiddleware
     {
         $circulation_rule = Circulation::withTrashed()->findOrFail($id); // 👈 include soft-deleted Circulation Rule
         $circulation_rule->restore(); // restores deleted_at to null
-        return redirect()->back()->with('success', 'Circulation Rule recovered successfully.');
+        return redirect()->back()->with('success', 'Circulation recovered successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Circulation $circulation_rule)
+    public function destroy(Circulation $circulation)
     {
-        // if ($user->image) {
-        //     ImageHelper::deleteImage($user->image, 'assets/images/users');
-        // }
-
-        $circulation_rule->delete(); // this will now just set deleted_at timestamp
-        return redirect()->back()->with('success', 'Circulation Rule deleted successfully.');
+        $circulation->delete(); // this will now just set deleted_at timestamp
+        return redirect()->back()->with('success', 'Circulation deleted successfully.');
     }
 }

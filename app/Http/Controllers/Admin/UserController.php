@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Circulation;
 use App\Models\Type;
 use App\Models\User;
 use App\Models\UserCategory;
@@ -161,11 +162,15 @@ class UserController extends Controller implements HasMiddleware
      */
     public function show(User $user)
     {
-        return Inertia::render('Admin/Users/Create', [
-            'editData' => $user->load('roles'),
-            'roles' => Role::orderBy('id')->get(),
-            'readOnly' => true,
-            'userCategories' => UserCategory::orderBy('order_index')->orderBy('name')->get(),
+        $userData = $user->load('roles');
+        $userCirculations = Circulation::where('borrower_id', $user->id)
+            ->orderByDesc('borrowed_at')
+            ->with('item_physical_copy:id,item_id,barcode,item_type_code,home_library_code,current_library_code', 'item_physical_copy.item:id,name', 'item_physical_copy.item_type:id,code,name,name_kh')
+            ->get();
+        // return $userCirculations;
+        return Inertia::render('Admin/Users/Show', [
+            'userData' => $userData,
+            'userCirculations' => $userCirculations,
         ]);
     }
 

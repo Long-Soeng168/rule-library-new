@@ -41,7 +41,7 @@ const RecoverItem = ({ recoverPath, permission, deleted_at }: { recoverPath: str
     const { t } = useTranslation();
     return (
         <div className="flex items-start gap-2">
-            <div className='flex flex-col items-center'>
+            <div className="flex flex-col items-center">
                 <Badge variant="destructive" className="rounded bg-destructive/80">
                     <Trash2Icon />
                     {t('Item Deleted')}
@@ -53,14 +53,8 @@ const RecoverItem = ({ recoverPath, permission, deleted_at }: { recoverPath: str
                 />
             </div>
             <TooltipButton tooltip="Recover Item" side="bottom">
-                <Button
-                    variant="default"
-                    size="icon"
-                    className={`rounded ${processing ? 'animate-spin' : ''}`}
-                    onClick={handleRecover}
-                    disabled={processing}
-                >
-                    <RefreshCwIcon />
+                <Button variant="default" size="icon" className={`rounded`} onClick={handleRecover} disabled={processing}>
+                    <RefreshCwIcon className={` ${processing ? 'animate-spin' : ''}`} />
                 </Button>
             </TooltipButton>
         </div>

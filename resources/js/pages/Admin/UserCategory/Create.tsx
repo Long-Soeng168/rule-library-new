@@ -140,7 +140,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         {types?.length > 0 && (
                             <FormCombobox
                                 name="user_category_type_code"
-                                label="Patron Type"
+                                label="User Type"
                                 options={[
                                     { value: null, label: t('NA') },
                                     ...types.map((item: any) => ({

@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 
-const NewItemButton = ({ url, permission }: { url?: string; permission?: string }) => {
+const NewItemButton = ({ url, permission, label = 'Add New' }: { url?: string; permission?: string; label?: string }) => {
     const hasPermission = usePermission();
     if (permission && !hasPermission(permission)) {
         return null;
@@ -15,12 +15,12 @@ const NewItemButton = ({ url, permission }: { url?: string; permission?: string 
     return url ? (
         <Link href={url} prefetch>
             <Button variant="default" size="lg" className="h-11 shadow-none">
-                <PlusIcon /> {t('Add New')}
+                <PlusIcon /> {t(label)}
             </Button>
         </Link>
     ) : (
         <Button variant="default" size="lg" className="h-11 shadow-none">
-            <PlusIcon /> {t('Add New')}
+            <PlusIcon /> {t(label)}
         </Button>
     );
 };

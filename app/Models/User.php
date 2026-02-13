@@ -38,6 +38,7 @@ class User extends Authenticatable
         'name_kh',
         'title_type_code',
         'category_code',
+        'total_active_loan',
     ];
 
     /**
@@ -90,6 +91,10 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class, 'created_by', 'id');
+    }
+    public function circulation_histories()
+    {
+        return $this->hasMany(Circulation::class, 'borrower_id', 'id');
     }
 
     public function author_items()

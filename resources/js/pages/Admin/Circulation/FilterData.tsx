@@ -1,7 +1,6 @@
 import CheckboxCardOption from '@/components/Card/CheckboxCardOption';
 import FilterSheet from '@/components/Filter/FilterSheet';
 import { FormLabel } from '@/components/Input/FormLabel';
-import { ComboboxSelect } from '@/components/Section/ComboboxSelect';
 import useTranslation from '@/hooks/use-translation';
 import { router, usePage } from '@inertiajs/react';
 import { CircleCheckBigIcon, ReplaceAllIcon, Trash2Icon } from 'lucide-react';
@@ -9,13 +8,10 @@ import { useState } from 'react';
 
 const FilterData = () => {
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
-    // types here refers to the User Types passed from UserCategoryController
-    const { types } = usePage<any>().props;
+    const { types, categories, languages } = usePage<any>().props;
 
     const initialQueryParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
-
     const [filters, setFilters] = useState({
-        user_category_type_code: initialQueryParams.get('user_category_type_code') || '',
         trashed: initialQueryParams.get('trashed') || '',
     });
 
@@ -30,17 +26,13 @@ const FilterData = () => {
         const f = appliedFilters ?? filters;
         const queryParams = new URLSearchParams(window.location.search);
 
-        f.user_category_type_code
-            ? queryParams.set('user_category_type_code', f.user_category_type_code)
-            : queryParams.delete('user_category_type_code');
         f.trashed ? queryParams.set('trashed', f.trashed) : queryParams.delete('trashed');
-
         queryParams.set('page', '1');
 
         router.get(`${currentPath}?${queryParams.toString()}`, {}, { preserveState: true, preserveScroll: true });
     };
 
-    const resetFilter = () => updateFilters({ user_category_type_code: '', trashed: '' });
+    const resetFilter = () => updateFilters({ trashed: '' });
 
     const { t, currentLocale } = useTranslation();
 
@@ -51,29 +43,10 @@ const FilterData = () => {
     ];
 
     return (
-        <FilterSheet handleFilter={applyFilter} resetFilter={resetFilter} isFiltered={!!filters.user_category_type_code || !!filters.trashed}>
-            {/* User Type Filter */}
-            <div className="mb-4">
-                <FormLabel label="User Type" />
-                <ComboboxSelect
-                    options={[
-                        { value: '', label: t('All Types') },
-                        ...types.map((item: any) => ({
-                            value: item.code,
-                            label: currentLocale === 'kh' ? item.name_kh || item.name : item.name,
-                        })),
-                    ]}
-                    value={filters.user_category_type_code}
-                    onChange={(val) => updateFilters({ user_category_type_code: val })}
-                    placeholder="Select User Type..."
-                    searchPlaceholder="Search Type..."
-                    className="mt-1"
-                />
-            </div>
-
+        <FilterSheet handleFilter={applyFilter} resetFilter={resetFilter} isFiltered={!!filters.trashed}>
             {/* Trashed Filter */}
             <div className="mb-4">
-                <FormLabel label="Trashed Records" />
+                <FormLabel label="Trashed" />
                 <div className="mt-1 grid w-full max-w-sm grid-cols-3 gap-3">
                     {trashedOptions.map((option) => (
                         <CheckboxCardOption

@@ -1,11 +1,10 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
-import { ArrowUpCircle, ChevronRight, RefreshCcw } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpCircle, ArrowUpRight, ChevronRight, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const resolveStatus = (item: any) => {
@@ -54,8 +53,8 @@ const RecentCheckouts = () => {
                             <Button variant="ghost" size="icon" onClick={fetchData} disabled={loading} className="h-8 w-8">
                                 <RefreshCcw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                             </Button>
-                            <Button variant="outline" size="sm" asChild>
-                                <Link href="/circulations">
+                            <Button variant="outline" size="sm" asChild className="rounded">
+                                <Link href="/admin/all-circulations">
                                     See More <ChevronRight className="ml-1 h-4 w-4" />
                                 </Link>
                             </Button>
@@ -69,7 +68,7 @@ const RecentCheckouts = () => {
                                 <TableHead className="w-[150px]">Barcode</TableHead>
                                 <TableHead>Title</TableHead>
                                 <TableHead>Borrower</TableHead>
-                                <TableHead className="text-right">Status</TableHead>
+                                <TableHead className="text-right">Date</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -96,28 +95,46 @@ const RecentCheckouts = () => {
                                     return (
                                         <TableRow key={item.id} className="group transition-colors hover:bg-muted/50">
                                             <TableCell className="font-mono font-bold text-primary">{item.barcode}</TableCell>
-                                            <TableCell className="max-w-[200px] font-mono">
-                                                <p className="line-clamp-2">{item.title}</p>
+                                            <TableCell className="max-w-[200px] font-mono hover:underline">
+                                                <Link href={`/admin/items/${item.item_id}`} className="line-clamp-2">
+                                                    {item.title}
+                                                </Link>
                                             </TableCell>
                                             <TableCell className="py-3">
-                                                <div className="flex flex-col gap-0.5">
-                                                    <span className="line-clamp-1 max-w-[200px] font-medium">{item.borrower_name}</span>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <span className="text-muted-foreground">Card:</span>
-                                                        <span>{item.borrower_card_number ?? '---'}</span>
-                                                    </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex flex-col items-end gap-1">
-                                                    <Badge variant={status.variant} className={cn(status.className, 'rounded')}>
-                                                        {status.label}
-                                                    </Badge>
-                                                    {item.borrowed_at && (
-                                                        <span className="text-muted-foreground">
-                                                            {formatToKhmerDateTime(item.borrowed_at, false)}
+                                                <Link href={`/admin/users/${item.borrower_id}`} className="group">
+                                                    <div className="flex flex-col gap-0.5">
+                                                        <span className="line-clamp-1 max-w-[200px] font-medium group-hover:underline">
+                                                            {item.borrower_name}
                                                         </span>
-                                                    )}
+                                                        <div className="flex items-center gap-1.5">
+                                                            <span className="text-muted-foreground">Card:</span>
+                                                            <span>{item.borrower_card_number ?? '---'}</span>
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            </TableCell>
+                                            <TableCell className="py-4 text-right whitespace-nowrap">
+                                                <div className="flex flex-col items-end font-mono text-[11px] leading-tight tracking-tighter uppercase">
+                                                    {/* Check Out */}
+                                                    <div className="group flex items-center gap-2">
+                                                        <span className="text-muted-foreground/70">OUT</span>
+                                                        <span className="text-foreground">{formatToKhmerDateTime(item.borrowed_at, false)}</span>
+                                                        <ArrowUpRight className="size-3 text-blue-500/50" />
+                                                    </div>
+
+                                                    {/* Connector line (Visual flair) */}
+                                                    <div className="my-0.5 mr-[5px] h-2 w-px bg-border" />
+
+                                                    {/* Check In */}
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-muted-foreground/70">Due</span>
+                                                        <span className={cn(item.due_at ? 'text-foreground' : 'animate-pulse text-orange-500')}>
+                                                            {item.due_at ? formatToKhmerDateTime(item.due_at, false) : '--- ---'}
+                                                        </span>
+                                                        <ArrowDownLeft
+                                                            className={cn('size-3', item.due_at ? 'text-green-500/50' : 'text-orange-500')}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </TableCell>
                                         </TableRow>

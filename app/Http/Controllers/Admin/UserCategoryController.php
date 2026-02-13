@@ -61,7 +61,7 @@ class UserCategoryController extends Controller implements HasMiddleware
 
         return Inertia::render('Admin/UserCategory/Index', [
             'tableData' => $tableData,
-            // Assuming your Patron Types are in the 'types' table under a specific group
+            // Assuming your User Types are in the 'types' table under a specific group
             'types' => Type::where('group_code', 'user-category-type-group')->orderBy('order_index')->get(),
         ]);
     }

@@ -24,7 +24,7 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
             const isOverdue = new Date(copy.due_at) < new Date();
             return isOverdue
                 ? { label: 'Overdue', label_kh: 'ហួសកំណត់', color: 'pink' }
-                : { label: 'On Loan', label_kh: 'បានខ្ចីចេញ', color: 'blue' };
+                : { label: 'On Loan', label_kh: 'បានខ្ចីចេញ', color: 'primary' };
         }
         if (copy.not_for_loan != 0) return { label: 'Not for Loan', label_kh: 'មិនសម្រាប់ខ្ចី', color: 'purple' };
 
@@ -33,6 +33,8 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
 
     const getStatusStyles = (color: string) => {
         switch (color) {
+            case 'primary':
+                return 'bg-primary/10 text-primary border-primary/20 dark:bg-primary/20 dark:text-primary-foreground dark:border-primary/30';
             case 'green':
                 return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/20';
             case 'blue':

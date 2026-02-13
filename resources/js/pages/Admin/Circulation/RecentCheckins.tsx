@@ -1,11 +1,10 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
-import { ArrowDownCircle, ChevronRight, RefreshCcw } from 'lucide-react';
+import { ArrowDownCircle, ArrowDownLeft, ArrowUpRight, ChevronRight, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const resolveStatus = (item: any) => {
@@ -54,8 +53,8 @@ const RecentCheckins = () => {
                             <Button variant="ghost" size="icon" onClick={fetchData} disabled={loading} className="h-8 w-8">
                                 <RefreshCcw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                             </Button>
-                            <Button variant="outline" size="sm" asChild>
-                                <Link href="/circulations">
+                            <Button variant="outline" size="sm" asChild className="rounded">
+                                <Link href="/admin/all-circulations">
                                     See More <ChevronRight className="ml-1 h-4 w-4" />
                                 </Link>
                             </Button>
@@ -69,7 +68,8 @@ const RecentCheckins = () => {
                                 <TableHead className="w-[150px]">Barcode</TableHead>
                                 <TableHead>Title</TableHead>
                                 <TableHead>Borrower</TableHead>
-                                <TableHead className="text-right">Status</TableHead>
+                                <TableHead>Fine</TableHead>
+                                <TableHead className="text-right">Date</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -96,28 +96,98 @@ const RecentCheckins = () => {
                                     return (
                                         <TableRow key={item.id} className="group transition-colors hover:bg-muted/50">
                                             <TableCell className="font-mono font-bold text-primary">{item.barcode}</TableCell>
-                                            <TableCell className="max-w-[200px] font-mono">
-                                                <p className="line-clamp-2">{item.title}</p>
+                                            <TableCell className="max-w-[200px] font-mono hover:underline">
+                                                <Link href={`/admin/items/${item.item_id}`} className="line-clamp-2">
+                                                    {item.title}
+                                                </Link>
                                             </TableCell>
                                             <TableCell className="py-3">
-                                                <div className="flex flex-col gap-0.5">
-                                                    <span className="line-clamp-1 max-w-[200px] font-medium">{item.borrower_name}</span>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <span className="text-muted-foreground">Card:</span>
-                                                        <span>{item.borrower_card_number ?? '---'}</span>
+                                                <Link href={`/admin/users/${item.borrower_id}`} className="group">
+                                                    <div className="flex flex-col gap-0.5">
+                                                        <span className="line-clamp-1 max-w-[200px] font-medium group-hover:underline">
+                                                            {item.borrower_name}
+                                                        </span>
+                                                        <div className="flex items-center gap-1.5">
+                                                            <span className="text-muted-foreground">Card:</span>
+                                                            <span>{item.borrower_card_number ?? '---'}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </Link>
                                             </TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex flex-col items-end gap-1">
-                                                    <Badge variant={status.variant} className={cn(status.className, 'rounded')}>
-                                                        {status.label}
-                                                    </Badge>
-                                                    {item.returned_at && (
-                                                        <span className="text-muted-foreground">
-                                                            {formatToKhmerDateTime(item.returned_at, false)}
+                                            <TableCell className="max-w-[200px]">
+                                                <div className="flex flex-col gap-1.5">
+                                                    {/* Fine Amount Display */}
+                                                    <span
+                                                        className={cn(
+                                                            'text-sm font-semibold',
+                                                            item.fine_amount > 0
+                                                                ? item.fine_paid
+                                                                    ? 'text-green-600'
+                                                                    : 'text-destructive'
+                                                                : 'text-xs text-muted-foreground',
+                                                        )}
+                                                    >
+                                                        {item.fine_amount > 0 ? `${item.fine_amount.toLocaleString()}` : 'No Fine'}
+                                                    </span>
+
+                                                    {/* Status Badge */}
+                                                    {item.fine_amount > 0 && (
+                                                        <span
+                                                            className={cn(
+                                                                'inline-flex w-fit items-center rounded-full px-2 py-0.5 text-[10px] font-medium',
+                                                                item.fine_paid
+                                                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+                                                            )}
+                                                        >
+                                                            {item.fine_paid ? 'Paid' : 'Unpaid'}
                                                         </span>
                                                     )}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="py-4 text-right whitespace-nowrap">
+                                                <div className="flex flex-col items-end font-mono text-[11px] leading-tight tracking-tighter uppercase">
+                                                    {/* Check Out */}
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-muted-foreground/60">OUT</span>
+                                                        <span className="text-foreground">{formatToKhmerDateTime(item.borrowed_at, false)}</span>
+                                                        <ArrowUpRight className="size-3 text-blue-500/40" />
+                                                    </div>
+
+                                                    {/* Short Connector */}
+                                                    <div className="mr-[5px] h-1.5 w-px bg-border/60" />
+
+                                                    {/* Due Date (The Deadline) */}
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-[9px] text-muted-foreground/40">DUE</span>
+                                                        <span className="font-medium text-muted-foreground/80">
+                                                            {formatToKhmerDateTime(item.due_at, false)}
+                                                        </span>
+                                                        <div className="flex size-3 items-center justify-center">
+                                                            <div className="size-1 rounded-full bg-border" />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Short Connector (Dashed/Dotted if not returned) */}
+                                                    <div
+                                                        className={cn('mr-[5px] h-1.5 w-px', item.returned_at ? 'bg-border/60' : 'bg-orange-500/30')}
+                                                    />
+
+                                                    {/* Check In */}
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-muted-foreground/60">IN </span>
+                                                        <span
+                                                            className={cn(
+                                                                'font-bold',
+                                                                item.returned_at ? 'text-foreground' : 'animate-pulse text-orange-500',
+                                                            )}
+                                                        >
+                                                            {item.returned_at ? formatToKhmerDateTime(item.returned_at, false) : '--- ---'}
+                                                        </span>
+                                                        <ArrowDownLeft
+                                                            className={cn('size-3', item.returned_at ? 'text-green-500/50' : 'text-orange-500')}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </TableCell>
                                         </TableRow>
