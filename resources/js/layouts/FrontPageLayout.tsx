@@ -8,8 +8,10 @@ import React from 'react';
 export default function FrontPageLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex min-h-screen flex-col">
-            <Navbar2 />
-            <NavbarHideAndShow />
+            <div className="overflow-hidden">
+                <Navbar2 />
+                <NavbarHideAndShow />
+            </div>
             <div className="min-h-screen flex-1 bg-background">
                 <main>{children}</main>
             </div>
