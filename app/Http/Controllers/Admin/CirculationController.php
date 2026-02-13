@@ -102,7 +102,7 @@ class CirculationController extends Controller implements HasMiddleware
             ],
         ]);
 
-        $physical_copy = ItemPhysicalCopy::where('barcode', $request->item_physical_copy_barcode)->first();
+        $physical_copy = ItemPhysicalCopy::where('barcode', $request->item_physical_copy_barcode)->with('item_type')->first();
 
         if (!$physical_copy) {
             return redirect()->back()->withErrors(["Barcode not found."]);
