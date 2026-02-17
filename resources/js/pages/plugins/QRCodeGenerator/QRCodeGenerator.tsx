@@ -87,14 +87,14 @@ const QRCodeGenerator = () => {
                         </CardHeader>
                         <CardContent className="p-4 md:p-6">
                             <Tabs defaultValue="content" className="space-y-6">
-                                <TabsList className="grid w-full grid-cols-3 bg-muted p-1">
-                                    <TabsTrigger value="content" className="text-xs data-[state=active]:bg-white/10 md:text-sm">
+                                <TabsList className="w-full">
+                                    <TabsTrigger value="content" className="w-full dark:data-[state=active]:bg-white/10">
                                         Data
                                     </TabsTrigger>
-                                    <TabsTrigger value="design" className="text-xs data-[state=active]:bg-white/10 md:text-sm">
+                                    <TabsTrigger value="design" className="w-full dark:data-[state=active]:bg-white/10">
                                         Style
                                     </TabsTrigger>
-                                    <TabsTrigger value="logo" className="text-xs data-[state=active]:bg-white/10 md:text-sm">
+                                    <TabsTrigger value="logo" className="w-full dark:data-[state=active]:bg-white/10">
                                         Logo
                                     </TabsTrigger>
                                 </TabsList>
@@ -172,7 +172,7 @@ const QRCodeGenerator = () => {
                                         )}
                                     </div>
 
-                                    <div className="mt-6 space-y-2 border-t border-dashed border-primary pt-4">
+                                    <div className="mt-6 space-y-2 border-t border-dashed border-primary/50 pt-4">
                                         <Label className="text-xs font-semibold">Bottom Label Text</Label>
                                         <Input
                                             value={config.label}
