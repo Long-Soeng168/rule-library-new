@@ -159,6 +159,7 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
         try {
             $validated['created_by'] = $request->user()->id;
             $validated['updated_by'] = $request->user()->id;
+            $validated['last_seen_at'] = now();
 
             ItemPhysicalCopy::create($validated);
 

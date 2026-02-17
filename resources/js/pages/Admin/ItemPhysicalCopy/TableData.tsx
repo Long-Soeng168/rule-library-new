@@ -70,6 +70,7 @@ const TableData = () => {
 
                             <TableHeadWithSort field="total_checkouts" label="Total Checkouts" />
                             <TableHeadWithSort field="last_borrowed_at" label="Last Borrowed" />
+                            <TableHeadWithSort field="last_seen_at" label="Last Seen" />
                             <TableHeadWithSort field="created_by" label="Created By" />
                             <TableHeadWithSort field="updated_by" label="Updated By" />
                         </TableRow>
@@ -146,6 +147,7 @@ const TableData = () => {
 
                                     <TableCellText value={item.total_checkouts} className="font-semibold" />
                                     <TableCellDate value={item.last_borrowed_at} className="whitespace-nowrap" />
+                                    <TableCellDate value={item.last_seen_at} className="whitespace-nowrap" />
 
                                     <TableCell>
                                         <div className="flex items-center gap-2">
