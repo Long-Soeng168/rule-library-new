@@ -221,7 +221,7 @@ const BarcodeGenerator = () => {
                     </CardContent>
                 </Card>
 
-                <div className="flex-1 space-y-8 overflow-auto rounded-lg bg-muted p-4 md:p-6 dark:bg-zinc-800">
+                <div className="flex-1 space-y-8 overflow-auto rounded-lg bg-muted p-4 py-6 dark:bg-zinc-800">
                     {codesByPage().map((pageCodes, pageIdx) => (
                         <div key={pageIdx} className="relative">
                             <p className="mb-2 text-center font-mono text-xs text-muted-foreground uppercase">Page {pageIdx + 1}</p>
@@ -254,6 +254,7 @@ const BarcodeGenerator = () => {
                             </div>
                         </div>
                     ))}
+                    <div></div>
                 </div>
             </div>
         </FrontPageLayout>
