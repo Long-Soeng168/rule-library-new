@@ -1,6 +1,6 @@
 import useTranslation from '@/hooks/use-translation';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpenTextIcon, HouseIcon, InfoIcon, MailIcon, MapPinIcon, NewspaperIcon, PhoneIcon } from 'lucide-react';
+import { BarcodeIcon, BookOpenTextIcon, HouseIcon, InfoIcon, MailIcon, MapPinIcon, NewspaperIcon, PhoneIcon, QrCodeIcon } from 'lucide-react';
 import { StarsBackground } from '../animate-ui/backgrounds/stars';
 import PWAInstallPrompt from '../Button/PWAInstallPrompt';
 import { FooterLogo } from '../Logo/FooterLogo';
@@ -20,6 +20,10 @@ export default function Footer() {
         { href: '/resources', icon: <BookOpenTextIcon size={18} />, label: t('E-Resources') },
         { href: '/posts', icon: <NewspaperIcon size={18} />, label: t('Posts') },
         { href: '/about', icon: <InfoIcon size={18} />, label: t('About') },
+    ];
+    const tools = [
+        { href: '/barcode-generator', icon: <BarcodeIcon size={18} />, label: t('Barcode Generator') },
+        { href: '/qr-code-generator', icon: <QrCodeIcon size={18} />, label: t('QR Code Generator') },
     ];
 
     return (
@@ -96,6 +100,23 @@ export default function Footer() {
                             </div>
                             <ul className="space-y-2">
                                 {defaultItems.map((item, idx) => (
+                                    <li key={idx}>
+                                        <Link
+                                            prefetch
+                                            href={item.href}
+                                            className={`flex items-center gap-2 rounded px-2 py-1 transition-colors ${isActive(item.href) ? 'font-semibold text-white underline underline-offset-4' : 'text-white'} hover:underline`}
+                                        >
+                                            {item.icon}
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                                {tools?.length > 0 && (
+                                    <div className="my-4 text-xl font-bold">
+                                        {t('Our Tools')} <Separator className="w-auto bg-white" />
+                                    </div>
+                                )}
+                                {tools.map((item, idx) => (
                                     <li key={idx}>
                                         <Link
                                             prefetch

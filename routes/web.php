@@ -3,6 +3,7 @@
 use App\Http\Controllers\FileCheckController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 
 // ==== Default Routes ====
 require __DIR__ . '/settings.php';
@@ -15,6 +16,13 @@ require __DIR__ . '/front_page_route.php';
 require __DIR__ . '/file_stream_route.php';
 
 
+// ==== Plugin App ====
+Route::get('/barcode-generator', function () {
+    return Inertia::render('plugins/BarcodeGenerator/BarcodeGenerator');
+});
+Route::get('/qr-code-generator', function () {
+    return Inertia::render('plugins/QRCodeGenerator/QRCodeGenerator');
+});
 
 // ==== Other Routes ====
 
