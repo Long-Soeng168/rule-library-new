@@ -64,7 +64,7 @@ const Index = () => {
                                     <button
                                         className={cn(
                                             // Layout & Shape
-                                            'group relative flex h-9 items-center justify-center rounded-xs px-4',
+                                            'group relative flex h-9 cursor-pointer items-center justify-center rounded-xs px-4',
                                             // Transitions & Interactions
                                             'transition-all duration-300 ease-out outline-none active:scale-95',
                                             // Typography
