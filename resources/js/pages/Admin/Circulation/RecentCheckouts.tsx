@@ -93,7 +93,7 @@ const RecentCheckouts = () => {
                                 items.map((item) => {
                                     const status = resolveStatus(item);
                                     return (
-                                        <TableRow key={item.id} className="group transition-colors hover:bg-muted/50">
+                                        <TableRow key={item.id} className="transition-colors hover:bg-muted/50">
                                             <TableCell className="font-mono font-bold text-primary">{item.barcode}</TableCell>
                                             <TableCell className="max-w-[200px] font-mono hover:underline">
                                                 <Link href={`/admin/items/${item.item_id}`} className="line-clamp-2">

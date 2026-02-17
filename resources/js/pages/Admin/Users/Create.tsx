@@ -22,6 +22,8 @@ import { useState } from 'react';
 interface UserForm {
     name: string;
     name_kh: string;
+    card_number: string;
+    expired_at: string;
     email: string;
     phone: string;
     gender: string;
@@ -45,6 +47,8 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
     const { data, setData, post, processing, transform, progress, errors, reset } = useForm<UserForm>({
         name: editData?.name || '',
         name_kh: editData?.name_kh || '',
+        card_number: editData?.card_number || '',
+        expired_at: editData?.expired_at || '',
         email: editData?.email || '',
         phone: editData?.phone || '',
         gender: editData?.gender || '',
@@ -132,6 +136,26 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 ) : (
                     <div>
                         <div className="form-field-container mb-5">
+                            <FormField
+                                id="card_number"
+                                name="card_number"
+                                label="Card Number"
+                                value={data.card_number}
+                                onChange={(val) => setData('card_number', val)}
+                                error={errors.card_number}
+                            />
+                            <FormField
+                                type="date"
+                                id="expired_at"
+                                name="expired_at"
+                                label="Expired Date"
+                                value={data.expired_at}
+                                onChange={(val) => setData('expired_at', val)}
+                                error={errors.expired_at}
+                                description={t('Auto-calculated from category if blank.')}
+                            />
+                        </div>
+                        <div className="form-field-container mb-5">
                             {types?.length > 0 && (
                                 <FormCombobox
                                     name="title_type_code"
@@ -151,7 +175,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                     label="User Category"
                                     options={[
                                         {
-                                             value: null,
+                                            value: null,
                                             label: t(`NA`),
                                         },
                                         ...userCategories.map((item: any) => ({

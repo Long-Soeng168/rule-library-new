@@ -16,13 +16,11 @@ import { useState } from 'react';
 const NOT_FOR_LOAN_OPTIONS = [
     { label: 'For Loan', label_kh: 'អាចខ្ចីបាន', value: '0' },
     { label: 'Not for Loan', label_kh: 'មិនសម្រាប់ខ្ចី', value: '1' },
-    { label: 'Reference Only', label_kh: 'ឯកសារយោង', value: '2' },
 ];
 
 const ITEM_LOST_OPTIONS = [
     { label: 'Not Lost', label_kh: 'មិនបានបាត់', value: '0' },
     { label: 'Lost', label_kh: 'បានបាត់', value: '1' },
-    { label: 'Long Overdue', label_kh: 'ហួសកំណត់យូរ', value: '2' },
 ];
 
 interface ItemPhysicalCopyForm {
@@ -192,7 +190,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 </div>
 
                 {/* Koha Flags Section */}
-                {/* <div className="grid grid-cols-1 gap-4 rounded-lg border bg-gray-50 p-4 md:grid-cols-4 dark:bg-white/5">
+                <div className="grid grid-cols-1 gap-4 rounded-lg border bg-gray-50 p-4 md:grid-cols-4 dark:bg-white/5">
                     <FormCombobox
                         name="not_for_loan"
                         label="Loan Status"
@@ -213,7 +211,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         options={[
                             { label: 'No', value: '0' },
                             { label: 'Yes', value: '1' },
-                        ].map((o) => ({ ...o, label: currentLocale === 'kh' ? (o.value === '1' ? 'ខូច' : 'ទេ') : o.label }))}
+                        ]}
                         value={data.damaged.toString()}
                         onChange={(val) => setData('damaged', parseInt(val))}
                     />
@@ -223,11 +221,11 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         options={[
                             { label: 'No', value: '0' },
                             { label: 'Yes', value: '1' },
-                        ].map((o) => ({ ...o, label: currentLocale === 'kh' ? (o.value === '1' ? 'ដកចេញ' : 'ទេ') : o.label }))}
+                        ]}
                         value={data.withdrawn.toString()}
                         onChange={(val) => setData('withdrawn', parseInt(val))}
                     />
-                </div> */}
+                </div>
 
                 {/* Notes Section */}
                 <div className="form-field-container">

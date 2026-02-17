@@ -7,6 +7,7 @@ import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableHeader, TableRow } from '@/components/ui/table';
 import useTranslation from '@/hooks/use-translation';
+import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { EditIcon } from 'lucide-react';
 
@@ -17,39 +18,13 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
      * Resolves the current status based on Koha flags and circulation dates
      */
     const resolveStatus = (copy: any) => {
-        if (copy.withdrawn != 0) return { label: 'Withdrawn', label_kh: 'បានដកចេញ', color: 'gray' };
-        if (copy.item_lost != 0) return { label: 'Lost', label_kh: 'បាត់បង់', color: 'red' };
-        if (copy.damaged != 0) return { label: 'Damaged', label_kh: 'ខូចខាត', color: 'yellow' };
         if (copy.due_at) {
             const isOverdue = new Date(copy.due_at) < new Date();
-            return isOverdue
-                ? { label: 'Overdue', label_kh: 'ហួសកំណត់', color: 'pink' }
-                : { label: 'On Loan', label_kh: 'បានខ្ចីចេញ', color: 'primary' };
+            return isOverdue ? { label: 'Overdue', label_kh: 'ហួសកំណត់' } : { label: 'On Loan', label_kh: 'បានខ្ចីចេញ' };
         }
-        if (copy.not_for_loan != 0) return { label: 'Not for Loan', label_kh: 'មិនសម្រាប់ខ្ចី', color: 'purple' };
+        if (copy.not_for_loan != 0) return { label: 'Not for Loan', label_kh: 'មិនសម្រាប់ខ្ចី' };
 
-        return { label: 'Available', label_kh: 'មាននៅបណ្ណាល័យ', color: 'green' };
-    };
-
-    const getStatusStyles = (color: string) => {
-        switch (color) {
-            case 'primary':
-                return 'bg-primary/10 text-primary border-primary/20 dark:bg-primary/20 dark:text-primary-foreground dark:border-primary/30';
-            case 'green':
-                return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/20';
-            case 'blue':
-                return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20';
-            case 'pink':
-                return 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20';
-            case 'red':
-                return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20';
-            case 'yellow':
-                return 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20';
-            case 'purple':
-                return 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/10 dark:text-purple-400 dark:border-purple-500/20';
-            default:
-                return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-500/10 dark:text-gray-400 dark:border-gray-500/20';
-        }
+        return { label: 'Available', label_kh: 'មាននៅបណ្ណាល័យ' };
     };
 
     return (
@@ -117,7 +92,18 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
                                     <div className="flex flex-col gap-1">
                                         <TableCellBadge
                                             value={currentLocale === 'kh' ? status.label_kh : status.label}
-                                            className={`uppercase ${getStatusStyles(status.color)}`}
+                                            className={cn(
+                                                'rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase',
+                                                // Simple logic based on the label
+                                                status.label === 'Overdue' &&
+                                                    'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400',
+                                                status.label === 'On Loan' &&
+                                                    'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400',
+                                                status.label === 'Not for Loan' &&
+                                                    'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400',
+                                                status.label === 'Available' &&
+                                                    'border-green-200 bg-green-50 text-green-700 dark:border-green-500/20 dark:bg-green-500/10 dark:text-green-400',
+                                            )}
                                         />
                                         {item.due_at && (
                                             <span className="text-[9px] font-semibold text-muted-foreground">

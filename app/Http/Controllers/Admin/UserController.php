@@ -106,9 +106,12 @@ class UserController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         // dd($request->all());
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
+            'card_number' => 'nullable|string|max:255|unique:users,card_number',
+            'expired_at' => 'nullable|date|date_format:Y-m-d|after_or_equal:today',
             'title_type_code' => 'nullable|string|max:255|exists:types,code',
             'category_code' => 'nullable|string|max:255|exists:user_categories,code',
             'email' => 'required|string|email|max:255|unique:users,email',
@@ -119,7 +122,13 @@ class UserController extends Controller implements HasMiddleware
             'roles' => 'required|array'
         ]);
         // dd($validated );
+        $userCategory = UserCategory::where('code', $request->category_code)->first();
 
+        if (empty($validated['expired_at']) && $userCategory && $userCategory->enrollment_period_months) {
+            $validated['expired_at'] = now()
+                ->addMonths($userCategory->enrollment_period_months)
+                ->format('Y-m-d');
+        }
 
         try {
             // Add creator and updater
@@ -195,6 +204,8 @@ class UserController extends Controller implements HasMiddleware
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'name_kh' => 'nullable|string|max:255',
+            'card_number' => 'nullable|string|max:255|unique:users,card_number,'  . $user->id,
+            'expired_at' => 'nullable|date|date_format:Y-m-d',
             'title_type_code' => 'nullable|string|max:255|exists:types,code',
             'category_code' => 'nullable|string|max:255|exists:user_categories,code',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,

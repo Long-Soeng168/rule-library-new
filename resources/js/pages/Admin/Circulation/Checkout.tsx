@@ -1,5 +1,5 @@
 import { ArrowRightLeft, ArrowUpCircle, Barcode, CheckCircleIcon, LoaderCircleIcon, User, X } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AlertFlashMessage from '@/components/Alert/AlertFlashMessage';
 import { FormErrorLabel } from '@/components/Input/FormErrorLabel';
@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { useForm, usePage } from '@inertiajs/react';
 import CheckinAndCheckoutLayout from './CheckinAndCheckoutLayout';
 import RecentCheckouts from './RecentCheckouts';
@@ -21,6 +22,7 @@ export default function CirculationDesk() {
     });
     const [refreshKeyRecentCheckout, setRefreshKeyRecentCheckout] = useState(0);
 
+    const [search, setSearch] = useState('');
     const { users_searched } = usePage<any>().props;
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const [selectedBarcode, setSelectedBarcode] = useState('');
@@ -29,6 +31,19 @@ export default function CirculationDesk() {
         borrower_id: '',
         item_physical_copy_barcode: '',
     });
+
+    useEffect(() => {
+        // Check if there is exactly 1 user and their card number matches the search exactly
+        if (users_searched?.length === 1) {
+            const foundUser = users_searched[0];
+
+            // Match search input against card number (ensuring strings match)
+            if (String(foundUser.card_number) === String(search).trim()) {
+                setSelectedUser(foundUser);
+                // Optionally clear search or focus the next field (barcode) here
+            }
+        }
+    }, [users_searched, search]);
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,7 +81,7 @@ export default function CirculationDesk() {
                         <Card className="relative gap-0 border-primary/50 p-0 shadow-none">
                             <CheckCircleIcon className="pointer-events-none absolute -top-2 -right-2 size-6 bg-background text-primary/80" />
                             <CardContent className="p-3">
-                                <div className="relative mb-4 flex items-center gap-4">
+                                <div className="relative mb-2 flex items-center gap-4">
                                     <Avatar className="h-14 w-14 border-2 border-background">
                                         <AvatarImage
                                             src={`/assets/images/users/thumb/${selectedUser.image}`}
@@ -78,7 +93,9 @@ export default function CirculationDesk() {
                                         </AvatarFallback>
                                     </Avatar>
                                     <div>
-                                        <p className="text-base font-semibold">{selectedUser.name}</p>
+                                        <a target="_blank" href={`/admin/users/${selectedUser?.id}`}>
+                                            <p className="text-base font-semibold hover:underline">{selectedUser.name}</p>
+                                        </a>
                                         <div className="from-muted-foreground text-sm">
                                             <p>
                                                 <span className="text-muted-foreground">Card: </span>
@@ -91,8 +108,22 @@ export default function CirculationDesk() {
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="space-y-2 border-t pt-3">
+                                {selectedUser.expired_at && (
+                                    <div className="flex items-center justify-between pb-2 text-[11px] font-bold">
+                                        <span className="tracking-tighter text-muted-foreground uppercase">Account Expires</span>
+                                        <span
+                                            className={cn(
+                                                'transition-colors',
+                                                new Date(selectedUser.expired_at) < new Date()
+                                                    ? 'text-red-600 dark:text-red-400' // Expired
+                                                    : 'text-green-600 dark:text-green-400', // Still active
+                                            )}
+                                        >
+                                            {formatToKhmerDateTime(selectedUser.expired_at, false, true)}
+                                        </span>
+                                    </div>
+                                )}
+                                <div className="space-y-2 border-t border-dashed border-primary/50 pt-2">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3 text-[13px]">
                                             <span className="flex items-center gap-1.5 font-medium text-muted-foreground/80">
@@ -106,16 +137,6 @@ export default function CirculationDesk() {
                                             <X className="size-4" /> Cancel
                                         </Button>
                                     </div>
-
-                                    {/* Optional: Expiry Date Alert if it exists in your data */}
-                                    {selectedUser.expired_at && (
-                                        <div className="flex items-center justify-between text-[11px] font-bold">
-                                            <span className="tracking-tighter text-muted-foreground uppercase">Account Expires</span>
-                                            <span className="text-orange-600 dark:text-orange-400">
-                                                {new Date(selectedUser.expired_at).toLocaleDateString()}
-                                            </span>
-                                        </div>
-                                    )}
                                 </div>
                             </CardContent>
                         </Card>
@@ -131,7 +152,7 @@ export default function CirculationDesk() {
                                     <div className="h-5">
                                         <LoadingOnPrefetch />
                                     </div>
-                                    <UserCheckoutSearch value={selectedUser?.id || ''} />
+                                    <UserCheckoutSearch onSearch={(search: string) => setSearch(search)} value={selectedUser?.id || ''} />
                                 </div>
 
                                 {users_searched?.length > 0 && (
@@ -144,10 +165,10 @@ export default function CirculationDesk() {
                                                     className="group flex cursor-pointer items-center justify-between space-x-4 rounded-md border bg-background p-3 transition-all hover:border-primary/50 hover:shadow-sm"
                                                 >
                                                     <div className="flex items-center space-x-2">
-                                                        <Avatar className="h-9 w-9 border-muted transition-transform group-hover:scale-105">
+                                                        <Avatar className="size-12 border-muted transition-transform group-hover:scale-105">
                                                             <AvatarImage
                                                                 src={`/assets/images/users/thumb/${user.image}`}
-                                                                className="overflow-hidden rounded"
+                                                                className="size-full overflow-hidden rounded object-cover"
                                                                 alt={user.name}
                                                             />
                                                             <AvatarFallback className="rounded bg-primary/10 font-medium text-primary">
@@ -156,7 +177,10 @@ export default function CirculationDesk() {
                                                         </Avatar>
                                                         <div className="flex flex-col gap-0.5">
                                                             {/* Patron Name */}
-                                                            <p className="line-clamp-1 text-sm font-medium text-foreground">{user.name}</p>
+                                                            <p className="line-clamp-2 text-sm font-medium text-foreground">
+                                                                {user.name}{' '}
+                                                                {user.phone && <span className="text-xs text-muted-foreground">({user.phone})</span>}
+                                                            </p>
 
                                                             {/* Patron ID / Card Number */}
                                                             <div className="flex items-center gap-1.5">
@@ -167,13 +191,6 @@ export default function CirculationDesk() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <Button
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        className="rounded px-3 text-[12px] transition-colors hover:bg-primary hover:text-primary-foreground"
-                                                    >
-                                                        Select
-                                                    </Button>
                                                 </div>
                                             ))}
                                         </div>
@@ -196,7 +213,7 @@ export default function CirculationDesk() {
                                     <Input
                                         autoFocus
                                         placeholder="Enter Barcode..."
-                                        className={`dark:border-white/20 ${errors.item_physical_copy_barcode ? 'border-destructive ring-4 ring-destructive/10' : ''} py-6 font-mono text-lg focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20`}
+                                        className={`dark:border-white/20 dark:focus-within:border-primary ${errors.item_physical_copy_barcode ? 'border-destructive ring-4 ring-destructive/10' : ''} py-6 font-mono text-lg focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20`}
                                         value={selectedBarcode}
                                         onChange={(e) => setSelectedBarcode(e.target.value)}
                                     />

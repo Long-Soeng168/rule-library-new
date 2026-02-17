@@ -4,7 +4,8 @@ import { Card } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
-import { usePage } from '@inertiajs/react';
+import { BreadcrumbItem } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
 import { AlertCircle, ArrowDownLeft, ArrowUpRight, Clock, CreditCard, Mail, Phone } from 'lucide-react';
 
 const Show = () => {
@@ -14,8 +15,14 @@ const Show = () => {
         return !returnedAt && new Date(dueAt) < new Date();
     };
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: '/dashboard' },
+        { title: 'Users', href: '/admin/users' },
+        { title: userData?.name, href: '#' },
+    ];
+
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <div className="container mx-auto max-w-6xl space-y-8 p-4">
                 {/* 1. MINIMALIST User PROFILE - Dark Mode Compatible */}
                 <div className="flex flex-col items-start justify-between gap-8 rounded border bg-card p-4 shadow-none md:flex-row md:items-center">
@@ -89,15 +96,17 @@ const Show = () => {
                                         <TableRow key={item.id} className="group border-border/50">
                                             <TableCell className="py-4">
                                                 <div className="space-y-1">
-                                                    <p className="line-clamp-1 text-sm font-medium text-foreground">
-                                                        {item.item_physical_copy.item.name}
-                                                    </p>
+                                                    <Link href={`/admin/items/${item.item_physical_copy?.item?.id}`}>
+                                                        <p className="line-clamp-1 text-sm font-medium text-foreground hover:underline">
+                                                            {item.item_physical_copy?.item?.name}
+                                                        </p>
+                                                    </Link>
                                                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                                                         <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono whitespace-nowrap text-foreground/80">
-                                                            Barcode: {item.item_physical_copy.barcode}
+                                                            Barcode: {item.item_physical_copy?.barcode}
                                                         </span>
                                                         <span>•</span>
-                                                        <span className="tracking-tight uppercase">{item.item_physical_copy.item_type.name}</span>
+                                                        <span className="tracking-tight uppercase">{item.item_physical_copy?.item_type?.name}</span>
                                                     </div>
                                                 </div>
                                             </TableCell>

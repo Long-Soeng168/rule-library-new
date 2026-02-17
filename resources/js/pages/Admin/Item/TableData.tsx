@@ -3,6 +3,7 @@ import DeleteItemButton from '@/components/Button/DeleteItemButton';
 import EditItemButton from '@/components/Button/EditItemButton';
 import RecoverItem from '@/components/Button/RecoverItemButton';
 import ViewItemButton from '@/components/Button/ViewItemButton';
+import ViewItemPhysicalCopiesButton from '@/components/Button/ViewItemPhysicalCopiesButton';
 import NoDataDisplay from '@/components/NoDataDisplay';
 import TableCellActions from '@/components/Table/TableCellActions';
 import TableCellBadge from '@/components/Table/TableCellBadge';
@@ -51,6 +52,10 @@ const TableData = () => {
                                             <EditItemButton url={`/admin/items/${item.id}/edit`} permission="item update" />
 
                                             {/* View Dialog */}
+                                            <ViewItemPhysicalCopiesButton
+                                                url={`/admin/items/${item.id}?view_physical_copies=1`}
+                                                permission="item view"
+                                            />
                                             <ViewItemButton url={`/admin/items/${item.id}`} permission="item view" />
 
                                             {/* Delete Item */}
@@ -69,7 +74,7 @@ const TableData = () => {
                                 <TableCellText value={item.name_kh} />
                                 <TableCellText value={item.category?.name} />
                                 <TableCellText value={item.file_type?.name} />
-                                <TableCellBadge value={item.status} className='capitalize' variant={item.status} />
+                                <TableCellBadge value={item.status} className="capitalize" variant={item.status} />
                                 <TableCellDate value={item.created_at} />
                                 <TableCellText value={item.created_user?.name} />
                                 <TableCellDate value={item.updated_at} />

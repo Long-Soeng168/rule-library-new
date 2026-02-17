@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin/all-circulations', [CirculationController::class, 'all_circulations']);
     Route::delete('admin/circulations/{circulation}', [CirculationController::class, 'destroy']);
     Route::post('admin/circulations/{circulation}/recover', [CirculationController::class, 'recover']);
+    Route::post('admin/circulations/{circulation}/update-fine-status', [CirculationController::class, 'update_fine_status']);
 
     Route::get('admin/circulations-checkin', [CirculationController::class, 'checkin_desk']);
     Route::get('admin/circulations-checkout', [CirculationController::class, 'checkout_desk']);
@@ -150,10 +151,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/items/{id}/recover', [ItemController::class, 'recover']);
 
     // Item Physical Copy
+    Route::get('/admin/items-physical-copies', [ItemPhysicalCopyController::class, 'index']);
     Route::get('admin/items/{item_id}/physical-copies/create', [ItemPhysicalCopyController::class, 'create']);
     Route::post('admin/items/{item_id}/physical-copies', [ItemPhysicalCopyController::class, 'store']);
+    Route::get('admin/items/{item_id}/physical-copies/{physical_copy_id}', [ItemPhysicalCopyController::class, 'show']);
     Route::get('admin/items/{item_id}/physical-copies/{physical_copy_id}/edit', [ItemPhysicalCopyController::class, 'edit']);
     Route::post('admin/items/{item_id}/physical-copies/{physical_copy_id}/update', [ItemPhysicalCopyController::class, 'update']);
+    Route::post('admin/items-physical-copies/{physical_copy_id}/recover', [ItemPhysicalCopyController::class, 'recover']);
     Route::delete('admin/items/{item_id}/physical-copies/{physical_copy_barcode}', [ItemPhysicalCopyController::class, 'destroy']);
 
 

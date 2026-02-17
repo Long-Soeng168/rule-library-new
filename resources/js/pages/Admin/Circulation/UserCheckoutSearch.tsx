@@ -32,7 +32,8 @@ const UserCheckoutSearch = ({ placeholder = 'Search...', className, onSearch, va
         debounce((searchTerm: string) => {
             if (onSearch) {
                 onSearch(searchTerm);
-            } else if (currentPath) {
+            }
+            if (currentPath) {
                 const queryParams = new URLSearchParams(window.location.search);
                 if (searchTerm) queryParams.set('search', searchTerm);
                 else queryParams.delete('search');

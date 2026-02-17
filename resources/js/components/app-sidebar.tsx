@@ -5,6 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { dashboard } from '@/routes';
 import { Link } from '@inertiajs/react';
 import {
+    ArrowLeftRightIcon,
     BookOpen,
     FilesIcon,
     Folder,
@@ -74,7 +75,7 @@ const mainNavItems: {
     {
         title: 'Circulations',
         url: '/admin/all-circulations',
-        icon: UsersIcon,
+        icon: ArrowLeftRightIcon,
         activeList: ['/admin/all-circulations', '/admin/circulations-checkout', '/admin/circulations-checkin', '/admin/circulation-rules'],
         permission: 'circulation view',
         items: [
@@ -113,13 +114,18 @@ const mainNavItems: {
                 permission: 'item view',
             },
             {
-                title: 'Categories',
-                url: '/admin/item-categories',
-                permission: 'item_category view',
+                title: 'All Physical Copies',
+                url: '/admin/items-physical-copies',
+                permission: 'item view',
             },
             {
                 title: 'Main Categories',
                 url: '/admin/item-main-categories',
+                permission: 'item_category view',
+            },
+            {
+                title: 'Categories',
+                url: '/admin/item-categories',
                 permission: 'item_category view',
             },
             {

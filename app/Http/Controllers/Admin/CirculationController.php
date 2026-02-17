@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Circulation;
 use App\Models\CirculationRule;
@@ -16,8 +15,6 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-use function PHPUnit\Framework\isNull;
-
 class CirculationController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
@@ -25,7 +22,7 @@ class CirculationController extends Controller implements HasMiddleware
         return [
             new Middleware('permission:circulation view', only: ['index', 'show']),
             new Middleware('permission:circulation create', only: ['create', 'store']),
-            new Middleware('permission:circulation update', only: ['edit', 'update', 'recover']),
+            new Middleware('permission:circulation update', only: ['edit', 'update', 'recover', 'update_fine_status']),
             new Middleware('permission:circulation delete', only: ['destroy', 'destroy_image']),
         ];
     }
@@ -45,9 +42,7 @@ class CirculationController extends Controller implements HasMiddleware
                     $sub_query->where('name', 'LIKE', "%{$search}%")
                         ->orWhere('name_kh', 'LIKE', "%{$search}%")
                         ->orWhere('card_number', 'LIKE', "%{$search}%")
-                        ->orWhere('id', 'LIKE', "%{$search}%")
-                        ->orWhere('phone', 'LIKE', "%{$search}%")
-                        ->orWhere('email', 'LIKE', "%{$search}%");
+                        ->orWhere('phone', 'LIKE', "%{$search}%");
                 })
                 // Move sorting inside the search block for better performance
                 ->orderBy('card_number')
@@ -125,8 +120,13 @@ class CirculationController extends Controller implements HasMiddleware
             return redirect()->back()->withErrors('Failed to Checkout: Item is already on loan.');
         }
 
-        // 1. Check the limit BEFORE starting the transaction to keep it clean
         $borrower = User::findOrFail($request->borrower_id);
+        if ($borrower->expired_at && now()->isAfter($borrower->expired_at)) {
+            return redirect()->back()->withErrors(
+                "User Account Expired."
+            );
+        }
+
         $category = UserCategory::where('code', $borrower->category_code)->first();
         $defaultRule = CirculationRule::first();
         $borrowingLimit = $category->borrowing_limit ?? $defaultRule->borrowing_limit ?? 2;
@@ -374,6 +374,20 @@ class CirculationController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
+    public function update_fine_status(Request $request, Circulation $circulation)
+    {
+        // Validate that the status is being passed
+        $request->validate([
+            'status' => 'required|boolean'
+        ]);
+
+        $circulation->update([
+            'fine_paid' => $request->status,
+            'updated_by' => $request->user()->id,
+        ]);
+
+        return redirect()->back()->with('success', 'Fine Status updated successfully.');
+    }
     public function destroy(Circulation $circulation)
     {
         $circulation->delete(); // this will now just set deleted_at timestamp

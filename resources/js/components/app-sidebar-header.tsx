@@ -19,11 +19,11 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                     <SidebarTrigger className="-ml-1 rounded-[6px] border border-primary text-primary hover:text-primary hover:ring-3 hover:ring-primary/20" />
                     <Breadcrumbs breadcrumbs={breadcrumbs} />
                 </div>
-                <div className="order-2 flex items-center justify-between gap-2 max-md:w-full">
-                    <div className="flex items-center md:hidden">
+                <div className="order-2 flex items-start justify-between gap-2 max-md:w-full">
+                    <div className="mt-1 flex items-center md:hidden">
                         <AppLogo />
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center justify-end gap-2">
                         <Link href={'/admin/circulations-checkout'} prefetch>
                             <Button variant="secondary" className="h-9 overflow-hidden rounded-md border hover:border-primary">
                                 <ArrowRightLeft /> {t('Check Out/In')}

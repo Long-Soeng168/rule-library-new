@@ -1,3 +1,4 @@
+import UpdateFineStatusButton from '@/components/Button/UpdateFineStatusButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -94,7 +95,7 @@ const RecentCheckins = () => {
                                 items.map((item) => {
                                     const status = resolveStatus(item);
                                     return (
-                                        <TableRow key={item.id} className="group transition-colors hover:bg-muted/50">
+                                        <TableRow key={item.id} className="transition-colors hover:bg-muted/50">
                                             <TableCell className="font-mono font-bold text-primary">{item.barcode}</TableCell>
                                             <TableCell className="max-w-[200px] font-mono hover:underline">
                                                 <Link href={`/admin/items/${item.item_id}`} className="line-clamp-2">
@@ -132,16 +133,17 @@ const RecentCheckins = () => {
 
                                                     {/* Status Badge */}
                                                     {item.fine_amount > 0 && (
-                                                        <span
-                                                            className={cn(
-                                                                'inline-flex w-fit items-center rounded-full px-2 py-0.5 text-[10px] font-medium',
-                                                                item.fine_paid
-                                                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-                                                            )}
-                                                        >
-                                                            {item.fine_paid ? 'Paid' : 'Unpaid'}
-                                                        </span>
+                                                        <UpdateFineStatusButton
+                                                            key={item.fine_paid}
+                                                            permission=""
+                                                            currentStatus={item.fine_paid}
+                                                            updatePath={`/admin/circulations/${item.id}/update-fine-status`}
+                                                            status={[
+                                                                { label: 'Paid', value: 1 },
+                                                                { label: 'Unpaid', value: 0 },
+                                                            ]}
+                                                            onSuccess={fetchData}
+                                                        />
                                                     )}
                                                 </div>
                                             </TableCell>

@@ -12,7 +12,7 @@ const ViewItemButton = ({ url, permission }: { url?: string; permission?: string
     return (
         <Link href={url}>
             <TooltipButton tooltip="View Item" side="bottom">
-                <Button variant="outline" size="icon" className="shadow-none">
+                <Button variant="outline" size="icon" className="shadow-none dark:text-muted-foreground">
                     <ViewIcon />
                 </Button>
             </TooltipButton>

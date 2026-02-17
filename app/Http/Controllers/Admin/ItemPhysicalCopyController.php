@@ -35,6 +35,83 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
         ];
     }
 
+    public function index(Request $request)
+    {
+        $perPage = $request->input('perPage', 10);
+        $search = $request->input('search', '');
+        $sortBy = $request->input('sortBy', 'id');
+        $sortDirection = $request->input('sortDirection', 'desc');
+
+        // Physical Item Filters
+        $shelf_location_code = $request->input('shelf_location_code');
+        $current_library_code = $request->input('current_library_code');
+        $home_library_code = $request->input('home_library_code');
+        $item_type_code = $request->input('item_type_code');
+        $item_lost = $request->input('item_lost'); // '1' or '0'
+        $damaged = $request->input('damaged');    // '1' or '0'
+        $withdrawn = $request->input('withdrawn'); // '1' or '0'
+        $trashed = $request->input('trashed');     // '', 'with', 'only'
+
+        $query = ItemPhysicalCopy::query();
+
+        // 1. Library & Type Filters
+        if ($shelf_location_code) {
+            $query->where('shelf_location_code', $shelf_location_code);
+        }
+        if ($current_library_code) {
+            $query->where('current_library_code', $current_library_code);
+        }
+        if ($home_library_code) {
+            $query->where('home_library_code', $home_library_code);
+        }
+        if ($item_type_code) {
+            $query->where('item_type_code', $item_type_code);
+        }
+
+        // 2. Boolean Status Filters (Lost, Damaged, Withdrawn)
+        // We check for !== null because '0' is a valid filter value
+        if ($item_lost !== null && $item_lost !== '') {
+            $query->where('item_lost', $item_lost);
+        }
+        if ($damaged !== null && $damaged !== '') {
+            $query->where('damaged', $damaged);
+        }
+        if ($withdrawn !== null && $withdrawn !== '') {
+            $query->where('withdrawn', $withdrawn);
+        }
+
+        // 3. Filter by trashed (soft deletes)
+        if ($trashed === 'with') {
+            $query->withTrashed();
+        } elseif ($trashed === 'only') {
+            $query->onlyTrashed();
+        }
+
+        // 4. Global Search (Barcode or Item ID)
+        if ($search) {
+            $query->where(function ($sub_query) use ($search) {
+                $sub_query->where('barcode', 'LIKE', "%{$search}%")
+                    ->orWhere('id', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // 5. Sorting and Eager Loading
+        $query->orderBy($sortBy, $sortDirection)
+            ->with(['created_user', 'updated_user', 'item', 'item_type', 'shelf_location', 'home_library', 'current_library']);
+
+        $tableData = $query->paginate($perPage)->withQueryString()->onEachSide(2);
+
+        return Inertia::render('Admin/ItemPhysicalCopy/Index', [
+            'tableData' => $tableData,
+            // Data for FilterSheet dropdowns
+            'shelfLocations' => Location::where('type_code', 'shelf-location')->orderBy('order_index')
+                ->orderBy('name')
+                ->get(),
+            'libraries' => Library::orderBy('order_index')->get(),
+            'itemTypes' => ItemType::orderBy('order_index')->get(),
+        ]);
+    }
+
     public function create(string $item_id, Request $request)
     {
         $item = Item::findOrFail($item_id);
@@ -92,26 +169,31 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Item $item)
-    {
-        // dd($item->loadCount('category'));
-        return Inertia::render('Admin/Item/Show', [
-            'showData' => $item->loadCount('category')->load('images', 'files', 'authors', 'publisher', 'language'),
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $item_id, string $physical_copy_id, Request $request)
     {
         $item = Item::findOrFail($item_id);
         $editData = ItemPhysicalCopy::findOrFail($physical_copy_id);
         return Inertia::render('Admin/ItemPhysicalCopy/Create', [
             'editData' => $editData,
+            'itemRecord' => $item,
+            'itemTypes' => ItemType::orderBy('order_index')
+                ->orderBy('name')
+                ->get(),
+            'shelfLocations' => Location::where('type_code', 'shelf-location')->orderBy('order_index')
+                ->orderBy('name')
+                ->get(),
+            'libraries' => Library::orderBy('order_index')
+                ->orderBy('name')
+                ->get(),
+        ]);
+    }
+    public function show(string $item_id, string $physical_copy_id, Request $request)
+    {
+        $item = Item::findOrFail($item_id);
+        $editData = ItemPhysicalCopy::findOrFail($physical_copy_id);
+        return Inertia::render('Admin/ItemPhysicalCopy/Create', [
+            'editData' => $editData,
+            'readOnly' => true,
             'itemRecord' => $item,
             'itemTypes' => ItemType::orderBy('order_index')
                 ->orderBy('name')
@@ -163,14 +245,24 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
             return redirect()->back()->withErrors(['error' => 'Failed to update: ' . $e->getMessage()]);
         }
     }
-
-
-    public function recover($id)
+    public function recover(string $physical_copy_id, Request $request)
     {
-        // $item = Item::withTrashed()->findOrFail($id); // 👈 include soft-deleted Item
-        // $item->restore(); // restores deleted_at to null
-        // return redirect()->back()->with('success', 'Item recovered successfully.');
+        $editData = ItemPhysicalCopy::withTrashed()->findOrFail($physical_copy_id);
+
+        try {
+
+            $editData->restore();
+            $editData->update([
+                'updated_by' => $request->user()->id,
+            ]);
+
+            return redirect()->back()->with('success', 'Recover successfully!');
+        } catch (\Exception $e) {
+            // Correcting error redirection format
+            return redirect()->back()->withErrors(['error' => 'Failed to Recover: ' . $e->getMessage()]);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

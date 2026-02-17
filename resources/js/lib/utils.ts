@@ -32,7 +32,7 @@ export function toSlug(input: string): string {
         .toLowerCase();
 }
 
-export const formatToKhmerDateTime = (utcDate?: string, showTime = true) => {
+export const formatToKhmerDateTime = (utcDate?: string, showTime = true, showFulllYear = false) => {
     if (!utcDate) return '-';
 
     const date = new Date(utcDate);
@@ -41,7 +41,7 @@ export const formatToKhmerDateTime = (utcDate?: string, showTime = true) => {
         timeZone: 'Asia/Bangkok',
         day: '2-digit',
         month: 'short',
-        year: '2-digit',
+        year: showFulllYear ? 'numeric' : '2-digit',
     };
 
     if (showTime) {

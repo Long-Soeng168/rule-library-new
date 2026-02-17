@@ -36,6 +36,8 @@ class User extends Authenticatable
         'password',
 
         'name_kh',
+        'card_number',
+        'expired_at',
         'title_type_code',
         'category_code',
         'total_active_loan',

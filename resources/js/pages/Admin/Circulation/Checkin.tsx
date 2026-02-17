@@ -68,7 +68,7 @@ export default function CirculationDesk() {
                                 <Input
                                     autoFocus
                                     placeholder="Enter Barcode..."
-                                    className={`dark:border-white/20 ${errors.item_physical_copy_barcode ? 'border-destructive ring-4 ring-destructive/10' : ''} py-6 font-mono text-lg focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20`}
+                                    className={`dark:border-white/20 dark:focus-within:border-primary ${errors.item_physical_copy_barcode ? 'border-destructive ring-4 ring-destructive/10' : ''} py-6 font-mono text-lg focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20`}
                                     value={selectedBarcode}
                                     onChange={(e) => setSelectedBarcode(e.target.value)}
                                 />

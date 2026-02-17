@@ -26,6 +26,10 @@ class ItemPhysicalCopy extends Model
     {
         return $this->belongsTo(ItemType::class, 'item_type_code', 'code');
     }
+    public function shelf_location()
+    {
+        return $this->belongsTo(Location::class, 'shelf_location_code', 'code');
+    }
     public function home_library()
     {
         return $this->belongsTo(Library::class, 'home_library_code', 'code');

@@ -1,6 +1,7 @@
 import TableCellAvatar from '@/components/Avatar/TableCellAvatar';
 import DeleteItemButton from '@/components/Button/DeleteItemButton';
 import RecoverItem from '@/components/Button/RecoverItemButton';
+import UpdateFineStatusButton from '@/components/Button/UpdateFineStatusButton';
 import NoDataDisplay from '@/components/NoDataDisplay';
 import TableCellActions from '@/components/Table/TableCellActions';
 import TableCellDate from '@/components/Table/TableCellDate';
@@ -68,16 +69,18 @@ const TableData = () => {
 
                                 {/* 4. Item / Barcode */}
                                 <TableCell className="min-w-[200px]">
-                                    <div className="flex flex-col">
-                                        <span className="line-clamp-1 text-sm font-medium text-foreground">
-                                            {item.item_physical_copy?.item?.name || 'No Title Associated'}
-                                        </span>
-                                        <div className="mt-0.5 flex items-center gap-2">
-                                            <span className="rounded bg-primary/10 px-1 font-mono text-[10px] font-medium text-primary">
-                                                Bardcode: {item.item_physical_copy?.barcode}
+                                    <Link href={`/admin/items/${item.item_physical_copy?.item?.id}`} className="group flex items-center gap-3">
+                                        <div className="flex flex-col">
+                                            <span className="line-clamp-1 text-sm font-medium text-foreground group-hover:underline">
+                                                {item.item_physical_copy?.item?.name || 'No Title Associated'}
                                             </span>
+                                            <div className="mt-0.5 flex items-center gap-2">
+                                                <span className="rounded bg-primary/10 px-1 font-mono text-[10px] font-medium text-primary">
+                                                    Bardcode: {item.item_physical_copy?.barcode}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 </TableCell>
 
                                 {/* 5. Timeline (Out, Due, In) */}
@@ -172,14 +175,16 @@ const TableData = () => {
                                             {parseFloat(item.fine_amount) > 0 ? `$${item.fine_amount}` : '—'}
                                         </span>
                                         {parseFloat(item.fine_amount) > 0 && (
-                                            <span
-                                                className={cn(
-                                                    'mt-1 rounded-sm px-1 py-0.5 text-[9px] font-medium tracking-tighter uppercase',
-                                                    item.fine_paid ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700',
-                                                )}
-                                            >
-                                                {item.fine_paid ? 'Paid' : 'Unpaid'}
-                                            </span>
+                                            <UpdateFineStatusButton
+                                                key={item.fine_paid}
+                                                permission=""
+                                                currentStatus={item.fine_paid}
+                                                updatePath={`/admin/circulations/${item.id}/update-fine-status`}
+                                                status={[
+                                                    { label: 'Paid', value: 1 },
+                                                    { label: 'Unpaid', value: 0 },
+                                                ]}
+                                            />
                                         )}
                                     </div>
                                 </TableCell>
