@@ -57,7 +57,7 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                         </div>
 
                         {/* Mobile-only Quick Actions */}
-                        <div className="flex items-center gap-1 md:hidden">
+                        <div className="flex items-center gap-2 md:hidden">
                             <NavLanguage />
                             <SwitchDarkModeSmoothAnimated />
                         </div>
@@ -67,7 +67,7 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                     <div className="flex flex-col gap-4 md:flex-row md:items-center">
                         {/* Segmented Control - Full width on mobile */}
                         <div className="flex w-full items-center gap-1 rounded-xl border bg-muted/30 p-1 md:w-auto md:rounded-lg">
-                            <Link href="/admin/circulations-checkout" className="flex-1">
+                            <Link href="/admin/circulations-checkout" className="relative flex-1">
                                 <button
                                     className={cn(
                                         'w-full shrink-0 cursor-pointer rounded-md px-4 py-2.5 text-sm font-bold whitespace-nowrap transition-all duration-200 md:rounded-sm md:py-1.5',
@@ -78,8 +78,12 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                                 >
                                     Check Out
                                 </button>
+                                {isCheckout && (
+                                    <span className="absolute -bottom-0.5 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-primary shadow-[0_-1px_4px_rgba(var(--primary),0.4)]" />
+                                )}
                             </Link>
-                            <Link href="/admin/circulations-checkin" className="flex-1">
+
+                            <Link href="/admin/circulations-checkin" className="relative flex-1">
                                 <button
                                     className={cn(
                                         'w-full shrink-0 cursor-pointer rounded-md px-4 py-2.5 text-sm font-bold whitespace-nowrap transition-all duration-200 md:rounded-sm md:py-1.5',
@@ -90,6 +94,9 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                                 >
                                     Check In
                                 </button>
+                                {isCheckin && (
+                                    <span className="absolute -bottom-0.5 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-primary shadow-[0_-1px_4px_rgba(var(--primary),0.4)]" />
+                                )}
                             </Link>
                         </div>
 

@@ -52,7 +52,7 @@ const Index = () => {
 
                 {/* The updated Table with Timeline and user details */}
                 <div className="no-scrollbar flex items-center gap-1 overflow-x-auto px-2 pb-2">
-                    <div className="flex space-x-1 rounded border border-border/60 bg-muted/30 p-1.5 shadow-inner">
+                    <div className="flex space-x-1 rounded border border-border/60 bg-muted/30 p-1.5">
                         {filters.map((filter) => {
                             const isActive = filter.value ? url.includes(`filter_by=${filter.value}`) : !url.includes('filter_by');
 
@@ -71,7 +71,7 @@ const Index = () => {
                                             'text-[11px] font-black tracking-widest whitespace-nowrap uppercase',
                                             // State Logic
                                             isActive
-                                                ? 'bg-white text-primary shadow-[0_2px_10px_-3px_rgba(0,0,0,0.15)] ring-1 ring-black/5 dark:bg-zinc-900'
+                                                ? 'bg-white text-primary ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/50'
                                                 : 'text-muted-foreground hover:bg-white/50 hover:text-foreground dark:hover:bg-zinc-800/50',
                                         )}
                                     >
@@ -92,7 +92,7 @@ const Index = () => {
 
                                         {/* Animated Glow Line Indicator */}
                                         {isActive && (
-                                            <div className="absolute -bottom-[3px] left-1/2 h-[3px] w-4 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
+                                            <div className="absolute -bottom-[2px] left-1/2 h-[3px] w-4 -translate-x-1/2 rounded-full bg-primary" />
                                         )}
                                     </button>
                                 </Link>

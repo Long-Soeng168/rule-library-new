@@ -52,7 +52,7 @@ export default function CirculationDesk() {
             />
             {/* {errors && <AllErrorsAlert title="Errors" errors={errors} />} */}
 
-            <div className="grid grid-cols-1 gap-8 pt-3 lg:grid-cols-12">
+            <div className="grid grid-cols-1 gap-7 pt-3 lg:grid-cols-12">
                 <div className="space-y-6 lg:col-span-4">
                     {/* User SELECTION */}
 
