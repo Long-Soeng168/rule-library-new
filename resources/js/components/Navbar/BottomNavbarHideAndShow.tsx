@@ -29,10 +29,10 @@ export default function BottomNavbarHideAndShow() {
     }, []);
 
     const navItems = [
-        { label: t('Home'), url: '/', icon: <HomeIcon size={20} /> },
-        { label: t('E-Resources'), url: '/resources', icon: <BookOpenTextIcon size={20} /> },
-        { label: t('Posts'), url: '/posts', icon: <NewspaperIcon size={20} /> },
-        { label: t('About'), url: '/about', icon: <InfoIcon size={20} /> },
+        { label: t('Home'), url: '/', icon: <HomeIcon size={24} /> },
+        { label: t('E-Resources'), url: '/resources', icon: <BookOpenTextIcon size={24} /> },
+        { label: t('Posts'), url: '/posts', icon: <NewspaperIcon size={24} /> },
+        { label: t('About'), url: '/about', icon: <InfoIcon size={24} /> },
     ];
 
     return (
@@ -50,13 +50,13 @@ export default function BottomNavbarHideAndShow() {
                             key={item.label}
                             href={item.url}
                             prefetch
-                            className={`flex flex-1 justify-center pt-1 pb-2 ${isActive ? 'bg-muted' : ''} `}
+                            className={`flex flex-1 justify-center pt-2 pb-4 ${isActive ? 'bg-muted' : ''} `}
                         >
                             <button
-                                className={`mt-1 flex flex-col items-center text-xs transition-colors ${isActive ? 'font-semibold text-primary' : 'text-muted-foreground hover:text-primary'} `}
+                                className={`mt-1 flex flex-col items-center transition-colors ${isActive ? 'font-semibold text-primary' : 'text-muted-foreground hover:text-primary'} `}
                             >
                                 {item.icon}
-                                <span className="mt-1 leading-none">{item.label}</span>
+                                <span className="mt-1 text-[12px] leading-none">{item.label}</span>
                             </button>
                         </Link>
                     );
