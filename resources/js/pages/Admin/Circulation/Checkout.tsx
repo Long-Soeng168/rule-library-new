@@ -92,25 +92,29 @@ export default function CirculationDesk() {
                                             {selectedUser.name?.substring(0, 2).toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
-                                    <div>
-                                        <a target="_blank" href={`/admin/users/${selectedUser?.id}`}>
-                                            <p className="text-base font-semibold hover:underline">{selectedUser.name}</p>
+                                    <div className="flex flex-col gap-1">
+                                        <a target="_blank" href={`/admin/users/${selectedUser?.id}`} className="group w-fit">
+                                            <p className="text-lg leading-none font-bold text-primary group-hover:underline">{selectedUser.name}</p>
                                         </a>
-                                        <div className="from-muted-foreground text-sm">
-                                            <p>
-                                                <span className="text-muted-foreground">Card: </span>
-                                                <span className="font-medium">{selectedUser.card_number ?? '---'}</span>
-                                            </p>
-                                            <p>
-                                                <span className="text-muted-foreground">Phone: </span>
-                                                <span className="font-medium">{selectedUser.phone ?? '---'}</span>
-                                            </p>
+
+                                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+                                            <div className="flex items-center gap-1">
+                                                <span className="text-[10px] font-semibold text-muted-foreground">Card:</span>
+                                                <span className="rounded bg-muted px-1.5 text-base font-medium text-foreground">
+                                                    {selectedUser.card_number ?? '---'}
+                                                </span>
+                                            </div>
+
+                                            <div className="flex items-center gap-1">
+                                                <span className="text-[12px] font-semibold text-muted-foreground">Phone: </span>
+                                                <span className="text-sm font-medium">{selectedUser.phone ?? '---'}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 {selectedUser.expired_at && (
-                                    <div className="flex items-center justify-between pb-2 text-[11px] font-bold">
-                                        <span className="tracking-tighter text-muted-foreground uppercase">Account Expires</span>
+                                    <div className="flex items-center justify-between pb-2 text-[12px] font-semibold">
+                                        <span className="text-muted-foreground">Account Expires: </span>
                                         <span
                                             className={cn(
                                                 'transition-colors',

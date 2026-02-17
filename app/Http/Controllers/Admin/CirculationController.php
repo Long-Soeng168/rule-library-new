@@ -166,6 +166,7 @@ class CirculationController extends Controller implements HasMiddleware
 
                 // 5. Increment User Counter
                 $borrower->increment('total_active_loan');
+                $borrower->increment('total_checkouts');
             });
 
             return redirect()->back()->with('success', 'Item checked out successfully!');
