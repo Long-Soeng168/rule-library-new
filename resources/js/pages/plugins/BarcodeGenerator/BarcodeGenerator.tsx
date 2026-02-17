@@ -224,7 +224,7 @@ const BarcodeGenerator = () => {
                 <div className="flex-1 space-y-8 overflow-auto rounded-lg bg-muted p-4 py-6 dark:bg-zinc-800">
                     {codesByPage().map((pageCodes, pageIdx) => (
                         <div key={pageIdx} className="relative">
-                            <p className="mb-2 text-center font-mono text-xs text-muted-foreground uppercase">Page {pageIdx + 1}</p>
+                            <p className="mb-2 text-center text-xs text-muted-foreground uppercase">Page {pageIdx + 1}</p>
                             <div
                                 style={{
                                     width: '210mm',
@@ -245,7 +245,7 @@ const BarcodeGenerator = () => {
                                         style={{ border: '1px dashed #ddd' }}
                                         className="flex flex-col items-center justify-center overflow-visible bg-white p-1 pb-[7.5px]"
                                     >
-                                        <span style={{ fontSize: '10px' }} className="mb-1 w-full truncate text-center font-bold uppercase">
+                                        <span style={{ fontSize: '10px' }} className="mb-1 w-full truncate text-center font-semibold">
                                             {config.orgName}
                                         </span>
                                         <BarcodeItem value={code} height={config.barcodeHeight} showValue={config.showValue} />

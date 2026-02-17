@@ -35,7 +35,7 @@ const QRCodeGenerator = () => {
         borderRadius: 12, // Kept as requested
         logoSize: 50,
         includeLogo: false,
-        label: 'SCAN TO ME',
+        label: 'SCAN ME',
     });
 
     useEffect(() => {
