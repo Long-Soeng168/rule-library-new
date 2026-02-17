@@ -35,10 +35,17 @@ const Feature6 = () => {
                     const shortDescription = currentLocale === 'kh' ? stat?.short_description_kh || stat?.short_description : stat?.short_description;
 
                     return (
-                        <div key={idx}>
-                            <span className="text-5xl font-bold text-primary md:text-6xl">{stat.value}</span>
-                            {name && <p className="mt-6 text-xl font-semibold">{name}</p>}
-                            {shortDescription && <p className="mt-2 text-[17px] text-muted-foreground">{shortDescription}</p>}
+                        <div key={idx} className="flex flex-col">
+                            {/* Scaled from 4xl on mobile to 6xl on desktop */}
+                            <span className="text-4xl font-bold tracking-tight text-primary md:text-6xl">{stat.value}</span>
+
+                            {/* Scaled from base/lg on mobile to xl on desktop */}
+                            {name && <p className="mt-3 text-base leading-tight font-semibold md:mt-6 md:text-xl">{name}</p>}
+
+                            {/* Scaled from 14px on mobile to 17px on desktop */}
+                            {shortDescription && (
+                                <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground md:mt-2 md:text-[17px]">{shortDescription}</p>
+                            )}
                         </div>
                     );
                 })}

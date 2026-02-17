@@ -31,9 +31,9 @@ export function ContentHeader({ title, description, link, containerClassName }: 
                     </div>
                 </Link>
             ) : (
-                <h2 className="text-3xl font-bold tracking-tight md:text-3xl">{title}</h2>
+                <h2 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h2>
             )}
-            {description && <p className="mt-2 text-gray-500">{description}</p>}
+            {description && <p className="text-gray-500 md:mt-2">{description}</p>}
         </div>
     );
 }
