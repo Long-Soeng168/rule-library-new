@@ -123,7 +123,7 @@ const BarcodeGenerator = () => {
 
     return (
         <FrontPageLayout>
-            <div className="flex min-h-screen flex-col gap-6 bg-muted/20 p-6 lg:flex-row">
+            <div className="section-container flex min-h-screen flex-col gap-6 bg-muted/20 p-4 py-6 lg:flex-row">
                 <Card className="h-fit w-full shrink-0 shadow-none lg:w-80">
                     <CardHeader>
                         <CardTitle className="text-xl">Barcode Generator</CardTitle>
@@ -204,9 +204,10 @@ const BarcodeGenerator = () => {
                             <Checkbox
                                 disabled={isExporting}
                                 checked={config.showValue}
+                                id="show_text"
                                 onCheckedChange={(c) => setConfig({ ...config, showValue: !!c })}
                             />
-                            <Label>Show text</Label>
+                            <Label htmlFor="show_text">Show text</Label>
                         </div>
                         <Button className="mt-4 w-full" size="lg" onClick={handleDownloadPDF} disabled={isExporting}>
                             {isExporting ? (

@@ -10,11 +10,13 @@ import TableCellDate from '@/components/Table/TableCellDate';
 import TableCellText from '@/components/Table/TableCellText';
 import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
+import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 
 const TableData = () => {
     const { tableData } = usePage<any>().props;
+    const { t } = useTranslation();
 
     /**
      * Resolves the current loan status (Overdue, On Loan, Available)
@@ -39,12 +41,7 @@ const TableData = () => {
             gray: 'border-gray-200 bg-gray-50 text-gray-400 dark:border-border dark:bg-transparent',
         };
 
-        return (
-            <TableCellBadge
-                value={label}
-                className={cn('rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase transition-colors', styles[color])}
-            />
-        );
+        return <TableCellBadge value={label} className={cn('rounded-full border px-2 py-0.5 text-[12px] font-semibold', styles[color])} />;
     };
 
     return (
@@ -55,7 +52,7 @@ const TableData = () => {
                         <TableRow>
                             <TableHeadWithSort label="Action" />
                             <TableHeadWithSort field="barcode" label="Barcode" />
-                            <TableHeadWithSort field="item_id" label="Item Title" />
+                            <TableHeadWithSort field="item_id" label="Title / Barcode" />
                             <TableHeadWithSort field="full_call_number" label="Call Number" />
                             <TableHeadWithSort field="current_library_code" label="Current Library" />
                             <TableHeadWithSort field="shelf_location_code" label="Shelf Location" />
@@ -63,7 +60,7 @@ const TableData = () => {
                             {/* Main Loan Status */}
                             <TableHeadWithSort field="due_at" label="Loan Status" />
                             {/* Detailed Flags */}
-                            <TableHeadWithSort field="not_for_loan" label="Loanable" />
+                            <TableHeadWithSort field="not_for_loan" label="Allow Checkout" />
                             <TableHeadWithSort field="item_lost" label="Lost" />
                             <TableHeadWithSort field="damaged" label="Damaged" />
                             <TableHeadWithSort field="withdrawn" label="Withdrawn" />
@@ -71,8 +68,8 @@ const TableData = () => {
                             <TableHeadWithSort field="total_checkouts" label="Total Checkouts" />
                             <TableHeadWithSort field="last_borrowed_at" label="Last Borrowed" />
                             <TableHeadWithSort field="last_seen_at" label="Last Seen" />
-                            <TableHeadWithSort field="created_by" label="Created By" />
-                            <TableHeadWithSort field="updated_by" label="Updated By" />
+                            <TableHeadWithSort field="created_by" label="Created by" />
+                            <TableHeadWithSort field="updated_by" label="Updated by" />
                         </TableRow>
                     </TableHeader>
                     <TableBody className="table-body rounded-md">
@@ -126,8 +123,8 @@ const TableData = () => {
                                     <TableCellText value={item.full_call_number || '---'} />
                                     <TableCellActions>
                                         <div className="text-sm font-medium">{item.current_library?.name ?? '---'}</div>
-                                        <div className="text-[9px] font-bold text-orange-600 uppercase dark:text-orange-400">
-                                            Home: {item.home_library?.name ?? '---'}
+                                        <div className="text-xs text-muted-foreground">
+                                            Home: <span className="font-semibold">{item.home_library?.name ?? '---'}</span>
                                         </div>
                                     </TableCellActions>
                                     <TableCellActions>
@@ -135,7 +132,7 @@ const TableData = () => {
                                     </TableCellActions>
 
                                     {/* Display Current Loan Status (Overdue / On Loan / Available) */}
-                                    <TableCell>{renderBadge(currentLoan.label, currentLoan.color as any)}</TableCell>
+                                    <TableCell>{renderBadge(t(currentLoan.label), currentLoan.color as any)}</TableCell>
 
                                     {/* Boolean Flags */}
                                     <TableCell>

@@ -3,7 +3,6 @@ import AllErrorsAlert from '@/components/Alert/AllErrorsAlert';
 import SubmitButton from '@/components/Button/SubmitButton';
 import { FormField } from '@/components/Input/FormField';
 import { ProgressWithValue } from '@/components/ProgressBar/progress-with-value';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useTranslation from '@/hooks/use-translation';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
@@ -22,8 +21,6 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         message: '',
         type: 'message',
     });
-
-    const [inputLanguage, setInputLanguage] = useState<'default' | 'khmer'>('default');
 
     const { data, setData, post, processing, progress, errors } = useForm<CirculationRuleForm>({
         fine_amount_per_day: editData?.fine_amount_per_day || 500,
@@ -53,8 +50,8 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Circulation Rules', href: '/admin/circulation-rules' },
-        { title: editData ? 'Edit Rules' : 'Create Rules', href: '#' },
+        { title: 'Circulation Rule', href: '/admin/circulation-rules' },
+        { title: editData ? 'Edit Rule' : 'Create Rule', href: '#' },
     ];
 
     const { t } = useTranslation();
@@ -70,20 +67,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 />
                 {errors && <AllErrorsAlert title="Please fix the following errors" errors={errors} />}
 
-                <div className="sticky top-0 z-10">
-                    <Tabs value={inputLanguage} onValueChange={(val: any) => setInputLanguage(val)}>
-                        <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
-                            <TabsTrigger value="default" className="h-full dark:data-[state=active]:bg-white/20">
-                                {t('Default')}
-                            </TabsTrigger>
-                            <TabsTrigger value="khmer" className="h-full dark:data-[state=active]:bg-white/20">
-                                {t('Khmer')}
-                            </TabsTrigger>
-                        </TabsList>
-                    </Tabs>
-                </div>
-
-                <div className="form-field-container">
+                <div className="form-field-container py-2">
                     {/* These rules are numeric, so we display them the same in both tabs 
                         but localized labels can change based on t() */}
 

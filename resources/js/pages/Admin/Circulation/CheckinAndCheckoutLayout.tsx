@@ -2,6 +2,7 @@ import NavLanguage from '@/components/Navbar/NavLanguage';
 import { SwitchDarkModeSmoothAnimated } from '@/components/Switch/SwitchDarkModeSmoothAnimated';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowRightLeft, LayoutIcon } from 'lucide-react';
@@ -14,6 +15,7 @@ interface Props {
 
 export default function CheckinAndCheckoutLayout({ children }: Props) {
     const { url } = usePage();
+    const { t } = useTranslation();
 
     const isCheckout = url.startsWith('/admin/circulations-checkout');
     const isCheckin = url.startsWith('/admin/circulations-checkin');
@@ -30,8 +32,13 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                     {/* Top Row: Title & Action Icons */}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 md:gap-4">
-                            <div className="relative flex size-10 items-center justify-center rounded-xl bg-primary/10 transition-transform active:scale-95 md:size-12">
-                                <ArrowRightLeft className="size-5 text-primary md:size-6" />
+                            <div
+                                className={cn(
+                                    'relative flex size-10 items-center justify-center rounded-md bg-primary/10 transition-transform active:scale-95 md:size-12',
+                                    isCheckout ? 'bg-blue-500/10 text-blue-500' : 'bg-green-500/10 text-green-600',
+                                )}
+                            >
+                                <ArrowRightLeft className="size-5 md:size-6" />
                                 <div
                                     className={cn(
                                         'absolute -top-0.5 -right-0.5 size-3 rounded-full border-2 border-background',
@@ -40,17 +47,17 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                                 />
                             </div>
                             <div>
-                                <h1 className="text-xl font-black tracking-tight text-foreground md:text-2xl">Circulation</h1>
+                                <h1 className="mb-0.5 text-xl font-black tracking-tight text-foreground md:text-2xl">{t('Circulation')}</h1>
                                 <div className="flex items-center gap-2">
-                                    <p className="text-[9px] font-black tracking-widest text-muted-foreground/60 uppercase">Mode</p>
+                                    <p className="text-sm text-muted-foreground uppercase">{t('Mode')}</p>
                                     <Badge
                                         variant="outline"
                                         className={cn(
-                                            'h-4 overflow-hidden rounded border-none px-1.5 text-[9px] font-bold md:h-5 md:text-[10px]',
-                                            isCheckout ? 'bg-blue-500/10 text-blue-600' : 'bg-green-500/10 text-green-600',
+                                            'overflow-hidden rounded border-none px-1.5 text-sm md:text-base',
+                                            isCheckout ? 'bg-blue-500/10 text-blue-500' : 'bg-green-500/10 text-green-600',
                                         )}
                                     >
-                                        {isCheckout ? 'Check-Out' : 'Check-In'}
+                                        {isCheckout ? t('Check Out') : t('Check In')}
                                     </Badge>
                                 </div>
                             </div>
@@ -70,13 +77,13 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                             <Link href="/admin/circulations-checkout" className="relative flex-1">
                                 <button
                                     className={cn(
-                                        'w-full shrink-0 cursor-pointer rounded-md px-4 py-2.5 text-sm font-bold whitespace-nowrap transition-all duration-200 md:rounded-sm md:py-1.5',
+                                        'w-full shrink-0 cursor-pointer rounded-md px-4 py-2.5 font-semibold whitespace-nowrap transition-all duration-200 md:rounded-sm md:py-1.5',
                                         isCheckout
                                             ? 'bg-background text-primary ring-1 ring-black/5 dark:bg-zinc-800'
                                             : 'text-muted-foreground hover:text-foreground',
                                     )}
                                 >
-                                    Check Out
+                                    {t('Check Out')}
                                 </button>
                                 {isCheckout && (
                                     <span className="absolute -bottom-0.5 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-primary shadow-[0_-1px_4px_rgba(var(--primary),0.4)]" />
@@ -86,39 +93,37 @@ export default function CheckinAndCheckoutLayout({ children }: Props) {
                             <Link href="/admin/circulations-checkin" className="relative flex-1">
                                 <button
                                     className={cn(
-                                        'w-full shrink-0 cursor-pointer rounded-md px-4 py-2.5 text-sm font-bold whitespace-nowrap transition-all duration-200 md:rounded-sm md:py-1.5',
+                                        'w-full shrink-0 cursor-pointer rounded-md px-4 py-2.5 font-semibold whitespace-nowrap transition-all duration-200 md:rounded-sm md:py-1.5',
                                         isCheckin
                                             ? 'bg-background text-primary ring-1 ring-black/5 dark:bg-zinc-800'
                                             : 'text-muted-foreground hover:text-foreground',
                                     )}
                                 >
-                                    Check In
+                                    {t('Check In')}
                                 </button>
                                 {isCheckin && (
                                     <span className="absolute -bottom-0.5 left-1/2 h-[3px] w-6 -translate-x-1/2 rounded-full bg-primary shadow-[0_-1px_4px_rgba(var(--primary),0.4)]" />
                                 )}
                             </Link>
                         </div>
+                        <div className="mx-2 hidden h-6 w-px bg-border/80 md:block" />
 
                         {/* Desktop-only secondary controls */}
-                        <div className="hidden items-center gap-2 border-l border-border/60 pl-4 md:flex">
-                            <SwitchDarkModeSmoothAnimated />
+                        <div className="hidden items-center gap-2 md:flex">
                             <NavLanguage />
-                            <div className="mx-2 h-6 w-px bg-border/60" />
+                            <div className="mx-2 h-6 w-px bg-border/80" />
                             <Link href="/dashboard">
-                                <Button variant="ghost" size="sm" className="text-[11px] font-bold tracking-wider uppercase">
-                                    <LayoutIcon className="mr-2 size-4" /> Dashboard
+                                <Button variant="secondary" size="sm" className="h-9 rounded-sm border font-medium hover:border-primary">
+                                    <LayoutIcon className="mr-1 size-4" /> {t('Dashboard')}
                                 </Button>
                             </Link>
+                            <SwitchDarkModeSmoothAnimated />
                         </div>
 
                         {/* Mobile Dashboard Link - Compact */}
                         <Link href="/dashboard" className="md:hidden">
-                            <Button
-                                variant="outline"
-                                className="w-full justify-center border-dashed py-5 text-xs font-bold tracking-widest text-muted-foreground uppercase"
-                            >
-                                <LayoutIcon className="mr-2 size-4" /> Return to Dashboard
+                            <Button variant="outline" className="w-full justify-center border-dashed py-5 text-sm text-muted-foreground">
+                                <LayoutIcon className="mr-2 size-4" /> {t('Return to Dashboard')}
                             </Button>
                         </Link>
                     </div>

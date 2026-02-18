@@ -48,6 +48,7 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
         $home_library_code = $request->input('home_library_code');
         $item_type_code = $request->input('item_type_code');
         $item_lost = $request->input('item_lost'); // '1' or '0'
+        $not_for_loan = $request->input('not_for_loan'); // '1' or '0'
         $damaged = $request->input('damaged');    // '1' or '0'
         $withdrawn = $request->input('withdrawn'); // '1' or '0'
         $trashed = $request->input('trashed');     // '', 'with', 'only'
@@ -72,6 +73,9 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
         // We check for !== null because '0' is a valid filter value
         if ($item_lost !== null && $item_lost !== '') {
             $query->where('item_lost', $item_lost);
+        }
+        if ($not_for_loan !== null && $not_for_loan !== '') {
+            $query->where('not_for_loan', $not_for_loan);
         }
         if ($damaged !== null && $damaged !== '') {
             $query->where('damaged', $damaged);

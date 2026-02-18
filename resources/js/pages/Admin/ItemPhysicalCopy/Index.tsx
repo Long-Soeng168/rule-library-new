@@ -10,8 +10,8 @@ const Index = () => {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         {
-            title: 'Items',
-            href: '/admin/items',
+            title: 'All Physical Copies',
+            href: '/admin/items-physical-copies',
         },
     ];
     return (

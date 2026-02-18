@@ -2,10 +2,11 @@ import UpdateFineStatusButton from '@/components/Button/UpdateFineStatusButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import useTranslation from '@/hooks/use-translation';
 import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
-import { ArrowDownCircle, ArrowDownLeft, ArrowUpRight, ChevronRight, RefreshCcw } from 'lucide-react';
+import { ArrowDownCircle, ArrowDownLeft, ArrowUpRight, ChevronRight, RotateCwIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const resolveStatus = (item: any) => {
@@ -21,6 +22,7 @@ const resolveStatus = (item: any) => {
 };
 
 const RecentCheckins = () => {
+    const { t } = useTranslation();
     const [items, setItems] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -48,15 +50,15 @@ const RecentCheckins = () => {
                     <CardTitle className="flex items-center justify-between gap-2 text-lg font-semibold text-muted-foreground">
                         <span className="flex items-center gap-2 text-primary">
                             <ArrowDownCircle />
-                            Recent Checkins
+                            {t('Recent Checkins')}
                         </span>
                         <div className="flex items-center gap-2">
                             <Button variant="ghost" size="icon" onClick={fetchData} disabled={loading} className="h-8 w-8">
-                                <RefreshCcw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                                <RotateCwIcon className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                             </Button>
                             <Button variant="outline" size="sm" asChild className="rounded">
                                 <Link href="/admin/all-circulations">
-                                    See More <ChevronRight className="ml-1 h-4 w-4" />
+                                    {t('See More')} <ChevronRight className="ml-1 h-4 w-4" />
                                 </Link>
                             </Button>
                         </div>
@@ -66,11 +68,11 @@ const RecentCheckins = () => {
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-muted/10">
-                                <TableHead className="w-[150px]">Barcode</TableHead>
-                                <TableHead>Title</TableHead>
-                                <TableHead>Borrower</TableHead>
-                                <TableHead>Fine</TableHead>
-                                <TableHead className="text-right">Date</TableHead>
+                                <TableHead>{t('Barcode')}</TableHead>
+                                <TableHead>{t('Title')}</TableHead>
+                                <TableHead>{t('Borrower')}</TableHead>
+                                <TableHead>{t('Fine')}</TableHead>
+                                <TableHead className="text-right">{t('Date')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -95,10 +97,10 @@ const RecentCheckins = () => {
                                 items.map((item) => {
                                     const status = resolveStatus(item);
                                     return (
-                                        <TableRow key={item.id} className="transition-colors hover:bg-muted/50">
+                                        <TableRow key={item.id} className="whitespace-nowrap transition-colors hover:bg-muted/50">
                                             <TableCell className="font-mono font-bold text-primary">{item.barcode}</TableCell>
-                                            <TableCell className="max-w-[200px] font-mono hover:underline">
-                                                <Link href={`/admin/items/${item.item_id}`} className="line-clamp-2">
+                                            <TableCell className="max-w-[200px] text-base hover:underline">
+                                                <Link href={`/admin/items/${item.item_id}`} className="line-clamp-1 truncate">
                                                     {item.title}
                                                 </Link>
                                             </TableCell>
@@ -109,7 +111,7 @@ const RecentCheckins = () => {
                                                             {item.borrower_name}
                                                         </span>
                                                         <div className="flex items-center gap-1.5">
-                                                            <span className="text-muted-foreground">Card:</span>
+                                                            <span className="text-muted-foreground">{t('Card')}:</span>
                                                             <span>{item.borrower_card_number ?? '---'}</span>
                                                         </div>
                                                     </div>
@@ -120,7 +122,7 @@ const RecentCheckins = () => {
                                                     {/* Fine Amount Display */}
                                                     <span
                                                         className={cn(
-                                                            'text-sm font-semibold',
+                                                            'text-sm font-medium',
                                                             item.fine_amount > 0
                                                                 ? item.fine_paid
                                                                     ? 'text-green-600'
@@ -128,7 +130,7 @@ const RecentCheckins = () => {
                                                                 : 'text-xs text-muted-foreground',
                                                         )}
                                                     >
-                                                        {item.fine_amount > 0 ? `${item.fine_amount.toLocaleString()}` : 'No Fine'}
+                                                        {item.fine_amount > 0 ? `${item.fine_amount.toLocaleString()}` : t('No Fine')}
                                                     </span>
 
                                                     {/* Status Badge */}
@@ -148,10 +150,10 @@ const RecentCheckins = () => {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="py-4 text-right whitespace-nowrap">
-                                                <div className="flex flex-col items-end font-mono text-[11px] leading-tight tracking-tighter uppercase">
+                                                <div className="flex flex-col items-end font-mono text-sm leading-tight tracking-tighter uppercase">
                                                     {/* Check Out */}
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-muted-foreground/60">OUT</span>
+                                                        <span className="text-muted-foreground">{t('Out')}:</span>
                                                         <span className="text-foreground">{formatToKhmerDateTime(item.borrowed_at, false)}</span>
                                                         <ArrowUpRight className="size-3 text-blue-500/40" />
                                                     </div>
@@ -161,7 +163,7 @@ const RecentCheckins = () => {
 
                                                     {/* Due Date (The Deadline) */}
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-[9px] text-muted-foreground/40">DUE</span>
+                                                        <span className="text-muted-foreground">{t('Due')}:</span>
                                                         <span className="font-medium text-muted-foreground/80">
                                                             {formatToKhmerDateTime(item.due_at, false)}
                                                         </span>
@@ -177,7 +179,7 @@ const RecentCheckins = () => {
 
                                                     {/* Check In */}
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-muted-foreground/60">IN </span>
+                                                        <span className="text-muted-foreground">{t('In')}:</span>
                                                         <span
                                                             className={cn(
                                                                 'font-bold',
@@ -198,7 +200,7 @@ const RecentCheckins = () => {
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
-                                        No recent activity found.
+                                        {t('No recent activity found.')}
                                     </TableCell>
                                 </TableRow>
                             )}

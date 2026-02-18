@@ -20,6 +20,7 @@ const FilterData = () => {
         home_library_code: initialQueryParams.get('home_library_code') || '',
         item_type_code: initialQueryParams.get('item_type_code') || '',
         item_lost: initialQueryParams.get('item_lost') || '',
+        not_for_loan: initialQueryParams.get('not_for_loan') || '',
         damaged: initialQueryParams.get('damaged') || '',
         withdrawn: initialQueryParams.get('withdrawn') || '',
         trashed: initialQueryParams.get('trashed') || '',
@@ -51,6 +52,7 @@ const FilterData = () => {
             home_library_code: '',
             item_type_code: '',
             item_lost: '',
+            not_for_loan: '',
             damaged: '',
             withdrawn: '',
             trashed: '',
@@ -66,6 +68,11 @@ const FilterData = () => {
         { value: '', label: t('All'), icon: ReplaceAllIcon },
         { value: '1', label: t('Yes'), icon: CircleCheckBigIcon },
         { value: '0', label: t('No'), icon: BanIcon },
+    ];
+    const not_for_loanOptions = [
+        { value: '', label: t('All'), icon: ReplaceAllIcon },
+        { value: '0', label: t('Allow'), icon: BanIcon },
+        { value: '1', label: t('Not Allow'), icon: CircleCheckBigIcon },
     ];
 
     const trashedOptions = [
@@ -151,7 +158,21 @@ const FilterData = () => {
             {/* Status Flags Group */}
             <div className="space-y-6">
                 <div>
-                    <FormLabel label="Is Lost?" />
+                    <FormLabel label="Allow Checkout" />
+                    <div className="mt-1 grid grid-cols-3 gap-2">
+                        {not_for_loanOptions.map((opt) => (
+                            <CheckboxCardOption
+                                key={opt.value}
+                                option={opt}
+                                checked={filters.not_for_loan === opt.value}
+                                onChange={(val) => updateFilters({ not_for_loan: val })}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                <div>
+                    <FormLabel label="Lost" />
                     <div className="mt-1 grid grid-cols-3 gap-2">
                         {booleanOptions.map((opt) => (
                             <CheckboxCardOption
@@ -165,7 +186,7 @@ const FilterData = () => {
                 </div>
 
                 <div>
-                    <FormLabel label="Is Damaged?" />
+                    <FormLabel label="Damaged" />
                     <div className="mt-1 grid grid-cols-3 gap-2">
                         {booleanOptions.map((opt) => (
                             <CheckboxCardOption
@@ -197,7 +218,7 @@ const FilterData = () => {
 
             {/* Trashed Filter */}
             <div className="mb-4">
-                <FormLabel label="Record Status" />
+                <FormLabel label="Status" />
                 <div className="mt-1 grid grid-cols-3 gap-3">
                     {trashedOptions.map((option) => (
                         <CheckboxCardOption

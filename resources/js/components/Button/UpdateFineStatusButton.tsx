@@ -75,7 +75,7 @@ const UpdateFineStatusButton = ({ currentStatus, updatePath, status, permission,
                               ],
                     )}
                 >
-                    {activeOption?.label || 'Unknown'}
+                    {t(activeOption?.label || '') || 'Unknown'}
                     <EditIcon className="size-3 opacity-80" />
                 </button>
             </DialogTrigger>
@@ -101,7 +101,7 @@ const UpdateFineStatusButton = ({ currentStatus, updatePath, status, permission,
                                         : 'border-muted bg-transparent text-muted-foreground hover:border-muted-foreground/50',
                                 )}
                             >
-                                {option.label}
+                                {t(option.label)}
                                 <div
                                     className={cn(
                                         'flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all',

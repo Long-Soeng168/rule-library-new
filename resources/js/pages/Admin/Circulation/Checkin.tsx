@@ -7,11 +7,13 @@ import { ProgressWithValue } from '@/components/ProgressBar/progress-with-value'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import useTranslation from '@/hooks/use-translation';
 import { useForm } from '@inertiajs/react';
 import CheckinAndCheckoutLayout from './CheckinAndCheckoutLayout';
 import RecentCheckins from './RecentCheckins';
 
 export default function CirculationDesk() {
+    const { t } = useTranslation();
     const [flashMessage, setFlashMessage] = useState<{ message: string; type: string }>({
         message: '',
         type: 'message',
@@ -58,16 +60,16 @@ export default function CirculationDesk() {
 
                     <Card className="gap-0 border-primary p-0 shadow-none ring-3 ring-primary/10">
                         <CardHeader className="p-3 pt-5">
-                            <CardTitle className="flex items-center gap-2 text-sm font-bold tracking-widest text-muted-foreground uppercase">
-                                <Barcode className="size-4" /> Return Item
+                            <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+                                <Barcode className="size-4" /> {t('Check In')}
                             </CardTitle>
-                            <CardDescription>Scan barcode to process Checkin</CardDescription>
+                            <CardDescription>{t('Scan barcode to process Checkin')}</CardDescription>
                         </CardHeader>
                         <CardContent className="p-3">
                             <form onSubmit={onSubmit} className="space-y-4">
                                 <Input
                                     autoFocus
-                                    placeholder="Enter Barcode..."
+                                    placeholder={t('Enter Barcode...')}
                                     className={`dark:border-white/20 dark:focus-within:border-primary ${errors.item_physical_copy_barcode ? 'border-destructive ring-4 ring-destructive/10' : ''} py-6 font-mono text-lg focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20`}
                                     value={selectedBarcode}
                                     onChange={(e) => setSelectedBarcode(e.target.value)}
@@ -76,7 +78,7 @@ export default function CirculationDesk() {
 
                                 {progress && <ProgressWithValue value={progress.percentage} position="start" />}
 
-                                <Button className="h-12 w-full font-bold" type="submit">
+                                <Button className="h-12 w-full font-semibold" type="submit">
                                     {processing ? (
                                         <span className="mr-2 size-6 animate-spin">
                                             <LoaderCircleIcon />
@@ -86,7 +88,7 @@ export default function CirculationDesk() {
                                             <ArrowDownCircle className="mr-2" />
                                         </span>
                                     )}
-                                    Check In
+                                    {t('Check In')}
                                 </Button>
                             </form>
                         </CardContent>

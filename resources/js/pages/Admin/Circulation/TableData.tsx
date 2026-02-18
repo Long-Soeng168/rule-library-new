@@ -8,12 +8,14 @@ import TableCellDate from '@/components/Table/TableCellDate';
 import TableCellText from '@/components/Table/TableCellText';
 import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
+import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowDownLeft, ArrowUpRight, Clock } from 'lucide-react';
 
 const TableData = () => {
     const { tableData } = usePage<any>().props;
+    const { t } = useTranslation();
 
     return (
         <>
@@ -24,7 +26,7 @@ const TableData = () => {
                             <TableHeadWithSort field="id" label="ID" />
                             <TableHeadWithSort label="Action" />
                             <TableHeadWithSort label="User" />
-                            <TableHeadWithSort label="Item / Barcode" />
+                            <TableHeadWithSort label="Title / Barcode" />
                             <TableHeadWithSort field="borrowed_at" label="Timeline (Out/Due/In)" />
                             <TableHeadWithSort field="fine_amount" label="Fine" />
                             <TableHeadWithSort field="created_at" label="Issued by" />
@@ -57,11 +59,11 @@ const TableData = () => {
                                     <Link href={`/admin/users/${item.borrower?.id}`} className="group flex items-center gap-3">
                                         <TableCellAvatar alt={item.borrower?.name} image={`/assets/images/users/thumb/${item.borrower?.image}`} />
                                         <div className="flex flex-col">
-                                            <span className="line-clamp-1 text-xs leading-tight font-medium text-foreground group-hover:underline">
+                                            <span className="line-clamp-1 text-sm leading-tight font-medium text-foreground group-hover:underline">
                                                 {item.borrower?.name || 'Unknown User'}
                                             </span>
-                                            <span className="mt-0.5 shrink-0 text-xs font-semibold whitespace-nowrap text-muted-foreground">
-                                                Card: {item.borrower?.card_number ?? '---'}
+                                            <span className="mt-0.5 shrink-0 text-sm font-semibold whitespace-nowrap text-muted-foreground">
+                                                {t('Card')}: {item.borrower?.card_number ?? '---'}
                                             </span>
                                         </div>
                                     </Link>
@@ -76,7 +78,7 @@ const TableData = () => {
                                             </span>
                                             <div className="mt-0.5 flex items-center gap-2">
                                                 <span className="rounded bg-primary/10 px-1 font-mono text-[10px] font-medium text-primary">
-                                                    Bardcode: {item.item_physical_copy?.barcode}
+                                                    {t('Barcode')}: {item.item_physical_copy?.barcode}
                                                 </span>
                                             </div>
                                         </div>
@@ -94,11 +96,11 @@ const TableData = () => {
                                         const showWarning = isOverdueAndOut || isLateAndUnpaid;
 
                                         return (
-                                            <div className="flex w-fit flex-col font-mono text-[10px] leading-tight tracking-tighter uppercase">
+                                            <div className="flex w-fit flex-col font-mono text-[12px] leading-tight tracking-tighter uppercase">
                                                 {/* Borrowed At */}
                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-6 text-muted-foreground/60">OUT</span>
-                                                    <span className="text-foreground">{item.borrowed_at}</span>
+                                                    <span className="w-9 text-muted-foreground/60">{t('Out')}</span>
+                                                    <span className="text-foreground">: {item.borrowed_at}</span>
                                                     <ArrowUpRight className="size-3 text-blue-500/40" />
                                                 </div>
 
@@ -108,16 +110,14 @@ const TableData = () => {
                                                 <div className="flex items-center gap-2">
                                                     <span
                                                         className={cn(
-                                                            'w-6 text-muted-foreground/40',
-                                                            showWarning ? 'font-medium text-destructive' : 'text-muted-foreground/40',
+                                                            'w-9 text-muted-foreground/40',
+                                                            showWarning ? 'font-medium text-destructive' : 'text-muted-foreground/60',
                                                         )}
                                                     >
-                                                        DUE
+                                                        {t('Due')}
                                                     </span>
-                                                    <span
-                                                        className={cn('font-medium', showWarning ? 'text-destructive' : 'text-muted-foreground/80')}
-                                                    >
-                                                        {item.due_at}
+                                                    <span className={cn('font-medium', showWarning ? 'text-destructive' : 'text-muted-foreground')}>
+                                                        : {item.due_at}
                                                     </span>
                                                     <div className="flex size-3 items-center justify-center">
                                                         <Clock
@@ -130,7 +130,7 @@ const TableData = () => {
 
                                                 {/* Returned At */}
                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-6 text-muted-foreground/60">IN</span>
+                                                    <span className="w-9 text-muted-foreground/60">{t('In')}</span>
                                                     <span
                                                         className={cn(
                                                             'font-medium',
@@ -141,7 +141,7 @@ const TableData = () => {
                                                                   : 'animate-pulse text-orange-500',
                                                         )}
                                                     >
-                                                        {item.returned_at ?? (showWarning ? 'On Loan (Overdue)' : 'On Loan')}
+                                                        : {item.returned_at ?? (showWarning ? t('On Loan (Overdue)') : t('On Loan'))}
                                                     </span>
                                                     <ArrowDownLeft
                                                         className={cn(
@@ -172,7 +172,7 @@ const TableData = () => {
                                                     : 'text-muted-foreground/30',
                                             )}
                                         >
-                                            {parseFloat(item.fine_amount) > 0 ? `$${item.fine_amount}` : '—'}
+                                            {parseFloat(item.fine_amount) > 0 ? `${item.fine_amount}` : '—'}
                                         </span>
                                         {parseFloat(item.fine_amount) > 0 && (
                                             <UpdateFineStatusButton
@@ -191,7 +191,7 @@ const TableData = () => {
 
                                 {/* 7. Issued by */}
                                 <TableCell>
-                                    <span className="flex flex-col gap-0.5 text-[11px] leading-tight whitespace-nowrap text-muted-foreground">
+                                    <span className="flex flex-col gap-0.5 text-sm leading-tight whitespace-nowrap text-muted-foreground">
                                         <p className="font-semibold text-foreground/80">{item.created_user?.name || 'System'}</p>
                                         <TableCellDate className="p-0" value={item.created_at} />
                                     </span>

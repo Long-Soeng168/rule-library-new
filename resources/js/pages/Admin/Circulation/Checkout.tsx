@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import useTranslation from '@/hooks/use-translation';
 import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { useForm, usePage } from '@inertiajs/react';
 import CheckinAndCheckoutLayout from './CheckinAndCheckoutLayout';
@@ -16,6 +17,7 @@ import RecentCheckouts from './RecentCheckouts';
 import UserCheckoutSearch from './UserCheckoutSearch';
 
 export default function CirculationDesk() {
+    const { t } = useTranslation();
     const [flashMessage, setFlashMessage] = useState<{ message: string; type: string }>({
         message: '',
         type: 'message',
@@ -88,33 +90,35 @@ export default function CirculationDesk() {
                                             className="overflow-hidden rounded"
                                             alt={selectedUser.name}
                                         />
-                                        <AvatarFallback className="rounded bg-primary/10 font-bold text-primary">
+                                        <AvatarFallback className="rounded bg-primary/10 font-semibold text-primary">
                                             {selectedUser.name?.substring(0, 2).toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="flex flex-col gap-1">
                                         <a target="_blank" href={`/admin/users/${selectedUser?.id}`} className="group w-fit">
-                                            <p className="text-lg leading-none font-bold text-primary group-hover:underline">{selectedUser.name}</p>
+                                            <p className="text-lg leading-none font-semibold text-primary group-hover:underline">
+                                                {selectedUser.name}
+                                            </p>
                                         </a>
 
                                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
                                             <div className="flex items-center gap-1">
-                                                <span className="text-[10px] font-semibold text-muted-foreground">Card:</span>
+                                                <span className="text-[12px] font-medium text-muted-foreground">{t('Card')}:</span>
                                                 <span className="rounded bg-muted px-1.5 text-base font-medium text-foreground">
                                                     {selectedUser.card_number ?? '---'}
                                                 </span>
                                             </div>
 
                                             <div className="flex items-center gap-1">
-                                                <span className="text-[12px] font-semibold text-muted-foreground">Phone: </span>
+                                                <span className="text-[12px] font-medium text-muted-foreground">{t('Phone')}: </span>
                                                 <span className="text-sm font-medium">{selectedUser.phone ?? '---'}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 {selectedUser.expired_at && (
-                                    <div className="flex items-center justify-between pb-2 text-[12px] font-semibold">
-                                        <span className="text-muted-foreground">Account Expires: </span>
+                                    <div className="flex items-center justify-between pb-2 text-sm font-medium">
+                                        <span className="text-muted-foreground">{t('Account Expires')}: </span>
                                         <span
                                             className={cn(
                                                 'transition-colors',
@@ -132,13 +136,13 @@ export default function CirculationDesk() {
                                         <div className="flex items-center gap-3 text-[13px]">
                                             <span className="flex items-center gap-1.5 font-medium text-muted-foreground/80">
                                                 <ArrowRightLeft className="size-3.5" />
-                                                Active Loans
+                                                {t('Active Loans')}
                                             </span>
                                             <span className="h-3 w-px bg-border" /> {/* Vertical Separator */}
-                                            <span className="font-bold text-primary">{selectedUser?.total_active_loan ?? 0}</span>
+                                            <span className="font-semibold text-primary">{selectedUser?.total_active_loan ?? 0}</span>
                                         </div>
                                         <Button variant="outline" size="sm" onClick={() => setSelectedUser(null)} className="rounded">
-                                            <X className="size-4" /> Cancel
+                                            <X className="size-4" /> {t('Cancel')}
                                         </Button>
                                     </div>
                                 </div>
@@ -147,8 +151,8 @@ export default function CirculationDesk() {
                     ) : (
                         <Card className="gap-0 border-primary p-0 shadow-none ring-3 ring-primary/10">
                             <CardHeader className="p-3 pt-5 pb-0">
-                                <CardTitle className="flex items-center gap-2 text-sm font-black text-muted-foreground uppercase">
-                                    <User className="size-3.5 text-primary" /> 1. Select User
+                                <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+                                    <User className="size-3.5 text-primary" /> 1. {t('Select Borrower')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-3 pt-0 pr-0">
@@ -188,7 +192,7 @@ export default function CirculationDesk() {
 
                                                             {/* Patron ID / Card Number */}
                                                             <div className="flex items-center gap-1.5">
-                                                                <span className="text-[13px] text-muted-foreground">Card:</span>
+                                                                <span className="text-[13px] text-muted-foreground">{t('Card')}:</span>
                                                                 <span className="rounded-sm bg-muted px-1.5 py-0.5 text-[14px] font-medium text-primary ring-1 ring-foreground/5 ring-inset">
                                                                     {user.card_number ?? '---'}
                                                                 </span>
@@ -207,16 +211,16 @@ export default function CirculationDesk() {
                     {selectedUser && (
                         <Card className="gap-0 border-primary p-0 shadow-none ring-3 ring-primary/10">
                             <CardHeader className="p-3 pt-5">
-                                <CardTitle className="flex items-center gap-2 text-sm font-bold tracking-widest text-muted-foreground uppercase">
-                                    <Barcode className="size-4" /> 2. Scan Item
+                                <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+                                    <Barcode className="size-4" /> 2. {t('Check Out')}
                                 </CardTitle>
-                                <CardDescription>Scan barcode to process Checkout</CardDescription>
+                                <CardDescription>{t('Scan barcode to process Checkout')}</CardDescription>
                             </CardHeader>
                             <CardContent className="p-3">
                                 <form onSubmit={onSubmit} className="space-y-4">
                                     <Input
                                         autoFocus
-                                        placeholder="Enter Barcode..."
+                                        placeholder={t('Enter Barcode...')}
                                         className={`dark:border-white/20 dark:focus-within:border-primary ${errors.item_physical_copy_barcode ? 'border-destructive ring-4 ring-destructive/10' : ''} py-6 font-mono text-lg focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20`}
                                         value={selectedBarcode}
                                         onChange={(e) => setSelectedBarcode(e.target.value)}
@@ -225,7 +229,7 @@ export default function CirculationDesk() {
                                     {/* Checkoute */}
                                     {progress && <ProgressWithValue value={progress.percentage} position="start" />}
 
-                                    <Button className="h-12 w-full font-bold" type="submit">
+                                    <Button className="h-12 w-full font-semibold" type="submit">
                                         {processing ? (
                                             <span className="mr-2 size-6 animate-spin">
                                                 <LoaderCircleIcon />
@@ -235,7 +239,7 @@ export default function CirculationDesk() {
                                                 <ArrowUpCircle className="mr-2" />
                                             </span>
                                         )}
-                                        Check Out
+                                        {t('Check Out')}
                                     </Button>
                                 </form>
                             </CardContent>

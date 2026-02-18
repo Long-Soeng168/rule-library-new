@@ -14,8 +14,8 @@ import { useState } from 'react';
 
 // Koha Authorized Values for Flags
 const NOT_FOR_LOAN_OPTIONS = [
-    { label: 'For Loan', label_kh: 'អាចខ្ចីបាន', value: '0' },
-    { label: 'Not for Loan', label_kh: 'មិនសម្រាប់ខ្ចី', value: '1' },
+    { label: 'Yes', label_kh: 'អាចខ្ចីបាន', value: '0' },
+    { label: 'No', label_kh: 'មិនអាចខ្ចីបាន', value: '1' },
 ];
 
 const ITEM_LOST_OPTIONS = [
@@ -101,7 +101,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Items', href: '/admin/items' },
         { title: itemRecord?.name, href: `/admin/items/${itemRecord?.id}?view_physical_copies=1` },
-        { title: editData?.id ? `Edit Physical Copy (Barcode: ${editData?.barcode})` : 'Add Physical Copy', href: '#' },
+        { title: editData?.id ? `${t('Edit Physical Copy')} (${t('Barcode')}: ${editData?.barcode})` : 'Add Physical Copy', href: '#' },
     ];
 
     return (
@@ -193,14 +193,16 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 <div className="grid grid-cols-1 gap-4 rounded-lg border bg-gray-50 p-4 md:grid-cols-4 dark:bg-white/5">
                     <FormCombobox
                         name="not_for_loan"
-                        label="Loan Status"
+                        label="Allow Checkout"
+                        searchPlaceholder="Search..."
                         options={NOT_FOR_LOAN_OPTIONS.map((o) => ({ value: o.value, label: currentLocale === 'kh' ? o.label_kh : o.label }))}
                         value={data.not_for_loan.toString()}
                         onChange={(val) => setData('not_for_loan', parseInt(val))}
                     />
                     <FormCombobox
                         name="item_lost"
-                        label="Lost Status"
+                        label="Lost"
+                        searchPlaceholder="Search..."
                         options={ITEM_LOST_OPTIONS.map((o) => ({ value: o.value, label: currentLocale === 'kh' ? o.label_kh : o.label }))}
                         value={data.item_lost.toString()}
                         onChange={(val) => setData('item_lost', parseInt(val))}
@@ -208,6 +210,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                     <FormCombobox
                         name="damaged"
                         label="Damaged"
+                        searchPlaceholder="Search..."
                         options={[
                             { label: 'No', value: '0' },
                             { label: 'Yes', value: '1' },
@@ -218,6 +221,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                     <FormCombobox
                         name="withdrawn"
                         label="Withdrawn"
+                        searchPlaceholder="Search..."
                         options={[
                             { label: 'No', value: '0' },
                             { label: 'Yes', value: '1' },

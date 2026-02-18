@@ -75,8 +75,8 @@ const QRCodeGenerator = () => {
 
     return (
         <FrontPageLayout>
-            <div className="flex min-h-screen flex-col items-center bg-slate-50 p-4 md:p-10 dark:bg-zinc-950">
-                <div className="grid w-full max-w-6xl gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-12">
+            <div className="flex min-h-screen flex-col items-center bg-slate-50 p-4 py-6 dark:bg-zinc-950">
+                <div className="section-container grid w-full gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-12">
                     {/* SETTINGS PANEL */}
                     <Card className="order-2 gap-0 overflow-hidden border-none py-0 lg:order-1 dark:bg-muted/30">
                         <CardHeader className="border-b bg-white px-4 py-4 md:px-6 dark:bg-zinc-900">

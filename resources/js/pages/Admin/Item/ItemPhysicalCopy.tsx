@@ -7,7 +7,7 @@ import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableHeader, TableRow } from '@/components/ui/table';
 import useTranslation from '@/hooks/use-translation';
-import { cn } from '@/lib/utils';
+import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { EditIcon } from 'lucide-react';
 
@@ -32,13 +32,13 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
             <Table>
                 <TableHeader className="table-header">
                     <TableRow>
-                        <TableHeadWithSort label="Actions" />
+                        <TableHeadWithSort label="Action" />
                         <TableHeadWithSort label="Barcode" />
                         <TableHeadWithSort label="Item Type" />
                         <TableHeadWithSort label="Library" />
                         <TableHeadWithSort label="Location" />
                         <TableHeadWithSort label="Call Number" />
-                        <TableHeadWithSort label="Status" />
+                        <TableHeadWithSort label="Loan Status" />
                         <TableHeadWithSort label="Unpublic Note" />
                         <TableHeadWithSort label="Public Note" />
                     </TableRow>
@@ -88,15 +88,15 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
                                 <TableCellText value={item.full_call_number ?? '---'} className="font-mono text-xs" />
 
                                 {/* 7. Computed Status Badge */}
-                                <TableCellActions tableCellClassName="px-0">
+                                <TableCellActions tableCellClassName="px-4">
                                     <div className="flex flex-col gap-1">
                                         <TableCellBadge
                                             value={currentLocale === 'kh' ? status.label_kh : status.label}
                                             className={cn(
-                                                'rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase',
+                                                'rounded-full border px-2 py-0.5 text-[12px] font-semibold',
                                                 // Simple logic based on the label
                                                 status.label === 'Overdue' &&
-                                                    'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400',
+                                                    'border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-500',
                                                 status.label === 'On Loan' &&
                                                     'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400',
                                                 status.label === 'Not for Loan' &&
@@ -106,8 +106,13 @@ const ItemCopiesTable = ({ copies, showData }: { copies: any[]; showData: any })
                                             )}
                                         />
                                         {item.due_at && (
-                                            <span className="text-[9px] font-semibold text-muted-foreground">
-                                                {t('Due')}: {new Date(item.due_at).toLocaleDateString()}
+                                            <span
+                                                className={cn(
+                                                    'text-[12px] font-medium text-foreground',
+                                                    status.label === 'Overdue' && 'text-red-700 dark:text-red-500',
+                                                )}
+                                            >
+                                                {t('Due')}: {formatToKhmerDateTime(item.due_at, false, true)}
                                             </span>
                                         )}
                                     </div>

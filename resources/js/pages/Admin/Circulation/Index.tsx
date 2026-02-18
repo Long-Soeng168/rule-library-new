@@ -2,6 +2,7 @@ import NewItemButton from '@/components/Button/NewItemButton';
 import RefreshButton from '@/components/Button/RefreshButton';
 import PaginationTabs from '@/components/Pagination/PaginationTabs';
 import TableDataSearch from '@/components/Search/TableDataSearch';
+import useTranslation from '@/hooks/use-translation';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
@@ -14,12 +15,13 @@ const Index = () => {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         {
-            title: 'Circulation History',
+            title: 'Circulations',
             href: '/admin/circulations',
         },
     ];
 
     const { url } = usePage();
+    const { t } = useTranslation();
 
     const filters = [
         { label: 'All', value: null, icon: History },
@@ -63,13 +65,7 @@ const Index = () => {
                                 >
                                     <button
                                         className={cn(
-                                            // Layout & Shape
                                             'group relative flex h-9 cursor-pointer items-center justify-center rounded-xs px-4',
-                                            // Transitions & Interactions
-                                            'transition-all duration-300 ease-out outline-none active:scale-95',
-                                            // Typography
-                                            'text-[11px] font-black tracking-widest whitespace-nowrap uppercase',
-                                            // State Logic
                                             isActive
                                                 ? 'bg-white text-primary ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/50'
                                                 : 'text-muted-foreground hover:bg-white/50 hover:text-foreground dark:hover:bg-zinc-800/50',
@@ -81,13 +77,8 @@ const Index = () => {
                                                 isActive ? 'text-primary' : 'text-muted-foreground/60',
                                             )}
                                         />
-                                        <span
-                                            className={cn(
-                                                'text-[11px] font-black tracking-widest uppercase transition-colors',
-                                                isActive ? 'opacity-100' : 'opacity-70',
-                                            )}
-                                        >
-                                            {filter.label}
+                                        <span className={cn('text-sm font-semibold transition-colors', isActive ? 'opacity-100' : 'opacity-70')}>
+                                            {t(filter.label)}
                                         </span>
 
                                         {/* Animated Glow Line Indicator */}
