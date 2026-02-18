@@ -229,7 +229,7 @@ export default function CirculationDesk() {
                                     {/* Checkoute */}
                                     {progress && <ProgressWithValue value={progress.percentage} position="start" />}
 
-                                    <Button className="h-12 w-full font-semibold" type="submit">
+                                    <Button disabled={processing} className="h-12 w-full font-semibold" type="submit">
                                         {processing ? (
                                             <span className="mr-2 size-6 animate-spin">
                                                 <LoaderCircleIcon />
