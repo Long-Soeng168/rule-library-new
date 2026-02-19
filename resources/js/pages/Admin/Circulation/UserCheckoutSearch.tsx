@@ -71,6 +71,7 @@ const UserCheckoutSearch = ({ placeholder = 'Search...', className, onSearch, va
                         setSearch(e.target.value);
                         debouncedSearch(e.target.value);
                     }}
+                    autoFocus
                     onKeyDown={handleKeyDown}
                     className="flex-1 border-0 bg-background text-lg shadow-none focus-visible:ring-0 sm:text-lg"
                 />

@@ -141,7 +141,15 @@ export default function CirculationDesk() {
                                             <span className="h-3 w-px bg-border" /> {/* Vertical Separator */}
                                             <span className="font-semibold text-primary">{selectedUser?.total_active_loan ?? 0}</span>
                                         </div>
-                                        <Button variant="outline" size="sm" onClick={() => setSelectedUser(null)} className="rounded">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => {
+                                                setSelectedUser(null);
+                                                setSelectedBarcode('');
+                                            }}
+                                            className="rounded"
+                                        >
                                             <X className="size-4" /> {t('Cancel')}
                                         </Button>
                                     </div>

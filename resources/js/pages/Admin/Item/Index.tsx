@@ -1,3 +1,4 @@
+import ExportButton from '@/components/Button/ExportButton';
 import NewItemButton from '@/components/Button/NewItemButton';
 import RefreshButton from '@/components/Button/RefreshButton';
 import PaginationTabs from '@/components/Pagination/PaginationTabs';
@@ -27,8 +28,9 @@ const Index = () => {
                         <TableDataSearch />
                         <RefreshButton />
                     </div>
-                    <div className="flex w-full justify-end md:w-auto">
+                    <div className="flex w-full justify-end gap-2 md:w-auto">
                         {/* Add New Dialog */}
+                        <ExportButton endpoint="/items-export" label="Export Excel" />
                         <NewItemButton url={`/admin/items/create?main_category_code=${main_category_code || ''}`} permission="item create" />
                     </div>
                 </div>

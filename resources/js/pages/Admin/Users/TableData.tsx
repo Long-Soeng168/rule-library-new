@@ -12,6 +12,7 @@ import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
 import useTranslation from '@/hooks/use-translation';
+import { formatToKhmerDateTime } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 
 const TableData = () => {
@@ -25,6 +26,7 @@ const TableData = () => {
                     <TableHeader className="table-header">
                         <TableRow>
                             <TableHeadWithSort field="id" label="ID" />
+                            <TableHeadWithSort field="card_number" label="Card Number" />
                             <TableHeadWithSort label="Action" />
                             <TableHeadWithSort label="Image" />
                             <TableHeadWithSort field="title_type_code" label="Honorific" />
@@ -34,6 +36,9 @@ const TableData = () => {
                             <TableHeadWithSort field="email" label="Email" />
                             <TableHeadWithSort field="phone" label="Phone" />
                             <TableHeadWithSort label="Total Resources" />
+                            <TableHeadWithSort field="total_active_loan" label="Total Active Loan" />
+                            <TableHeadWithSort field="total_checkouts" label="Total Checkouts" />
+                            <TableHeadWithSort field="expired_at" label="Expired at" />
                             <TableHeadWithSort field="created_at" label="Created at" />
                             <TableHeadWithSort field="created_by" label="Created by" />
                             <TableHeadWithSort field="updated_at" label="Updated at" />
@@ -44,6 +49,7 @@ const TableData = () => {
                         {tableData?.data?.map((item: any, index: number) => (
                             <TableRow className="table-row" key={item.id}>
                                 <TableCellText value={item.id} />
+                                <TableCellText value={item.card_number} />
                                 <TableCellActions>
                                     {item.deleted_at ? (
                                         <RecoverItem
@@ -111,6 +117,13 @@ const TableData = () => {
                                         )}
                                     </div>
                                 </TableCell>
+
+                                <TableCellText value={item.total_active_loan} />
+                                <TableCellText value={item.total_checkouts} />
+                                <TableCellText
+                                    value={formatToKhmerDateTime(item.expired_at, false, true)}
+                                    className={`font-semibold ${!item.expired_at ? '' : new Date(item.expired_at) < new Date() ? 'text-red-600' : 'text-green-600'} `}
+                                />
                                 <TableCellDate value={item.created_at} />
                                 <TableCellText value={item.created_user?.name} />
                                 <TableCellDate value={item.updated_at} />

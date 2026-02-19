@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ItemPhysicalCopyExport;
 use App\Helpers\FileHelper;
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
@@ -22,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemPhysicalCopyController extends Controller implements HasMiddleware
 {
@@ -278,5 +280,86 @@ class ItemPhysicalCopyController extends Controller implements HasMiddleware
         $item_physical_copy = ItemPhysicalCopy::where('barcode', $physical_copy_barcode)->firstOrFail();
         $item_physical_copy->delete(); // this will now just set deleted_at timestamp
         return redirect()->back()->with('success', 'Physical copy deleted successfully.');
+    }
+
+    // EXPORT
+    public function export_item_physical_copies(Request $request)
+    {
+        $search = $request->input('search', '');
+        $sortBy = $request->input('sortBy', 'id');
+        $sortDirection = $request->input('sortDirection', 'desc');
+
+        $shelf_location_code = $request->input('shelf_location_code');
+        $current_library_code = $request->input('current_library_code');
+        $home_library_code = $request->input('home_library_code');
+        $item_type_code = $request->input('item_type_code');
+        $item_lost = $request->input('item_lost');
+        $not_for_loan = $request->input('not_for_loan');
+        $damaged = $request->input('damaged');
+        $withdrawn = $request->input('withdrawn');
+        $trashed = $request->input('trashed');
+
+        $query = ItemPhysicalCopy::query();
+
+        // SAME FILTERS AS INDEX
+        if ($shelf_location_code) {
+            $query->where('shelf_location_code', $shelf_location_code);
+        }
+        if ($current_library_code) {
+            $query->where('current_library_code', $current_library_code);
+        }
+        if ($home_library_code) {
+            $query->where('home_library_code', $home_library_code);
+        }
+        if ($item_type_code) {
+            $query->where('item_type_code', $item_type_code);
+        }
+
+        if ($item_lost !== null && $item_lost !== '') {
+            $query->where('item_lost', $item_lost);
+        }
+        if ($not_for_loan !== null && $not_for_loan !== '') {
+            $query->where('not_for_loan', $not_for_loan);
+        }
+        if ($damaged !== null && $damaged !== '') {
+            $query->where('damaged', $damaged);
+        }
+        if ($withdrawn !== null && $withdrawn !== '') {
+            $query->where('withdrawn', $withdrawn);
+        }
+
+        // TRASH FILTER (you forgot this)
+        if ($trashed === 'with') {
+            $query->withTrashed();
+        } elseif ($trashed === 'only') {
+            $query->onlyTrashed();
+        }
+
+        // SEARCH
+        if ($search) {
+            $query->where(function ($sub_query) use ($search) {
+                $sub_query->where('barcode', 'LIKE', "%{$search}%")
+                    ->orWhere('id', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // SORT (also missing)
+        $query->orderBy($sortBy, $sortDirection);
+
+        // EAGER LOAD
+        $query->with([
+            'created_user',
+            'updated_user',
+            'item',
+            'item_type',
+            'shelf_location',
+            'home_library',
+            'current_library'
+        ]);
+
+        return Excel::download(
+            new ItemPhysicalCopyExport($query->get()),
+            'physical_items.xlsx'
+        );
     }
 }

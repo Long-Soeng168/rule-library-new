@@ -9,7 +9,7 @@ import TableCellText from '@/components/Table/TableCellText';
 import TableHeadWithSort from '@/components/Table/TableHeadWithSort';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
 import useTranslation from '@/hooks/use-translation';
-import { cn } from '@/lib/utils';
+import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowDownLeft, ArrowUpRight, Clock } from 'lucide-react';
 
@@ -59,10 +59,10 @@ const TableData = () => {
                                     <Link href={`/admin/users/${item.borrower?.id}`} className="group flex items-center gap-3">
                                         <TableCellAvatar alt={item.borrower?.name} image={`/assets/images/users/thumb/${item.borrower?.image}`} />
                                         <div className="flex flex-col">
-                                            <span className="line-clamp-1 text-sm leading-tight font-medium text-foreground group-hover:underline">
+                                            <span className="line-clamp-1 font-medium text-foreground group-hover:underline">
                                                 {item.borrower?.name || 'Unknown User'}
                                             </span>
-                                            <span className="mt-0.5 shrink-0 text-sm font-semibold whitespace-nowrap text-muted-foreground">
+                                            <span className="mt-0.5 shrink-0 font-semibold whitespace-nowrap text-muted-foreground">
                                                 {t('Card')}: {item.borrower?.card_number ?? '---'}
                                             </span>
                                         </div>
@@ -73,11 +73,11 @@ const TableData = () => {
                                 <TableCell className="min-w-[200px]">
                                     <Link href={`/admin/items/${item.item_physical_copy?.item?.id}`} className="group flex items-center gap-3">
                                         <div className="flex flex-col">
-                                            <span className="line-clamp-1 text-sm font-medium text-foreground group-hover:underline">
+                                            <span className="line-clamp-1 font-medium text-foreground group-hover:underline">
                                                 {item.item_physical_copy?.item?.name || 'No Title Associated'}
                                             </span>
                                             <div className="mt-0.5 flex items-center gap-2">
-                                                <span className="rounded bg-primary/10 px-1 font-mono text-[10px] font-medium text-primary">
+                                                <span className="rounded bg-primary/10 px-1 font-mono font-medium text-primary">
                                                     {t('Barcode')}: {item.item_physical_copy?.barcode}
                                                 </span>
                                             </div>
@@ -96,11 +96,11 @@ const TableData = () => {
                                         const showWarning = isOverdueAndOut || isLateAndUnpaid;
 
                                         return (
-                                            <div className="flex w-fit flex-col font-mono text-[12px] leading-tight tracking-tighter uppercase">
+                                            <div className="flex w-fit flex-col font-mono tracking-tighter uppercase">
                                                 {/* Borrowed At */}
                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-9 text-muted-foreground/60">{t('Out')}</span>
-                                                    <span className="text-foreground">: {item.borrowed_at}</span>
+                                                    <span className="w-11 text-muted-foreground">{t('Out')}</span>
+                                                    <span className="text-foreground">: {formatToKhmerDateTime(item.borrowed_at, false, true)}</span>
                                                     <ArrowUpRight className="size-3 text-blue-500/40" />
                                                 </div>
 
@@ -110,14 +110,14 @@ const TableData = () => {
                                                 <div className="flex items-center gap-2">
                                                     <span
                                                         className={cn(
-                                                            'w-9 text-muted-foreground/40',
-                                                            showWarning ? 'font-medium text-destructive' : 'text-muted-foreground/60',
+                                                            'w-11 text-muted-foreground',
+                                                            showWarning ? 'font-medium text-destructive' : 'text-muted-foreground',
                                                         )}
                                                     >
                                                         {t('Due')}
                                                     </span>
                                                     <span className={cn('font-medium', showWarning ? 'text-destructive' : 'text-muted-foreground')}>
-                                                        : {item.due_at}
+                                                        : {formatToKhmerDateTime(item.due_at, false, true)}
                                                     </span>
                                                     <div className="flex size-3 items-center justify-center">
                                                         <Clock
@@ -130,7 +130,7 @@ const TableData = () => {
 
                                                 {/* Returned At */}
                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-9 text-muted-foreground/60">{t('In')}</span>
+                                                    <span className="w-11 text-muted-foreground">{t('In')}</span>
                                                     <span
                                                         className={cn(
                                                             'font-medium',
@@ -141,7 +141,9 @@ const TableData = () => {
                                                                   : 'animate-pulse text-orange-500',
                                                         )}
                                                     >
-                                                        : {item.returned_at ?? (showWarning ? t('On Loan (Overdue)') : t('On Loan'))}
+                                                        :{' '}
+                                                        {formatToKhmerDateTime(item.returned_at, false, true) ??
+                                                            (showWarning ? t('On Loan (Overdue)') : t('On Loan'))}
                                                     </span>
                                                     <ArrowDownLeft
                                                         className={cn(
@@ -164,7 +166,7 @@ const TableData = () => {
                                     <div className="flex flex-col items-start leading-none">
                                         <span
                                             className={cn(
-                                                'font-mono text-sm font-medium',
+                                                'font-mono font-medium',
                                                 parseFloat(item.fine_amount) > 0
                                                     ? item.fine_paid
                                                         ? 'text-green-600'
@@ -191,7 +193,7 @@ const TableData = () => {
 
                                 {/* 7. Issued by */}
                                 <TableCell>
-                                    <span className="flex flex-col gap-0.5 text-sm leading-tight whitespace-nowrap text-muted-foreground">
+                                    <span className="flex flex-col gap-0.5 whitespace-nowrap text-muted-foreground">
                                         <p className="font-semibold text-foreground/80">{item.created_user?.name || 'System'}</p>
                                         <TableCellDate className="p-0" value={item.created_at} />
                                     </span>

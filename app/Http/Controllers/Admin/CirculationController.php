@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\CirculationExport;
 use App\Http\Controllers\Controller;
 use App\Models\Circulation;
 use App\Models\CirculationRule;
@@ -14,6 +15,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CirculationController extends Controller implements HasMiddleware
 {
@@ -164,6 +166,10 @@ class CirculationController extends Controller implements HasMiddleware
                     'updated_by'       => $request->user()->id,
                 ]);
 
+                $item = $physical_copy->item;
+                $item->update([
+                    'total_checkouts'  => $item->total_checkouts + 1,
+                ]);
                 // 5. Increment User Counter
                 $borrower->increment('total_active_loan');
                 $borrower->increment('total_checkouts');
@@ -393,5 +399,60 @@ class CirculationController extends Controller implements HasMiddleware
     {
         $circulation->delete(); // this will now just set deleted_at timestamp
         return redirect()->back()->with('success', 'Circulation deleted successfully.');
+    }
+
+    // EXPORTS
+    public function export_circulations(Request $request)
+    {
+        $search = $request->input('search', '');
+        $sortBy = $request->input('sortBy', 'id');
+        $sortDirection = $request->input('sortDirection', 'desc');
+        $trashed = $request->input('trashed');
+        $filter_by = $request->input('filter_by');
+
+        $query = Circulation::query()
+            ->with([
+                'borrower:id,name,card_number,image',
+                'item_physical_copy.item:id,name,name_kh',
+                'created_user:id,name',
+                'updated_user:id,name'
+            ]);
+
+        // SAME FILTERS
+        if ($filter_by === 'on_loan') {
+            $query->whereNull('returned_at');
+        } elseif ($filter_by === 'returned') {
+            $query->whereNotNull('returned_at');
+        } elseif ($filter_by === 'overdue') {
+            $query->whereNull('returned_at')->where('due_at', '<', now());
+        } elseif ($filter_by === 'fine_unpaid') {
+            $query->where('fine_amount', '>', 0)->where('fine_paid', false);
+        } elseif ($filter_by === 'fine_paid') {
+            $query->where('fine_amount', '>', 0)->where('fine_paid', true);
+        }
+
+        // SEARCH
+        if ($search) {
+            $query->where(function ($sub_query) use ($search) {
+                $sub_query->where('id', 'LIKE', "%{$search}%")
+                    ->orWhereHas('borrower', function ($q) use ($search) {
+                        $q->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('card_number', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('item_physical_copy', function ($q) use ($search) {
+                        $q->where('barcode', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($trashed === 'with') {
+            $query->withTrashed();
+        } elseif ($trashed === 'only') {
+            $query->onlyTrashed();
+        }
+
+        $rows = $query->orderBy($sortBy, $sortDirection)->get();
+
+        return Excel::download(new CirculationExport($rows), 'circulations.xlsx');
     }
 }

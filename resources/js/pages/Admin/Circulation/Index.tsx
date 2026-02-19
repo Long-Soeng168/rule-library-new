@@ -1,3 +1,4 @@
+import ExportButton from '@/components/Button/ExportButton';
 import NewItemButton from '@/components/Button/NewItemButton';
 import RefreshButton from '@/components/Button/RefreshButton';
 import PaginationTabs from '@/components/Pagination/PaginationTabs';
@@ -7,7 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { AlertCircle, Banknote, BookOpen, CheckCircle2, History } from 'lucide-react';
+import { AlertCircle, ArrowLeftRightIcon, Banknote, BookOpen, CheckCircle2, History } from 'lucide-react';
 import FilterData from './FilterData';
 import TableData from './TableData';
 
@@ -48,7 +49,13 @@ const Index = () => {
 
                     <div className="flex w-full justify-end gap-2 md:w-auto">
                         {/* Link to the Circulation Desk (Scanner) */}
-                        <NewItemButton url="/admin/circulations-checkout" label="Check Out/In" permission="circulation create" />
+                        <ExportButton endpoint="/circulations-export" />
+                        <NewItemButton
+                            url="/admin/circulations-checkout"
+                            icon={ArrowLeftRightIcon}
+                            label="Check Out/In"
+                            permission="circulation create"
+                        />
                     </div>
                 </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\UserExport;
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Circulation;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -275,5 +276,45 @@ class UserController extends Controller implements HasMiddleware
 
         $user->delete(); // this will now just set deleted_at timestamp
         return redirect()->back()->with('success', 'User deleted successfully.');
+    }
+
+    // EXPORT
+    public function export_users(Request $request)
+    {
+        $perPage = $request->input('perPage', 10);
+        $search = $request->input('search', '');
+        $sortBy = $request->input('sortBy', 'id');
+        $sortDirection = $request->input('sortDirection', 'desc');
+        $role = $request->input('role');
+        $trashed = $request->input('trashed');
+
+        $query = User::query()->with('created_user', 'updated_user', 'roles', 'title');
+
+        if ($role) {
+            $query->whereHas('roles', function ($q) use ($role) {
+                $q->where('name', $role);
+            });
+        }
+
+        if ($trashed === 'with') {
+            $query->withTrashed();
+        } elseif ($trashed === 'only') {
+            $query->onlyTrashed();
+        }
+
+        if ($search) {
+            $query->where(function ($sub_query) use ($search) {
+                $sub_query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('name_kh', 'LIKE', "%{$search}%")
+                    ->orWhere('card_number', 'LIKE', "%{$search}%")
+                    ->orWhere('id', 'LIKE', "%{$search}%")
+                    ->orWhere('phone', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $rows = $query->orderBy($sortBy, $sortDirection)->get();
+
+        return Excel::download(new UserExport($rows), 'users.xlsx');
     }
 }

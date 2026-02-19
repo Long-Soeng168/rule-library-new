@@ -1,3 +1,4 @@
+import ExportButton from '@/components/Button/ExportButton';
 import RefreshButton from '@/components/Button/RefreshButton';
 import PaginationTabs from '@/components/Pagination/PaginationTabs';
 import TableDataSearch from '@/components/Search/TableDataSearch';
@@ -22,6 +23,10 @@ const Index = () => {
                         <FilterData />
                         <TableDataSearch />
                         <RefreshButton />
+                    </div>
+                    <div className="flex w-full justify-end gap-2 md:w-auto">
+                        {/* Add New Dialog */}
+                        <ExportButton endpoint="/item-physical-copies-export" label="Export Excel" />
                     </div>
                 </div>
                 <TableData />

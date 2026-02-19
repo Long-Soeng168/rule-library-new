@@ -26,9 +26,13 @@ const TableData = () => {
                             <TableHeadWithSort label="Image" />
                             <TableHeadWithSort field="name" label="Name" />
                             <TableHeadWithSort field="name_kh" label="Name Khmer" />
+                            <TableHeadWithSort field="status" label="Status" />
                             <TableHeadWithSort field="category_code" label="Category" />
                             <TableHeadWithSort field="file_type_code" label="File Type" />
-                            <TableHeadWithSort field="status" label="Status" />
+                            <TableHeadWithSort field="total_view_count" label="Total Views" />
+                            <TableHeadWithSort field="total_read_count" label="Total Reads" />
+                            <TableHeadWithSort field="total_download_count" label="Total Downloads" />
+                            <TableHeadWithSort field="total_checkouts" label="Total Checkouts" />
                             <TableHeadWithSort field="created_at" label="Created at" />
                             <TableHeadWithSort field="created_by" label="Created by" />
                             <TableHeadWithSort field="updated_at" label="Updated at" />
@@ -72,9 +76,13 @@ const TableData = () => {
                                 </TableCell>
                                 <TableCellText value={item.name} />
                                 <TableCellText value={item.name_kh} />
+                                <TableCellBadge value={item.status} className="capitalize" variant={item.status} />
                                 <TableCellText value={item.category?.name} />
                                 <TableCellText value={item.file_type?.name} />
-                                <TableCellBadge value={item.status} className="capitalize" variant={item.status} />
+                                <TableCellText value={item.total_view_count} />
+                                <TableCellText value={item.total_read_count} />
+                                <TableCellText value={item.total_download_count} />
+                                <TableCellText value={item.total_checkouts} />
                                 <TableCellDate value={item.created_at} />
                                 <TableCellText value={item.created_user?.name} />
                                 <TableCellDate value={item.updated_at} />

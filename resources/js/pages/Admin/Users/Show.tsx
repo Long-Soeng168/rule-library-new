@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import useTranslation from '@/hooks/use-translation';
 import AppLayout from '@/layouts/app-layout';
-import { cn } from '@/lib/utils';
+import { cn, formatToKhmerDateTime } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { AlertCircle, ArrowDownLeft, ArrowUpRight, Clock, CreditCard, Mail, Phone, UserIcon } from 'lucide-react';
@@ -40,12 +40,12 @@ const Show = () => {
                             <div className="flex items-center gap-2">
                                 <h1 className="font-semibold text-card-foreground md:text-xl">{userData.name}</h1>
                                 {userData.roles?.map((role: any) => (
-                                    <Badge key={role.id} variant="secondary" className="rounded text-xs">
+                                    <Badge key={role.id} variant="secondary" className="rounded">
                                         {role.name}
                                     </Badge>
                                 ))}
                             </div>
-                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-muted-foreground">
+                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-muted-foreground">
                                 <span className="flex items-center gap-1.5">
                                     <CreditCard className="size-3.5 opacity-70" /> {userData.card_number}
                                 </span>
@@ -83,10 +83,10 @@ const Show = () => {
                         <Table>
                             <TableHeader className="bg-muted/50">
                                 <TableRow className="border-none hover:bg-transparent">
-                                    <TableHead className="py-4 text-sm font-semibold text-muted-foreground">{t('Title / Barcode')}</TableHead>
-                                    <TableHead className="text-sm font-semibold text-muted-foreground">{t('Timeline (Out/Due/In)')}</TableHead>
-                                    <TableHead className="text-sm font-semibold text-muted-foreground">{t('Fine')}</TableHead>
-                                    <TableHead className="text-right text-sm font-semibold text-muted-foreground">{t('Status')}</TableHead>
+                                    <TableHead className="py-4 font-semibold text-muted-foreground">{t('Title / Barcode')}</TableHead>
+                                    <TableHead className="font-semibold text-muted-foreground">{t('Timeline (Out/Due/In)')}</TableHead>
+                                    <TableHead className="font-semibold text-muted-foreground">{t('Fine')}</TableHead>
+                                    <TableHead className="text-right font-semibold text-muted-foreground">{t('Status')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -97,11 +97,11 @@ const Show = () => {
                                             <TableCell className="py-4">
                                                 <div className="space-y-1">
                                                     <Link href={`/admin/items/${item.item_physical_copy?.item?.id}`}>
-                                                        <p className="line-clamp-1 text-sm font-medium text-foreground hover:underline">
+                                                        <p className="line-clamp-1 font-medium text-foreground hover:underline">
                                                             {item.item_physical_copy?.item?.name}
                                                         </p>
                                                     </Link>
-                                                    <div className="flex items-center gap-2 text-[12px] text-muted-foreground">
+                                                    <div className="flex items-center gap-2 text-muted-foreground">
                                                         <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono whitespace-nowrap text-foreground/80">
                                                             {t('Barcode')}: {item.item_physical_copy?.barcode}
                                                         </span>
@@ -112,23 +112,29 @@ const Show = () => {
                                             </TableCell>
 
                                             <TableCell>
-                                                <div className="flex w-fit shrink-0 flex-col gap-1 font-mono text-xs whitespace-nowrap">
+                                                <div className="flex w-fit shrink-0 flex-col gap-1 font-mono whitespace-nowrap">
                                                     <div className="flex items-center gap-3 text-foreground">
-                                                        <span className="w-9 text-muted-foreground">{t('Out')}</span>
-                                                        <span className="tabular-nums">: {item.borrowed_at}</span>
+                                                        <span className="w-11 text-muted-foreground">{t('Out')}</span>
+                                                        <span className="tabular-nums">: {formatToKhmerDateTime(item.borrowed_at, false, true)}</span>
                                                         <ArrowUpRight className="size-3 opacity-30" />
                                                     </div>
                                                     <div className="flex items-center gap-3 text-muted-foreground">
-                                                        <span className={cn('w-9', overdue ? 'font-bold text-destructive' : 'text-muted-foreground')}>
+                                                        <span
+                                                            className={cn('w-11', overdue ? 'font-bold text-destructive' : 'text-muted-foreground')}
+                                                        >
                                                             {t('Due')}
                                                         </span>
-                                                        <span className={cn('tabular-nums', overdue && 'text-destructive')}>: {item.due_at}</span>
+                                                        <span className={cn('tabular-nums', overdue && 'text-destructive')}>
+                                                            : {formatToKhmerDateTime(item.due_at, false, true)}
+                                                        </span>
                                                         <Clock className={cn('size-3', overdue ? 'animate-pulse text-destructive' : 'opacity-30')} />
                                                     </div>
                                                     {item.returned_at && (
                                                         <div className="mt-1 flex items-center gap-3 border-t border-border pt-1 text-green-500">
-                                                            <span className="w-9 text-muted-foreground">{t('In')}</span>
-                                                            <span className="font-semibold tabular-nums">: {item.returned_at}</span>
+                                                            <span className="w-11 text-muted-foreground">{t('In')}</span>
+                                                            <span className="font-semibold tabular-nums">
+                                                                : {formatToKhmerDateTime(item.returned_at, false, true)}
+                                                            </span>
                                                             <ArrowDownLeft className="size-3 opacity-50" />
                                                         </div>
                                                     )}
@@ -139,7 +145,7 @@ const Show = () => {
                                                 <div className="flex flex-col items-start gap-1">
                                                     <span
                                                         className={cn(
-                                                            'font-mono text-sm',
+                                                            'font-mono',
                                                             parseFloat(item.fine_amount) > 0
                                                                 ? 'font-bold text-destructive'
                                                                 : 'text-muted-foreground/30',
@@ -165,25 +171,22 @@ const Show = () => {
 
                                             <TableCell className="text-right">
                                                 {item.returned_at ? (
-                                                    <span className="overflow-hidden rounded bg-muted px-2.5 py-1 text-sm font-semibold text-muted-foreground">
+                                                    <span className="overflow-hidden rounded bg-muted px-2.5 py-1 font-semibold text-muted-foreground">
                                                         {t('Returned')}
                                                     </span>
                                                 ) : overdue ? (
                                                     <div className="flex flex-col items-end gap-1">
-                                                        <Badge
-                                                            variant="destructive"
-                                                            className="h-5 overflow-hidden rounded px-2 text-sm font-semibold"
-                                                        >
+                                                        <Badge variant="destructive" className="h-5 overflow-hidden rounded px-2 font-semibold">
                                                             {t('Overdue')}
                                                         </Badge>
-                                                        <span className="flex items-center gap-1 text-[9px] font-medium text-destructive">
-                                                            <AlertCircle className="size-2.5" /> Action required
+                                                        <span className="flex items-center gap-1 font-medium text-destructive">
+                                                            <AlertCircle className="size-2.5" /> {t('Action required')}
                                                         </span>
                                                     </div>
                                                 ) : (
                                                     <Badge
                                                         variant="outline"
-                                                        className="h-5 overflow-hidden rounded border-primary/30 bg-primary/5 px-2 text-sm font-semibold text-primary"
+                                                        className="h-5 overflow-hidden rounded border-primary/30 bg-primary/5 px-2 font-semibold text-primary"
                                                     >
                                                         {t('On Loan')}
                                                     </Badge>

@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/circulations/{circulation}/recover', [CirculationController::class, 'recover']);
     Route::post('admin/circulations/{circulation}/update-fine-status', [CirculationController::class, 'update_fine_status']);
 
+
     Route::get('admin/circulations-checkin', [CirculationController::class, 'checkin_desk']);
     Route::get('admin/circulations-checkout', [CirculationController::class, 'checkout_desk']);
     Route::post('admin/circulations', [CirculationController::class, 'checkout']);
@@ -167,4 +168,11 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+    // EXPORTS
+    Route::get('/circulations-export', [CirculationController::class, 'export_circulations']);
+    Route::get('/users-export', [UserController::class, 'export_users']);
+    Route::get('/items-export', [ItemController::class, 'export_items']);
+    Route::get('/item-physical-copies-export', [ItemPhysicalCopyController::class, 'export_item_physical_copies']);
 });

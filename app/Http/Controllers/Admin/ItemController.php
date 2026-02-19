@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ItemExport;
 use App\Helpers\FileHelper;
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller implements HasMiddleware
 {
@@ -542,5 +544,79 @@ class ItemController extends Controller implements HasMiddleware
         $file->delete();
 
         return redirect()->back()->with('success', 'File deleted successfully.');
+    }
+
+    // EXPORT
+    public function export_items(Request $request)
+    {
+        $search = $request->input('search', '');
+        $sortBy = $request->input('sortBy', 'id');
+        $sortDirection = $request->input('sortDirection', 'desc');
+        $file_type_code = $request->input('file_type_code');
+        $main_category_code = $request->input('main_category_code');
+        $category_code = $request->input('category_code');
+        $language_code = $request->input('language_code');
+        $status = $request->input('status');
+        $publisher_id = $request->input('publisher_id');
+        $advisor_id = $request->input('advisor_id');
+        $author_id = $request->input('author_id');
+        $trashed = $request->input('trashed');
+
+        $query = Item::query();
+
+        if ($file_type_code) $query->where('file_type_code', $file_type_code);
+
+        if ($author_id) {
+            $query->whereHas('authors', fn($q) => $q->where('author_id', $author_id));
+        }
+
+        if ($advisor_id) $query->where('advisor_id', $advisor_id);
+        if ($publisher_id) $query->where('publisher_id', $publisher_id);
+        if ($main_category_code) $query->where('main_category_code', $main_category_code);
+
+        if ($category_code) {
+            $category = ItemCategory::where('code', $category_code)->first();
+            $children = $category?->allChildren()->pluck('code')->toArray() ?? [];
+
+            $query->where(function ($q) use ($category_code, $children) {
+                $q->where('category_code', $category_code)
+                    ->orWhereIn('category_code', $children);
+            });
+        }
+
+        if ($language_code) $query->where('language_code', $language_code);
+        if ($status) $query->where('status', $status);
+
+        if ($trashed === 'with') $query->withTrashed();
+        elseif ($trashed === 'only') $query->onlyTrashed();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('name_kh', 'LIKE', "%{$search}%")
+                    ->orWhere('id', 'LIKE', "%{$search}%")
+                    ->orWhere('file_type_code', 'LIKE', "%{$search}%")
+                    ->orWhere('category_code', 'LIKE', "%{$search}%")
+                    ->orWhere('keywords', 'LIKE', "%{$search}%")
+                    ->orWhere('short_description', 'LIKE', "%{$search}%")
+                    ->orWhere('short_description_kh', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $rows = $query
+            ->with([
+                'created_user:id,name',
+                'updated_user:id,name',
+                'publisher:id,name',
+                'advisor:id,name',
+                'authors:id,name',
+                'language:code,name',
+                'category:code,name',
+                'file_type:code,name',
+            ])
+            ->orderBy($sortBy, $sortDirection)
+            ->get();
+
+        return Excel::download(new ItemExport($rows), 'items.xlsx');
     }
 }
