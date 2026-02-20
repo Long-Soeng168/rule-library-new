@@ -6,6 +6,7 @@ import { dashboard } from '@/routes';
 import { Link } from '@inertiajs/react';
 import {
     ArrowLeftRightIcon,
+    BarChart3,
     BookOpen,
     FilesIcon,
     Folder,
@@ -137,6 +138,30 @@ const mainNavItems: {
                 title: 'Libraries',
                 url: '/admin/libraries',
                 permission: 'library view',
+            },
+        ],
+    },
+    {
+        title: 'Engagement',
+        url: '/admin/items-views',
+        icon: BarChart3,
+        activeList: ['/admin/items-views', '/admin/items-reads', '/admin/items-downloads'],
+        permission: 'item view',
+        items: [
+            {
+                title: 'Items Views',
+                url: '/admin/items-views',
+                permission: 'item view',
+            },
+            {
+                title: 'Items Reads',
+                url: '/admin/items-reads',
+                permission: 'item view',
+            },
+            {
+                title: 'Items Downloads',
+                url: '/admin/items-downloads',
+                permission: 'item view',
             },
         ],
     },
