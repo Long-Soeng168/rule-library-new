@@ -86,6 +86,8 @@ class PostController extends Controller
         $relatedData = $query->limit(6)->get();
         // return $relatedData;
 
+        $post->increment('total_view_count');
+        
         return Inertia::render('FrontPage/Posts/Show', [
             'showData' => $post->load('images', 'files', 'category'),
             'relatedData' => $relatedData,
