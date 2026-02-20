@@ -82,6 +82,10 @@ class ResourceController extends Controller
             return Item::findOrFail($id)->load('images', 'publisher', 'authors', 'advisor', 'language', 'category.parent');
         });
 
+        if ($showData->status === 'unpublished') {
+            abort(403);
+        }
+
         $main_category_code = $showData->main_category_code;
         $mainCategory = Cache::flexible("main_cat_lookup_{$main_category_code}", [3600, 7200], function () use ($main_category_code) {
             return ItemMainCategory::select('id', 'code', 'name', 'name_kh', 'image')->where('code', $main_category_code)->first();

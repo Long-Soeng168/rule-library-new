@@ -4,18 +4,43 @@ interface TableCellDateProps {
     value?: string | null;
     fallback?: string;
     className?: string;
+
     locale?: string;
-    options?: Intl.DateTimeFormatOptions;
+    timezone?: string;
+
+    showTime?: boolean;
+    fullYear?: boolean;
 }
 
 const TableCellDate = ({
     value,
     fallback = '---',
     className = '',
-    locale = 'en-UK',
-    options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' },
+    locale = 'en-GB',
+    timezone = 'Asia/Bangkok',
+    showTime = true,
+    fullYear = true,
 }: TableCellDateProps) => {
-    return <TableCell className={className}>{value ? new Date(value).toLocaleDateString(locale, options) : fallback}</TableCell>;
+    if (!value) return <TableCell className={className}>{fallback}</TableCell>;
+
+    const date = new Date(value);
+
+    const options: Intl.DateTimeFormatOptions = {
+        timeZone: timezone,
+        day: '2-digit',
+        month: 'short',
+        year: fullYear ? 'numeric' : '2-digit',
+    };
+
+    if (showTime) {
+        options.hour = '2-digit';
+        options.minute = '2-digit';
+        options.hour12 = true;
+    }
+
+    const formatted = date.toLocaleString(locale, options);
+
+    return <TableCell className={className}>{formatted}</TableCell>;
 };
 
 export default TableCellDate;

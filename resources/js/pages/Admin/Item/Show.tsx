@@ -1,9 +1,11 @@
 import ResourceDetail from '@/components/Section/ResourceDetail';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useTranslation from '@/hooks/use-translation';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import { ArrowRightIcon, EditIcon } from 'lucide-react';
 import { useState } from 'react';
 import ItemPhysicalCopy from './ItemPhysicalCopy';
 
@@ -23,14 +25,29 @@ const Show = () => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <section className="p-3">
                 <Tabs value={inputLanguage} onValueChange={(val: any) => setInputLanguage(val)}>
-                    <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
-                        <TabsTrigger value="itemDetail" className="h-full dark:data-[state=active]:bg-white/20">
-                            {t('Item Detail')}
-                        </TabsTrigger>
-                        <TabsTrigger value="physicalCopies" className="h-full dark:data-[state=active]:bg-white/20">
-                            {t('Physical Copies')}
-                        </TabsTrigger>
-                    </TabsList>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <TabsList className="mb-1 border bg-border/50 p-1 dark:border-white/20">
+                            <TabsTrigger value="itemDetail" className="h-full dark:data-[state=active]:bg-white/20">
+                                {t('Item Detail')}
+                            </TabsTrigger>
+                            <TabsTrigger value="physicalCopies" className="h-full dark:data-[state=active]:bg-white/20">
+                                {t('Physical Copies')}
+                            </TabsTrigger>
+                        </TabsList>
+                        <div className="flex shrink-0 flex-wrap items-center gap-2">
+                            <Link href={`/admin/items/${showData.id}/edit`}>
+                                <Button variant="outline">
+                                    <EditIcon />
+                                    {t('Edit Detail')}
+                                </Button>
+                            </Link>
+                            <a target="_blank" href={`/resources/${showData?.main_category_code}/${showData.id}`}>
+                                <Button variant="outline">
+                                    {t('Public View')} <ArrowRightIcon />
+                                </Button>
+                            </a>
+                        </div>
+                    </div>
                     <TabsContent value="itemDetail">
                         <ResourceDetail imageContainerClassname="sm:max-w-[300px] sm:min-w-[300px]" showButtonBelowImages={false} />
                         <section className="mt-8">

@@ -7,9 +7,13 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ItemCategoryController;
 use App\Http\Controllers\Admin\ItemController;
+use App\Http\Controllers\Admin\ItemDownloadsEngagementController;
+use App\Http\Controllers\Admin\ItemEngagementController;
 use App\Http\Controllers\Admin\ItemMainCategoryController;
 use App\Http\Controllers\Admin\ItemPhysicalCopyController;
+use App\Http\Controllers\Admin\ItemReadsEngagementController;
 use App\Http\Controllers\Admin\ItemTypeController;
+use App\Http\Controllers\Admin\ItemViewsEngagementController;
 use App\Http\Controllers\Admin\KeyValueController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LibraryController;
@@ -175,4 +179,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users-export', [UserController::class, 'export_users']);
     Route::get('/items-export', [ItemController::class, 'export_items']);
     Route::get('/item-physical-copies-export', [ItemPhysicalCopyController::class, 'export_item_physical_copies']);
+
+    // ENGAGEMENT
+    Route::get('/top-item-views-summary-export', [ItemViewsEngagementController::class, 'export_top_item_views_summary']);
+    Route::get('/top-item-reads-summary-export', [ItemReadsEngagementController::class, 'export_top_items_summary']);
+    Route::get('/top-item-downloads-summary-export', [ItemDownloadsEngagementController::class, 'export_top_items_summary']);
+
+    Route::get('/admin/item-views', [ItemViewsEngagementController::class, 'item_views']);
+    Route::get('/admin/top-item-views', [ItemViewsEngagementController::class, 'top_item_views']);
+
+    Route::get('/admin/item-reads', [ItemReadsEngagementController::class, 'item_reads']);
+    Route::get('/admin/top-item-reads', [ItemReadsEngagementController::class, 'top_item_reads']);
+
+    Route::get('/admin/item-downloads', [ItemDownloadsEngagementController::class, 'item_downloads']);
+    Route::get('/admin/top-item-downloads', [ItemDownloadsEngagementController::class, 'top_item_downloads']);
 });

@@ -358,6 +358,28 @@
     "Clear Date": "សម្អាតកាលបរិច្ឆេទ",
 
     "en": "kh",
+
+    "Total Active Loan": "ចំនួនកំពុងខ្ចីសរុប",
+    "Expired at": "ផុតកំណត់នៅថ្ងៃទី",
+
+    "ID / Title": "ID / ចំណងជើង",
+    "Edit Detail": "កែប្រែ",
+    "Public View": "មើលលើគេហទំព័រ",
+    "Device": "ឧបករណ៍",
+    "Top Views": "មើលច្រើនបំផុត",
+    "Top Reads": "អានច្រើនបំផុត",
+    "Top Downloads": "ទាញយកច្រើនបំផុត",
+    "From Date": "ចាប់ពីថ្ងៃ",
+    "To Date": "ដល់ថ្ងៃ",
+    "All Devices": "ឧបករណ៍ទាំងអស់",
+    "Item Top Views": "មើលច្រើនបំផុត",
+    "Item Views": "ការមើល",
+    "Item Top Reads": "អានច្រើនបំផុត",
+    "Item Reads": "ការអាន",
+    "Item Top Downloads": "ទាញយកច្រើនបំផុត",
+    "Item Downloads": "ការទាញយក",
+    "Items Engagements": "សកម្មភាពប្រើប្រាស់",
+
     "Total Views": "ចំនួនការមើលសរុប",
     "Total Reads": "ចំនួនការអានសរុប",
     "Total Downloads": "ចំនួនការទាញយកសរុប",
