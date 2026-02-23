@@ -1,7 +1,8 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { usePage } from '@inertiajs/react';
-import { ChevronRightIcon } from 'lucide-react';
+import { ChevronRightIcon, ImageOffIcon } from 'lucide-react';
 import { styled } from 'styled-components';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 const BookCardHoverGradient = ({
     badgeText,
     title,
@@ -20,7 +21,15 @@ const BookCardHoverGradient = ({
             <div className="relative h-full">
                 <div className="btn group relative z-10 h-full w-full overflow-hidden rounded-md border-2 border-background shadow hover:translate-[-8px] hover:border-transparent active:hover:translate-0 dark:border-border dark:hover:border-transparent">
                     <div className="flex h-full w-full flex-col border-none bg-background text-foreground">
-                        <img src={app_url + image_url} alt={title} className="aspect-[7/10] w-full border-b bg-transparent object-cover" />
+                        <div>
+                            <Avatar className="aspect-[7/10] w-full border-b bg-transparent object-cover">
+                                <AvatarImage src={image_url} className="aspect-[7/10] w-full border-b bg-transparent object-cover" alt={title} />
+                                <AvatarFallback className="rounded bg-primary/10 font-semibold text-primary">
+                                    <ImageOffIcon size={50} strokeWidth={1.5} className="opacity-50" />
+                                </AvatarFallback>
+                            </Avatar>
+                        </div>
+                        {/* <img src={image_url} alt={title} className="aspect-[7/10] w-full border-b bg-transparent object-cover" /> */}
                         <div className="flex flex-1 flex-col justify-between">
                             <div className="p-2 pb-0">
                                 <TooltipProvider>

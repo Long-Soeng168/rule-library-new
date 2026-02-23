@@ -8,7 +8,7 @@ export function BookScrollAreaHorizontal({ items, mainCategoryCode }: { items: a
     return (
         <>
             {/* Mobile */}
-            <div className="lg:hidden mt-2">
+            <div className="mt-2 lg:hidden">
                 <div className="overflow-x-visible">
                     <ScrollArea className="w-full overflow-x-visible rounded-md whitespace-nowrap">
                         <div className="section-container flex h-full w-full justify-start space-x-4 overflow-x-visible pb-4">
@@ -17,7 +17,7 @@ export function BookScrollAreaHorizontal({ items, mainCategoryCode }: { items: a
                                     <div className="w-[265px] shrink-0">
                                         <div className="overflow-hidden rounded-md border duration-300 hover:border-primary">
                                             <img
-                                                src={`https://rule-library.com/assets/images/items/thumb/${item.thumbnail}`}
+                                                src={`/assets/images/items/thumb/${item.thumbnail}`}
                                                 alt={item.name}
                                                 className="h-[378.57px] w-[265px] object-cover"
                                             />

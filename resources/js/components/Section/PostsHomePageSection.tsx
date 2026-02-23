@@ -27,6 +27,8 @@ const PostsHomePageSection = () => {
         });
     }, [api]);
 
+    if (posts?.length < 1) return null;
+
     return (
         <div className="mt-4">
             <div className="section-container">

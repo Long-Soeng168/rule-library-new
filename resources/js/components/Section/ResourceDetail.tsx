@@ -29,14 +29,14 @@ const ResourceDetail = ({
             <div className={cn('sm:max-w-sm sm:min-w-xs', imageContainerClassname)}>
                 <div className="flex items-center justify-center">
                     <BookImagesGallery
-                        readUrl={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`}
+                        readUrl={showData?.file_name ? `/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items` : ''}
                         images={images}
                         alternative={showData?.name}
                     />
                     {/* <img src="/assets/sample_images/books/thesis1.jpg" alt="University Logo" className="h-auto w-full border border-primary" /> */}
                 </div>
 
-                {showButtonBelowImages && (
+                {showButtonBelowImages && showData?.file_name && (
                     <div className="mt-2 flex gap-2">
                         <Link href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`} className="flex-1">
                             <ReadButton />

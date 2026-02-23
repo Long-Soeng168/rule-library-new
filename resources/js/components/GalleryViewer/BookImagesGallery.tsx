@@ -1,10 +1,11 @@
 import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
-import { BookOpenIcon, FileDownIcon, Maximize2Icon, Minimize2Icon, RotateCwSquareIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
+import { BookOpenIcon, FileDownIcon, ImageOffIcon, Maximize2Icon, Minimize2Icon, RotateCwSquareIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import { useState } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
 export default function BookImagesGallery({ images = [''], mainImageClassName = '', alternative = '', aspectRatio = '7/10', readUrl = '#' }) {
@@ -53,7 +54,7 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                 </div>
             )}
             overlayRender={() => (
-                <div className="absolute right-0 bottom-0 left-0 z-10 flex bg-transparent">
+                <div className={cn('absolute right-0 bottom-0 left-0 z-10 flex bg-transparent', !readUrl && 'hidden')}>
                     <div className="z-20 mx-auto flex w-full items-center justify-center text-sm text-white lg:justify-end">
                         <div className="flex w-full justify-center gap-2 bg-black/50 p-2">
                             <Link href={`${readUrl}`}>
@@ -77,15 +78,20 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                 {/* Main image */}
                 {images.map((src, idx) => (
                     <PhotoView key={idx} src={src}>
-                        <img
-                            src={src}
-                            alt={alternative}
-                            className={cn(
-                                `h-full max-h-[800px] min-h-20 w-full cursor-pointer rounded-none border border-primary object-cover sm:max-w-sm ${src === mainImage ? '' : 'hidden'} aspect-[${aspectRatio}]`,
-                                mainImageClassName,
-                                `${images?.length == 1 && 'aspect-auto'}`,
-                            )}
-                        />
+                        <Avatar>
+                            <AvatarImage
+                                src={src}
+                                className={cn(
+                                    `h-full max-h-[800px] w-full cursor-pointer rounded-none border border-primary object-cover sm:max-w-sm ${src === mainImage ? '' : 'hidden'} aspect-[${aspectRatio}]`,
+                                    mainImageClassName,
+                                    `${images?.length == 1 && 'aspect-auto'}`,
+                                )}
+                                alt={alternative}
+                            />
+                            <AvatarFallback className="rounded-none bg-primary/10 font-semibold text-primary">
+                                <ImageOffIcon size={35} strokeWidth={1.5} className="min-h-32 opacity-50" />
+                            </AvatarFallback>
+                        </Avatar>
                     </PhotoView>
                 ))}
 

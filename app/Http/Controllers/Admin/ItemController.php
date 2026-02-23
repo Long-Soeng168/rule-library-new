@@ -192,6 +192,7 @@ class ItemController extends Controller implements HasMiddleware
             'keywords' => 'nullable|string|max:500',
             'status' => 'nullable|string|max:255',
 
+            'edition' => 'nullable|string|max:255',
             'ddc' => 'nullable|string|max:255',
             'lcc' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:255',
@@ -362,6 +363,7 @@ class ItemController extends Controller implements HasMiddleware
             'keywords' => 'nullable|string|max:500',
             'status' => 'nullable|string|max:255',
 
+            'edition' => 'nullable|string|max:255',
             'ddc' => 'nullable|string|max:255',
             'lcc' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:255',

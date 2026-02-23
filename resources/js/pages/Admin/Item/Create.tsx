@@ -8,7 +8,6 @@ import UploadedImage from '@/components/Form/UploadedImageDisplay';
 import { FormCombobox } from '@/components/Input/FormCombobox';
 import { FormField } from '@/components/Input/FormField';
 import FormFieldMultiSelect from '@/components/Input/FormFieldMultiSelect';
-import { FormFieldTextArea } from '@/components/Input/FormFieldTextArea';
 import { FormLabel } from '@/components/Input/FormLabel';
 import FormRadioStatus from '@/components/Input/FormRadioStatus';
 import { ProgressWithValue } from '@/components/ProgressBar/progress-with-value';
@@ -21,6 +20,7 @@ import MyCkeditor5 from '@/pages/plugins/ckeditor5/my-ckeditor5';
 import { BreadcrumbItem } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import CreateUserDialog from './CreateUserDialog';
 
 interface ItemForm {
     code?: string;
@@ -29,6 +29,7 @@ interface ItemForm {
 
     name: string;
     name_kh?: string;
+    edition?: string;
 
     short_description?: string;
     short_description_kh?: string;
@@ -103,6 +104,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         status: editData?.status || postStatusData[0]?.value || '',
         name: editData?.name || '',
         name_kh: editData?.name_kh || '',
+        edition: editData?.edition || '',
         short_description: editData?.short_description || '',
         keywords: editData?.keywords || '',
         short_description_kh: editData?.short_description_kh || '',
@@ -239,14 +241,24 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 onChange={(val) => setData('name', val)}
                                 error={errors.name}
                             />
-                            <FormFieldTextArea
+                            <div className="form-field-container">
+                                <FormField
+                                    id="edition"
+                                    name="edition"
+                                    label="Edition"
+                                    value={data.edition || ''}
+                                    onChange={(val) => setData('edition', val)}
+                                    error={errors.edition}
+                                />
+                            </div>
+                            {/* <FormFieldTextArea
                                 id="short_description"
                                 name="short_description"
                                 label="Short Description"
                                 value={data.short_description || ''}
                                 onChange={(val) => setData('short_description', val)}
                                 error={errors.short_description}
-                            />
+                            /> */}
                         </>
                     )}
 
@@ -261,19 +273,19 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 error={errors.name_kh}
                             />
 
-                            <FormFieldTextArea
+                            {/* <FormFieldTextArea
                                 id="short_description_kh"
                                 name="short_description_kh"
                                 label="Short Description Khmer"
                                 value={data.short_description_kh || ''}
                                 onChange={(val) => setData('short_description_kh', val)}
                                 error={errors.short_description_kh}
-                            />
+                            /> */}
                         </>
                     )}
                 </div>
                 {inputLanguage == 'default' && (
-                    <span className="space-y-6 space-x-6 md:grid md:grid-cols-2">
+                    <span className="space-y-6 md:grid md:grid-cols-2 md:gap-x-6">
                         <FormCombobox
                             name="main_category_code"
                             label="Main Category"
@@ -374,7 +386,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                 )}
                 {inputLanguage == 'default' && (
                     <>
-                        <div className="form-field-container">
+                        <div className="form-field-container mt-6">
                             <Tabs defaultValue="ddc" className="w-full rounded-lg bg-muted/80 p-4 dark:bg-muted/50">
                                 <TabsList className="h-auto border bg-border/50 p-1 dark:border-white/20">
                                     <div className="flex w-auto flex-wrap justify-start gap-1">
@@ -478,19 +490,25 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 </TabsList>
                                 <TabsContent value="authors_select" className="mt-1">
                                     {authors?.length > 0 && (
-                                        <FormFieldMultiSelect
-                                            label=""
-                                            options={[
-                                                ...authors.map((item: any) => ({
-                                                    value: item.id?.toString(),
-                                                    label: `(ID:${item.id}) ${item.name}`,
-                                                })),
-                                            ]}
-                                            value={data.author_ids || []}
-                                            onChange={(objectValue) => setData('author_ids', objectValue)}
-                                            error={errors.author_ids}
-                                            multiSelectClassName="bg-background"
-                                        />
+                                        <div className="flex items-center gap-2" key={authors?.length}>
+                                            <FormFieldMultiSelect
+                                                label=""
+                                                options={[
+                                                    ...authors.map((item: any) => ({
+                                                        value: item.id?.toString(),
+                                                        label: `(ID:${item.id}) ${item.name}`,
+                                                    })),
+                                                ]}
+                                                value={data.author_ids || []}
+                                                onChange={(objectValue) => setData('author_ids', objectValue)}
+                                                error={errors.author_ids}
+                                                multiSelectClassName="bg-background flex-1"
+                                            />
+                                            <div>
+                                                <div className="h-[8px]"></div>
+                                                <CreateUserDialog role="Author" />
+                                            </div>
+                                        </div>
                                     )}
                                 </TabsContent>
                                 <TabsContent value="author_name" className="mt-1">
@@ -512,46 +530,60 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                         {data?.main_category_code == 'theses' && (
                             <div className="form-field-container md:grid-cols-1">
                                 {advisors?.length > 0 && (
-                                    <FormCombobox
-                                        name="advisor_id"
-                                        label="Advisors"
-                                        options={[
-                                            {
-                                                value: null,
-                                                label: t('NA'),
-                                            },
-                                            ...advisors.map((item: any) => ({
-                                                value: item.id?.toString(),
-                                                label: `(ID:${item.id}) ${item.name}`,
-                                            })),
-                                        ]}
-                                        value={data.advisor_id?.toString() || ''}
-                                        onChange={(val) => setData('advisor_id', val)}
-                                        error={errors.advisor_id}
-                                    />
+                                    <div className="flex gap-2" key={advisors?.length}>
+                                        <FormCombobox
+                                            name="advisor_id"
+                                            label="Advisors"
+                                            options={[
+                                                {
+                                                    value: null,
+                                                    label: t('NA'),
+                                                },
+                                                ...advisors.map((item: any) => ({
+                                                    value: item.id?.toString(),
+                                                    label: `(ID:${item.id}) ${item.name}`,
+                                                })),
+                                            ]}
+                                            value={data.advisor_id?.toString() || ''}
+                                            onChange={(val) => setData('advisor_id', val)}
+                                            error={errors.advisor_id}
+                                            className="flex-1"
+                                        />
+                                        <div>
+                                            <div className="h-[22px]"></div>
+                                            <CreateUserDialog role="Advisor" />
+                                        </div>
+                                    </div>
                                 )}
                             </div>
                         )}
 
                         <div className="form-field-container">
                             {publishers?.length > 0 && (
-                                <FormCombobox
-                                    name="publisher_id"
-                                    label="Publisher"
-                                    options={[
-                                        {
-                                            value: null,
-                                            label: t('NA'),
-                                        },
-                                        ...publishers.map((item: any) => ({
-                                            value: item.id?.toString(),
-                                            label: `(ID:${item.id}) ${item.name}`,
-                                        })),
-                                    ]}
-                                    value={data.publisher_id?.toString() || ''}
-                                    onChange={(val) => setData('publisher_id', val)}
-                                    error={errors.publisher_id}
-                                />
+                                <div className="flex gap-2" key={publishers?.length}>
+                                    <FormCombobox
+                                        name="publisher_id"
+                                        label="Publisher"
+                                        options={[
+                                            {
+                                                value: null,
+                                                label: t('NA'),
+                                            },
+                                            ...publishers.map((item: any) => ({
+                                                value: item.id?.toString(),
+                                                label: `(ID:${item.id}) ${item.name}`,
+                                            })),
+                                        ]}
+                                        value={data.publisher_id?.toString() || ''}
+                                        onChange={(val) => setData('publisher_id', val)}
+                                        error={errors.publisher_id}
+                                        className="flex-1"
+                                    />
+                                    <div>
+                                        <div className="h-[22px]"></div>
+                                        <CreateUserDialog role="Publisher" />
+                                    </div>
+                                </div>
                             )}
                             <div>
                                 <PublishedDatePicker
