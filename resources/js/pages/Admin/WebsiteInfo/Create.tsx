@@ -42,6 +42,9 @@ interface WebsiteInfoForm {
 
     logo?: string | null;
     logo_darkmode?: string | null;
+
+    primary_color?: string | null;
+    primary_foreground_color?: string | null;
 }
 
 export default function Create({ editData, readOnly }: { editData?: any; readOnly?: boolean }) {
@@ -86,6 +89,9 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
 
         logo: editData?.logo || null,
         logo_darkmode: editData?.logo_darkmode || null,
+
+        primary_color: editData?.primary_color || null,
+        primary_foreground_color: editData?.primary_foreground_color || null,
     });
 
     const onSubmit = (e: React.FormEvent) => {
@@ -310,6 +316,25 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
                                 error={errors.google_map_embed}
                             />
                         </div>
+
+                        <FormField
+                            type="color"
+                            id="primary_color"
+                            name="primary_color"
+                            label="Primary Color"
+                            value={data.primary_color || ''}
+                            onChange={(val) => setData('primary_color', val)}
+                            error={errors.primary_color}
+                        />
+                        <FormField
+                            type="color"
+                            id="primary_foreground_color"
+                            name="primary_foreground_color"
+                            label="Primary Foreground Color"
+                            value={data.primary_foreground_color || ''}
+                            onChange={(val) => setData('primary_foreground_color', val)}
+                            error={errors.primary_foreground_color}
+                        />
 
                         <div>
                             <FormFileUpload key={editData?.logo} id="logo" label="Logo" files={files} setFiles={setFiles} />

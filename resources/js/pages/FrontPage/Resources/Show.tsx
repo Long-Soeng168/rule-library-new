@@ -4,6 +4,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import useTranslation from '@/hooks/use-translation';
 import FrontPageLayout from '@/layouts/FrontPageLayout';
 import { Head, usePage } from '@inertiajs/react';
+import ItemPhysicalCopyFrontDisplay from './ItemPhysicalCopyFrontDisplay';
 
 const Show = () => {
     const { mainCategory, showData, app_url } = usePage<any>().props;
@@ -100,6 +101,7 @@ const Show = () => {
 
                 <div>
                     <ResourceDetail />
+                    <ItemPhysicalCopyFrontDisplay />
                 </div>
             </section>
             <section className="mt-20 mb-20">

@@ -78,6 +78,9 @@ class WebsiteInfoController extends Controller implements HasMiddleware
 
             'logo' => 'nullable|mimes:jpeg,png,jpg,gif,webp,svg|max:4096',
             'logo_darkmode' => 'nullable|mimes:jpeg,png,jpg,gif,webp,svg|max:4096',
+
+            'primary_color' => 'nullable|string',
+            'primary_foreground_color' => 'nullable|string',
         ]);
 
         try {
@@ -167,6 +170,9 @@ class WebsiteInfoController extends Controller implements HasMiddleware
 
             'logo' => 'nullable|mimes:jpeg,png,jpg,gif,webp,svg|max:4096',
             'logo_darkmode' => 'nullable|mimes:jpeg,png,jpg,gif,webp,svg|max:4096',
+
+            'primary_color' => 'nullable|string',
+            'primary_foreground_color' => 'nullable|string',
         ]);
 
         try {

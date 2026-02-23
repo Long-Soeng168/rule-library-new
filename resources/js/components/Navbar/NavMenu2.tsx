@@ -1,6 +1,6 @@
 import useTranslation from '@/hooks/use-translation';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpenTextIcon, ChevronDown, HomeIcon, InfoIcon, NewspaperIcon, UserIcon } from 'lucide-react';
+import { BookOpenTextIcon, ChevronDown, HomeIcon, InfoIcon, NewspaperIcon } from 'lucide-react';
 
 export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizontal' | 'vertical' }) => {
     const { t } = useTranslation();
@@ -35,17 +35,16 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                     <Link
                         prefetch
                         href={item.href}
-                        className={`relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium transition-colors 
-                            ${isActive(item.href) ? 'text-true-primary' : 'text-foreground'} 
-                            hover:bg-muted dark:hover:bg-none`}
+                        className={`relative flex w-full items-center gap-1 rounded-none px-3 py-2 text-sm font-medium transition-colors ${isActive(item.href) ? 'text-primary' : 'text-foreground'} hover:bg-muted dark:hover:bg-none`}
                     >
                         {item.icon}
                         {item.label}
                         {item.dropdown && <ChevronDown className="ml-2 text-muted-foreground" size={16} />}
                     </Link>
 
-                    <div className={`h-0.5 w-full origin-left scale-x-0 bg-true-primary transition-transform duration-300 group-hover:scale-x-100
-                        ${isActive(item.href) ? 'scale-x-100' : ''}`}></div>
+                    <div
+                        className={`h-0.5 w-full origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100 ${isActive(item.href) ? 'scale-x-100' : ''}`}
+                    ></div>
 
                     {item.dropdown && (
                         <ul className="absolute top-full left-0 z-20 mt-0 hidden w-full flex-col border bg-background shadow-lg group-hover:flex dark:border-white/30">
@@ -54,9 +53,7 @@ export const NavMenu2 = ({ orientation = 'horizontal' }: { orientation?: 'horizo
                                     <Link
                                         prefetch
                                         href={sub.href}
-                                        className={`block px-3 py-2 text-sm transition-colors 
-                                            ${isActive(sub.href) ? 'text-true-primary' : 'text-foreground'} 
-                                            hover:bg-muted dark:hover:bg-none`}
+                                        className={`block px-3 py-2 text-sm transition-colors ${isActive(sub.href) ? 'text-true-primary' : 'text-foreground'} hover:bg-muted dark:hover:bg-none`}
                                     >
                                         {sub.label}
                                     </Link>

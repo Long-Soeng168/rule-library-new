@@ -79,8 +79,19 @@ class ResourceController extends Controller
     public function item_show(string $main_category_code, string $id, Request $request)
     {
         $showData = Cache::flexible("item_details_{$id}", [3600, 7200], function () use ($id) {
-            return Item::findOrFail($id)->load('images', 'publisher', 'authors', 'advisor', 'language', 'category.parent');
+            return Item::findOrFail($id)->load(
+                'images',
+                'publisher',
+                'authors',
+                'advisor',
+                'language',
+                'category.parent',
+                'physical_copies.current_library',
+                'physical_copies.item_type',
+            );
         });
+
+        // return ($showData);
 
         if ($showData->status === 'unpublished') {
             abort(403);
