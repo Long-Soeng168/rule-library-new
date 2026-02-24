@@ -255,10 +255,10 @@ const Index = () => {
 
                             <div className="not-prose">
                                 <TeamAccordion
-                                    defaultValue="Dr. Ngan Sundet"
+                                    defaultValue="Dr. Ngann Sundet"
                                     members={[
                                         {
-                                            name: 'Dr. Ngan Sundet',
+                                            name: 'Dr. Ngann Sundet',
                                             name_kh: 'បណ្ឌិត ង៉ាន់ ស៊ុនដេត',
                                             image: '/assets/rule_library/profiles/sundet.jpeg',
                                             role: 'ប្រធានបណ្ណាល័យ',
