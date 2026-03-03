@@ -25,7 +25,7 @@ const BookCardHoverGradient = ({
                             <Avatar className="h-full w-full rounded-none border-none">
                                 <AvatarImage
                                     src={image_url}
-                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    className="h-full w-full object-cover transition-transform duration-700"
                                     alt={title}
                                 />
                                 <AvatarFallback className="relative flex h-full w-full flex-col items-start justify-between overflow-hidden rounded-none bg-zinc-50 p-4 dark:bg-zinc-950">
