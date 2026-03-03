@@ -259,3 +259,77 @@ Route::get('/compress_images_to_webp/{start}/{end}', function ($start, $end) {
         'failed_count' => count($failedItemIds),
     ]);
 });
+
+Route::get('/copy_thesis_images/{start}/{end}', function ($start, $end) {
+
+    set_time_limit(0);
+
+    $records = DB::table('t')
+        ->whereBetween('id', [(int)$start, (int)$end])
+        ->orderBy('id')
+        ->get();
+
+    $sourceFolder = public_path('assets/images/items'); // where items thumbnails currently exist
+    $targetFolder = public_path('assets/images/t_images');
+
+    // Ensure target folder exists
+    if (!File::exists($targetFolder)) {
+        File::makeDirectory($targetFolder, 0755, true, true);
+    }
+
+    $failedIds = [];
+
+    foreach ($records as $record) {
+
+        if (!$record->thesis_id) {
+            $failedIds[] = $record->id;
+            continue;
+        }
+
+        // Find matching item
+        $item = Item::where('main_category_code', 'theses')
+            ->where('old_id', $record->thesis_id)
+            ->first();
+
+        if (!$item || !$item->thumbnail) {
+            $failedIds[] = $record->id;
+            continue;
+        }
+
+        $oldImagePath = $sourceFolder . '/' . $item->thumbnail;
+
+        if (!File::exists($oldImagePath)) {
+            $failedIds[] = $record->id;
+            continue;
+        }
+
+        try {
+
+            // Get original extension
+            $extension = pathinfo($item->thumbnail, PATHINFO_EXTENSION);
+
+            // New filename based on 'no' field
+            $newFileName = $record->no . '.' . $extension;
+
+            $newImagePath = $targetFolder . '/' . $newFileName;
+
+            // Copy image
+            File::copy($oldImagePath, $newImagePath);
+
+            // Update t table
+            DB::table('t')
+                ->where('id', $record->id)
+                ->update([
+                    'image' => $newFileName
+                ]);
+        } catch (\Throwable $e) {
+            $failedIds[] = $record->id;
+        }
+    }
+
+    return response()->json([
+        'status' => 'done',
+        'failed_ids' => $failedIds,
+        'failed_count' => count($failedIds),
+    ]);
+});
