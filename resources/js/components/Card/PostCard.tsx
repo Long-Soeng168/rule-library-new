@@ -18,7 +18,7 @@ export function PostCard({ url, title, description, date, categoryName, thumbnai
             <div className="flex h-full flex-col">
                 {thumbnail && (
                     <div className="relative aspect-video w-full overflow-hidden">
-                        <img src={thumbnail} alt={title} className="w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <img src={thumbnail} alt={title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                         {categoryName && <Badge className="absolute right-1 bottom-1 rounded-none bg-primary/80">{categoryName}</Badge>}
                     </div>
                 )}
