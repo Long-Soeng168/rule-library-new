@@ -38,7 +38,7 @@ const Hero = () => {
                     <LibrarySearch />
 
                     {/* Suggestion pills */}
-                    <div className="mx-auto flex max-w-2xl flex-wrap justify-center gap-3 gap-y-3">
+                    <div className="mx-auto -mt-4 flex max-w-2xl flex-wrap justify-center gap-3 gap-y-3">
                         {mainCategories.map((item: any) => {
                             return (
                                 <Link key={item?.id} href={`/resources/${item?.code}`} prefetch>

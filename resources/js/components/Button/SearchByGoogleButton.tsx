@@ -6,7 +6,7 @@ const SearchByGoogleButton = () => {
     const { t, currentLocale } = useTranslation();
 
     return (
-        <div className="py-4">
+        <div className="pt-8">
             <Link
                 href="/search-powered-by-google"
                 prefetch
