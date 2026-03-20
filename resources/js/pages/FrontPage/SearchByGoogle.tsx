@@ -44,6 +44,27 @@ const SearchByGoogle = () => {
                     <style
                         dangerouslySetInnerHTML={{
                             __html: `
+                            
+/* Mobile Style */
+.gcsc-find-more-on-google-root {
+    display: none !important;
+}
+.dark .gsc-results .gsc-cursor {
+    color: white !important;
+}
+.gsc-cursor-container-previous {
+    flex-grow: 0 !important;
+}
+.gsc-cursor-container-next {
+    flex-grow: 0 !important;
+}
+.gsc-tabsArea {
+    margin-bottom: 12px;
+}
+table.gsc-above-wrapper-area-container {
+    margin-top: 0 !important;
+}
+
 /* Target the specific Google input ID or class */
 #gsc-i-id1, .gsc-input {
     background: none !important; /* Removes the Google logo background */
