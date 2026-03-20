@@ -4,6 +4,7 @@ import { BookOpenTextIcon, FileTextIcon, HeadphonesIcon, LibraryIcon } from 'luc
 import { AnimatedGradientTextBadge } from '../animate-ui/text/AnimatedGradientTextBadge';
 import LibrarySearch from '../Search/LibrarySearch';
 import { Button } from '../ui/button';
+import SearchByGoogleButton from '../Button/SearchByGoogleButton';
 
 const data = [
     { name: 'Theses', icon: FileTextIcon },
@@ -58,6 +59,8 @@ const Hero = () => {
                             );
                         })}
                     </div>
+                    <SearchByGoogleButton />
+
                 </div>
             </main>
         </section>
