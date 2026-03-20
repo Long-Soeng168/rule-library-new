@@ -215,7 +215,7 @@ class ResourceController extends Controller
                 $query->where('publisher_id', $publisher_id);
             }
             if ($advisor_id) {
-                $query->where('advisor_id', $advisor_id);
+                $query->orWhere('advisor_id', $advisor_id);
             }
 
             if ($from_year && $to_year && $from_year > $to_year) {
