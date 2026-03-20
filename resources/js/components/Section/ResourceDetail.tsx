@@ -38,9 +38,9 @@ const ResourceDetail = ({
 
                 {showButtonBelowImages && showData?.file_name && (
                     <div className="mt-2 flex gap-2">
-                        <Link href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`} className="flex-1">
+                        <a target='_blank' href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items`} className="flex-1">
                             <ReadButton />
-                        </Link>
+                        </a>
                         <a href={`/view-pdf?file_name=${showData?.file_name}&id=${showData?.id}&resource=items&is_download=1`} className="flex-1">
                             <DownloadButton />
                         </a>

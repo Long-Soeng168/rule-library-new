@@ -1,6 +1,5 @@
 import useTranslation from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
-import { Link } from '@inertiajs/react';
 import { BookOpenIcon, FileDownIcon, ImageIcon, Maximize2Icon, Minimize2Icon, RotateCwSquareIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import { useState } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -57,12 +56,12 @@ export default function BookImagesGallery({ images = [''], mainImageClassName = 
                 <div className={cn('absolute right-0 bottom-0 left-0 z-10 flex bg-transparent', !readUrl && 'hidden')}>
                     <div className="z-20 mx-auto flex w-full items-center justify-center text-sm text-white lg:justify-end">
                         <div className="flex w-full justify-center gap-2 bg-black/50 p-2">
-                            <Link href={`${readUrl}`}>
+                            <a target="_blank" href={`${readUrl}`}>
                                 <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
                                     <BookOpenIcon size={20} />
                                     <span>{t('Read File')}</span>
                                 </button>
-                            </Link>
+                            </a>
                             <a href={`${readUrl}&is_download=1`}>
                                 <button className="flex h-[44px] w-40 cursor-pointer flex-row items-center justify-center gap-1 bg-white/10 py-2 transition hover:bg-white/20 active:scale-95">
                                     <FileDownIcon size={20} />
