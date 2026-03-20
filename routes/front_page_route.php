@@ -7,6 +7,10 @@ use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/search-powered-by-google', function () {
+    return Inertia::render('FrontPage/SearchByGoogle');
+});
+
 Route::get('/', [FrontPageController::class, 'index'])->name('home');
 
 Route::get('/posts', [PostController::class, 'index']);
