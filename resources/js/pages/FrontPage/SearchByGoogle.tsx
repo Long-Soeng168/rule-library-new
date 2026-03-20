@@ -89,9 +89,9 @@ td.gsc-search-button {
    ============================================================ */
 .gsc-input-box {
     border: 1px solid #4f46e5 !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
     background: #ffffff !important;
-    padding: 8px 5px !important;
+    padding: 0px 2px !important;
     overflow: hidden !important;
     transition: all 0.3s ease !important;
 }
@@ -111,8 +111,8 @@ button.gsc-search-button-v2 {
     align-items: center !important;
     justify-content: center !important;
     background-color: #6366f1 !important;
-    border-radius: 12px !important;
-    height: 74.5px !important; 
+    border-radius: 8px !important;
+    height: 58px !important; 
     min-width: 71px !important;
     margin: 0 0 0 10px !important;
     border: none !important;
@@ -137,7 +137,7 @@ button.gsc-search-button-v2 svg {
     padding: 24px !important;
     margin-bottom: 12px !important;
     border: 1px solid #f1f5f9 !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
     background-color: #ffffff !important;
     transition: all 0.2s ease !important;
 }
