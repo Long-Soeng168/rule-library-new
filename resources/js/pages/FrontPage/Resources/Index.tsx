@@ -25,7 +25,7 @@ const Index = () => {
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
-                <div className="section-container">
+                <div className="section-container -mt-4">
                     <LibrarySearch />
                 </div>
                 <div className='mt-8'>
