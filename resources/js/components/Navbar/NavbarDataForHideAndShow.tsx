@@ -11,7 +11,7 @@ const NavbarDataForHideAndShow = () => {
     return (
         <>
             {/* Desktop view */}
-            <div className="max-[1000px]:hidden min-[1000px]:border-b">
+            <div className="max-[1050px]:hidden min-[1050px]:border-b">
                 <div className="section-container mx-auto w-full py-2">
                     <div className="flex h-full items-center justify-between">
                         <NavbarLogo3 />
@@ -26,7 +26,7 @@ const NavbarDataForHideAndShow = () => {
                             <NavLanguage />
 
                             {/* Start Mobile Menu */}
-                            <div className="hidden max-[1000px]:block">
+                            <div className="hidden max-[1050px]:block">
                                 <NavSheet />
                             </div>
                             {/* End Mobile Menu */}
@@ -37,7 +37,7 @@ const NavbarDataForHideAndShow = () => {
             {/* End Desktop view */}
 
             {/* Mobile view */}
-            <div className="sticky top-0 z-30 mx-auto w-full border-b bg-background/40 py-2 backdrop-blur-md min-[1000px]:hidden">
+            <div className="sticky top-0 z-30 mx-auto w-full border-b bg-background/40 py-2 backdrop-blur-md min-[1050px]:hidden">
                 <nav className="section-container">
                     <div className="sticky top-0 flex h-full items-center justify-between">
                         <div>
@@ -51,7 +51,7 @@ const NavbarDataForHideAndShow = () => {
                             <NavLanguage />
 
                             {/* Start Mobile Menu */}
-                            <div className="hidden max-[1000px]:block">
+                            <div className="hidden max-[1050px]:block">
                                 <NavSheet />
                             </div>
                             {/* End Mobile Menu */}

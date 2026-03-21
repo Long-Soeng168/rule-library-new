@@ -9,15 +9,15 @@ const Navbar2 = () => {
     return (
         <>
             {/* Start Top Navbar */}
-            <div className="min-[1000px]:border-b">
+            <div className="min-[1050px]:border-b">
                 <div className="section-container mx-auto w-full py-4">
                     <div className="flex h-full items-center justify-between">
                         <NavbarLogo2 />
 
-                        <div className="max-[1000px]:hidden">
+                        <div className="max-[1050px]:hidden">
                             <NavMenu2 />
                         </div>
-                        <div className="max-[1000px]:hidden">
+                        <div className="max-[1050px]:hidden">
                             <div className="flex items-center gap-3">
                                 {/* <LibrarySearchSheet /> */}
                                 <SearchByGoogleButtonSmall />
@@ -25,7 +25,7 @@ const Navbar2 = () => {
                                 <NavLanguage />
 
                                 {/* Start Mobile Menu */}
-                                <div className="hidden max-[1000px]:block">
+                                <div className="hidden max-[1050px]:block">
                                     <NavSheet />
                                 </div>
                                 {/* End Mobile Menu */}
@@ -37,7 +37,7 @@ const Navbar2 = () => {
             {/* End Top Navbar */}
 
             {/* Start Bottom Navbar */}
-            <div className="z-30 mx-auto w-full border-b bg-background pb-4 min-[1000px]:hidden">
+            <div className="z-30 mx-auto w-full border-b bg-background pb-4 min-[1050px]:hidden">
                 <nav className="section-container">
                     <div className="flex h-full items-center justify-between">
                         <div></div>
@@ -49,7 +49,7 @@ const Navbar2 = () => {
                             <NavLanguage />
 
                             {/* Start Mobile Menu */}
-                            <div className="hidden max-[1000px]:block">
+                            <div className="hidden max-[1050px]:block">
                                 <NavSheet />
                             </div>
                             {/* End Mobile Menu */}

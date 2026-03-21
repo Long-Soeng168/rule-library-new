@@ -3,7 +3,7 @@ import { Search, SparklesIcon } from 'lucide-react';
 
 const SearchByGoogleButtonSmall = () => {
     return (
-        <div className="inline-block p-1"> {/* Tiny padding to prevent glow clipping */}
+        <div className="inline-block"> {/* Tiny padding to prevent glow clipping */}
             <Link
                 href="/search-powered-by-google"
                 prefetch
