@@ -1,3 +1,4 @@
+import SearchByGoogleButtonSmall from '../Button/SearchByGoogleButtonSmall';
 import { NavbarLogo3 } from '../Logo/NavbarLogo3';
 import { NavbarLogo4 } from '../Logo/NavbarLogo4';
 import LibrarySearchSheet from '../Search/LibrarySearchSheet';
@@ -19,7 +20,8 @@ const NavbarDataForHideAndShow = () => {
                             <NavMenu2 />
                         </div>
                         <div className="flex items-center gap-3">
-                            <LibrarySearchSheet />
+                            {/* <LibrarySearchSheet /> */}
+                            <SearchByGoogleButtonSmall />
                             <SwitchDarkModeSmoothAnimated />
                             <NavLanguage />
 
@@ -43,7 +45,8 @@ const NavbarDataForHideAndShow = () => {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <LibrarySearchSheet />
+                            {/* <LibrarySearchSheet /> */}
+                            <SearchByGoogleButtonSmall />
                             <SwitchDarkModeSmoothAnimated />
                             <NavLanguage />
 

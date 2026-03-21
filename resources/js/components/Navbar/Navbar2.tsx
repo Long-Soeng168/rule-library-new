@@ -1,5 +1,5 @@
+import SearchByGoogleButtonSmall from '../Button/SearchByGoogleButtonSmall';
 import { NavbarLogo2 } from '../Logo/NavbarLogo2';
-import LibrarySearchSheet from '../Search/LibrarySearchSheet';
 import { SwitchDarkModeSmoothAnimated } from '../Switch/SwitchDarkModeSmoothAnimated';
 import NavLanguage from './NavLanguage';
 import { NavMenu2 } from './NavMenu2';
@@ -19,7 +19,8 @@ const Navbar2 = () => {
                         </div>
                         <div className="max-[1000px]:hidden">
                             <div className="flex items-center gap-3">
-                                <LibrarySearchSheet />
+                                {/* <LibrarySearchSheet /> */}
+                                <SearchByGoogleButtonSmall />
                                 <SwitchDarkModeSmoothAnimated />
                                 <NavLanguage />
 
@@ -42,7 +43,8 @@ const Navbar2 = () => {
                         <div></div>
 
                         <div className="flex items-center gap-3">
-                            <LibrarySearchSheet />
+                            {/* <LibrarySearchSheet /> */}
+                            <SearchByGoogleButtonSmall />
                             <SwitchDarkModeSmoothAnimated />
                             <NavLanguage />
 

@@ -28,7 +28,7 @@ const Index = () => {
                 <div className="section-container">
                     <LibrarySearch />
                 </div>
-                <div>
+                <div className='mt-8'>
                     <ResourceMainCategory />
                 </div>
 

@@ -56,6 +56,9 @@ const LibrarySearch = ({ debounceSearch = true }: LibrarySearchProps) => {
 
     return (
         <div className="relative mx-auto w-full max-w-2xl">
+            <div className="h-8">
+                <LoadingOnPrefetch />
+            </div>
             <div
                 className={cn(
                     'flex items-center rounded-full border border-primary bg-muted p-2 ring-primary/20 transition-colors focus-within:ring-4 dark:ring-primary/50',
@@ -80,10 +83,7 @@ const LibrarySearch = ({ debounceSearch = true }: LibrarySearchProps) => {
                 <Button variant="ghost" size="icon" className="rounded-full bg-primary/10 hover:bg-primary/20" onClick={handleSearch}>
                     <SearchIcon className="h-5 w-5 text-primary" />
                 </Button>
-            </div>
-            <div className="h-8">
-                <LoadingOnPrefetch />
-            </div>
+            </div> 
         </div>
     );
 };

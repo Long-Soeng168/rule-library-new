@@ -10,20 +10,20 @@ const SearchByGoogleButton = () => {
             <Link
                 href="/search-powered-by-google"
                 prefetch
-                className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full border border-indigo-500 bg-white px-5 pl-4 py-3 text-sm font-bold transition-all hover:-translate-y-0.5 dark:bg-slate-950"
+                className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full border border-[#4086f4] bg-white px-5 pl-4 py-3 text-sm font-bold transition-all hover:-translate-y-0.5 dark:bg-slate-950"
             >
                 {/* Animated Rainbow Gradient Background (Hidden by default, fades in on hover) */}
-                <div className="MoveGradient absolute inset-0 -z-10 bg-gradient-to-r from-indigo-400 via-red-400 to-green-400 opacity-0 transition-opacity duration-500 group-hover:opacity-10" />
+                <div className="MoveGradient absolute inset-0 -z-10 bg-gradient-to-r from-[#4086f4] via-red-400 to-green-400 opacity-0 transition-opacity duration-500 group-hover:opacity-10" />
 
                 {/* Search Icon with a playful bounce */}
                 <div className="relative">
-                    <Search className="h-5 w-5 text-indigo-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+                    <Search className="h-5 w-5 text-[#4086f4] transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
                     <Sparkles className="absolute -top-2 -right-2 h-3 w-3 scale-0 text-yellow-500 transition-all delay-100 group-hover:scale-100" />
                 </div>
 
-                <span className="relative bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent transition-all group-hover:from-indigo-600 group-hover:to-purple-600 dark:from-white dark:to-slate-300">
+                <span className="relative bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent transition-all group-hover:from-[#4086f4] group-hover:to-red-500 dark:from-white dark:to-slate-300">
                     {currentLocale === 'kh' ? 'ស្វែងរកសកល' : 'Global Search'}
-                    <div className="absolute bottom-0 left-1/2 h-[1px] w-3/3 origin-left -translate-x-1/2 scale-x-0 rounded-full bg-gradient-to-r from-indigo-500 via-indigo-500 to-purple-500 transition-transform duration-500 group-hover:scale-x-100" />
+                    <div className="absolute bottom-0 left-1/2 h-[1px] w-3/3 origin-left -translate-x-1/2 scale-x-0 rounded-full bg-gradient-to-r from-[#4086f4] via-[#4086f4] to-red-500 transition-transform duration-500 group-hover:scale-x-100" />
                 </span>
 
                 {/* Vertical Divider with color pulse */}

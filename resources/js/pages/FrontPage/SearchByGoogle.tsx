@@ -39,13 +39,21 @@ const SearchByGoogle = () => {
     return (
         <FrontPageLayout>
             <div>
-                <div className="section-container mx-auto my-10">
+                <div className="section-container mx-auto pt-6 sm:pt-10">
                     {/* Scoped CSS to modernize the Google Widget */}
                     <style
                         dangerouslySetInnerHTML={{
                             __html: `
+.gsc-table-cell-snippet-close {
+    font-family: 'KantumruyPro' !important;
+}
+.gs-web-image-box .gs-image, .gs-promotion-image-box .gs-promotion-image {
+    background: rgb(0 0 0 / 0%) !important;
+    object-fit: contain !important;
+}
                             
 /* Mobile Style */
+
 .gcsc-find-more-on-google-root {
     display: none !important;
 }

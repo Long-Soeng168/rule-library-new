@@ -23,7 +23,7 @@ export function NavbarLogo4() {
                     <AvatarImage src={logoDark} alt={name || 'Logo'} className="hidden aspect-auto rounded object-contain dark:block" />
                     <AvatarFallback>{name?.charAt(0) || 'L'}</AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col max-[450px]:hidden">
+                <div className="flex flex-col max-[600px]:hidden">
                     {name && (
                         <div className="whitespace-nowrap">
                             <p className="text-[11px] font-medium whitespace-nowrap text-muted-foreground">គេហទំព័របណ្ណាល័យនៃ</p>

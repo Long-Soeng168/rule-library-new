@@ -22,7 +22,7 @@ const Hero = () => {
                     <Link href={`/about`} prefetch>
                         <AnimatedGradientTextBadge />
                     </Link>
-                    <h1 className="mt-4 mb-5 px-1 text-2xl max-w-full leading-tight font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+                    <h1 className="mt-4 -mb-2 px-1 text-2xl max-w-full leading-tight font-extrabold tracking-tight sm:text-4xl md:text-5xl">
                         {/* {currentLocale === 'kh' ? homepageHero?.name_kh || homepageHero?.name : homepageHero?.name} */}
                         {currentLocale === 'kh' ? (
                             <p>
@@ -38,7 +38,7 @@ const Hero = () => {
                     <LibrarySearch />
 
                     {/* Suggestion pills */}
-                    <div className="mx-auto -mt-4 flex max-w-2xl flex-wrap justify-center gap-3 gap-y-3">
+                    <div className="mx-auto mt-3 flex max-w-2xl flex-wrap justify-center gap-3 gap-y-3">
                         {mainCategories.map((item: any) => {
                             return (
                                 <Link key={item?.id} href={`/resources/${item?.code}`} prefetch>
