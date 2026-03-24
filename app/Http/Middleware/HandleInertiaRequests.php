@@ -67,7 +67,7 @@ class HandleInertiaRequests extends Middleware
 
             // Global Website Info
             'website_info' => WebsiteInfo::first(),
-            'media_links' => Link::whereIn('type_code', ['social-media', 'contact'])->get(),
+            'media_links' => Link::whereIn('type_code', ['social-media', 'contact'])->orderBy('order_index')->get(),
 
         ];
     }

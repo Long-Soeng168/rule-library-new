@@ -41,7 +41,7 @@ export default function Create({ editData, readOnly }: { editData?: any; readOnl
         type_code: editData?.type_code || types[0]?.code || '',
         name: editData?.name || '',
         name_kh: editData?.name_kh || '',
-        link: editData?.name_kh || '',
+        link: editData?.link || '',
         order_index: editData?.order_index || 100,
         short_description: editData?.short_description || '',
         short_description_kh: editData?.short_description_kh || '',
