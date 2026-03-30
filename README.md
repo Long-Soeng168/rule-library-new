@@ -12,8 +12,8 @@
 - composer run dev
 
 # Init User
-php artisan db:seed --class=RolesAndPermissionsSeeder
-php artisan db:seed --class=UserSeeder
+- php artisan db:seed --class=RolesAndPermissionsSeeder
+- php artisan db:seed --class=UserSeeder
 
 # CRUD table
 
@@ -24,13 +24,14 @@ php artisan make:model Page -m
 - Resource
 
 
+```
 <!-- TODO: update permission in other resource as it got 'user update' all -->
-```bash
 <RecoverItem
 deleted_at={item.deleted_at}
 recoverPath={`/admin/users/${item.id}/recover`}
 permission="user update" <-------
 />
+```
 
 
 #PDF Viewer Package
