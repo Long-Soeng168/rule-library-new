@@ -34,5 +34,4 @@ permission="user update" <-------
 
 
 #PDF Viewer Package
-```bash
 npm install @react-pdf-viewer/core @react-pdf-viewer/default-layout
